@@ -27,7 +27,7 @@ menu:
         #  weight: 6
 
 params:
-    description: "I am an ML/AI Engineer in the AI Program at Oregon State University. I focus on developing models using reinforcement learning and online learning, with a strong interest in exploring applications of LLM fine-tuning."
+    description: "I'm a recent AI graduate from Oregon State University, specializing in integrating online learning with database management systems."
     author: Yong-Hwan Lee
     # googleAnalyticsID: "G-XXXXX"
     DateFormat: "February 2025"
@@ -53,13 +53,13 @@ params:
     profileMode:
           enabled: true
           title: Yong-Hwan Lee
-          subtitle: "I am an ML/AI Engineer in the AI Program at Oregon State University. I focus on developing models using reinforcement learning and online learning, with a strong interest in exploring applications of LLM fine-tuning."
+          subtitle: "I am an aspiring ML/AI Engineer currently completing my AI program at Oregon State University. I focus on developing models using reinforcement learning and online learning, with a strong interest in exploring applications of LLM fine-tuning."
           imageUrl: "picture.jpeg"
           imageWidth: 160
           imageHeight: 160
           buttons:
             - name: Project
-              url: papers/
+              url: projects/
             #- name: Courses
             #  url: courses/
             #- name: Data
@@ -74,20 +74,20 @@ params:
             #  url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
 
     socialIcons:
-        - name: CV
-          url: cv.pdf
+        #- name: CV
+        #  url: cv.pdf
         - name: Email
           url: kapshaul@gmail.com
-        - name: Zoom
-          url: https://www.zoom.us/my/igelfeld
         #- name: Location
         #  url: location/
-        #- name: Office Hours
+        - name: GitHub
+          url: https://github.com/kapshaul
+        - name: Website
+          url: https://research.engr.oregonstate.edu/idea/home
+        #- name: Office Website
         #  url: officehours/
         #- name: Google Scholar
         #  url: https://scholar.google.com/citations?user=cL23w-4AAAAJ
-        - name: GitHub
-          url: https://github.com/kapshaul
         #- name: Substack
         #  url: https://pmichaillat.substack.com
         #- name: YouTube

@@ -1,7 +1,7 @@
 ---
 title: "LLM Fine-Tunning with GRPO (On Process)" 
-date: 2000-01-01
-lastmod: 2000-01-01
+date: 1000-01-01
+lastmod: 1000-01-01
 tags: ["LLM", "Quantization", "Fine-Tunning", "Reinforcement Learning"]
 author: ["Yong-Hwan Lee"]
 description: "This study was carried out as a personal project." 

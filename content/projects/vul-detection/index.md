@@ -7,7 +7,7 @@ author: ["Yong-Hwan Lee", "Shijie Zhao", "James Flora", "Yunhan Qiao"]
 description: "This study was carried out as a project at Oregon State University." 
 summary: "Fine-tuning a Large Language Model (LLM) for code vulnerability detection using QLoRA, a method that quantizes the model to 4-bit floats and incorporates adapters for fine-tuning." 
 cover:
-    image: "image.png"
+    image: "image1.png"
     alt: "Fine-Tunning for Code Vulnerability Detection"
     relative: false
 

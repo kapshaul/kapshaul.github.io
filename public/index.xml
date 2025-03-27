@@ -48,6 +48,13 @@ Data Science and Engineering and Artificial Intelligence group at Oregon State U
       <description>Professor Dr von Igelfeld&amp;#39;s mailing and office addresses at the Institute of Romance Philology.</description>
     </item>
     <item>
+      <title>Scalable Reinforcement Learning: Exploring Distributed Implementations</title>
+      <link>http://localhost:1313/projects/distributed-agents/</link>
+      <pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/distributed-agents/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
       <title>Your Inner Hedgehog</title>
       <link>http://localhost:1313/papers/paper3/</link>
       <pubDate>Tue, 06 Apr 2021 00:00:00 +0000</pubDate>
@@ -97,13 +104,6 @@ Data Science and Engineering and Artificial Intelligence group at Oregon State U
       <description>This graduate course presents classical results in Romance philology.</description>
     </item>
     <item>
-      <title>LLM Fine-Tunning with GRPO (On Process)</title>
-      <link>http://localhost:1313/projects/rl-fine-tunning/</link>
-      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/projects/rl-fine-tunning/</guid>
-      <description>This study was carried out as a personal project.</description>
-    </item>
-    <item>
       <title>Portugese Irregular Verbs</title>
       <link>http://localhost:1313/books/book1/</link>
       <pubDate>Wed, 01 Jan 1997 00:00:00 +0000</pubDate>
@@ -116,6 +116,13 @@ Data Science and Engineering and Artificial Intelligence group at Oregon State U
       <pubDate>Sat, 16 Jun 1990 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/courses/course2/</guid>
       <description>This undergraduate course discusses profanity in Early Irish.</description>
+    </item>
+    <item>
+      <title>LLM Fine-Tunning with GRPO (On Process)</title>
+      <link>http://localhost:1313/projects/rl-fine-tunning/</link>
+      <pubDate>Wed, 01 Jan 1000 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/rl-fine-tunning/</guid>
+      <description>This study was carried out as a personal project.</description>
     </item>
   </channel>
 </rss>

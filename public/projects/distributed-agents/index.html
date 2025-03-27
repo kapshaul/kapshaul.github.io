@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Scalable Reinforcement Learning: Exploring Distributed Implementations | Yong-Hwan Lee</title>
+<meta name="keywords" content="Reinforcement Learning , Parallel Learning, Scalable RL, Multi-Agent RL">
+<meta name="description" content="This study was carried out as a project at Oregon State University.">
+<meta name="author" content="Yong-Hwan Lee,&thinsp;Bakhtiyar Doskenov">
+<link rel="canonical" href="http://localhost:1313/projects/distributed-agents/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6cf4a8fa527330d9574f36d8d000fdaf90ca838ff09ab72fc27d3cb7ca1ddc5.css" integrity="sha256-1s9Kj6UnMw2VdPNtjQAP2vkMqDj/Caty/CfTy3yh3cU=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/projects/distributed-agents/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Scalable Reinforcement Learning: Exploring Distributed Implementations" />
+<meta property="og:description" content="This study was carried out as a project at Oregon State University." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/projects/distributed-agents/" />
+<meta property="og:image" content="http://localhost:1313/image.png" /><meta property="article:section" content="projects" />
+<meta property="article:published_time" content="2021-12-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2025-02-10T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://localhost:1313/image.png" />
+<meta name="twitter:title" content="Scalable Reinforcement Learning: Exploring Distributed Implementations"/>
+<meta name="twitter:description" content="This study was carried out as a project at Oregon State University."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Projects",
+      "item": "http://localhost:1313/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Scalable Reinforcement Learning: Exploring Distributed Implementations",
+      "item": "http://localhost:1313/projects/distributed-agents/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Scalable Reinforcement Learning: Exploring Distributed Implementations",
+  "name": "Scalable Reinforcement Learning: Exploring Distributed Implementations",
+  "description": "This study was carried out as a project at Oregon State University.",
+  "keywords": [
+    "Reinforcement Learning ", "Parallel Learning", "Scalable RL", "Multi-Agent RL"
+  ],
+  "articleBody": " Download Code Abstract The goal of this project is to implement and experiment with both single-core and distributed versions of the deep reinforcement learning algorithm Deep Q Networks (DQN). In particular, DQN will be run in the classic RL benchmark Cart-Pole and abblation experiments will be run to observe the impact of the different DQN components.\nDQN Overview DQN is simply the standard table-based Q-learning algorithm but with three extensions:\nUse of function approximation via a neural network instead of a Q-table. Use of experience replay. Use of a target network. Extension (1) allows for scaling to problems with enormous state spaces, such as when the states correspond to images or sequences of images. Extensions (2) and (3) are claimed to improve the robustness and effectiveness of DQN compared.\n(2) adjusts Q-learning so that updates are not just performed on individual experiences as they arrive. But rather, experiences are stored in a memory buffer and updates are performed by sampling random mini-batches of experience tuples from the memory buffer and updating the network based on the mini-batch. This allows for reuse of experience as well as helping to reduce correlation between successive updates, which is claimed to be beneficial.\n(3) adjusts the way that target values are computed for the Q-learning updates. Let $Q_{\\theta}(s,a)$ be the function approximation network with parameters $\\theta$ for representing the Q-function. Given an experience tuple $(s, a, r, s’)$ the origional Q-learning algorithm updates the parameters so that $Q_{\\theta}(s,a)$ moves closer to the target value:\n$$ r + \\beta \\max_a’ Q_{\\theta}(s’,a’) $$\nRather, DQN stores two function approximation networks. The first is the update network with parameters $\\theta$, which is the network that is continually updated during learning. The second is a target network with parameters $\\theta’$. Given the same experience tuple, DQN will update the parameters $\\theta$ so that $Q_{\\theta}(s,a)$ moves toward a target value based on the target network:\n$$ r + \\beta \\max_a’ Q_{\\theta’}(s’,a’) $$\nPeriodically the target network is updated with the most recent parameters $\\theta’ \\leftarrow \\theta$. This use of a target network is claimed to stabilize learning.\nDistributed DQN agent The idea is to speedup learning by creating actors to collect data and a model server to update the neural network model.\nCollector: There is a simulator inside each collector. Their job is to collect exprience from the simulator, and send them to the memory server. They follow the explore_or_exploit policy, getting greedy action from model server. Also, call update function of model server to update the model. Evaluator: There is a simulator inside the evaluator. It is called by the the Model Server, taking eval_model from it, and test its performance. Model Server: Stores the evalation and target networks. It Takes experiences from Memory Server and updates the Q-network, also replacing target Q-network periodically. It also interfaces to the evaluator periodically. Memory Server: It is used to store/sample experience relays. An image of this architecture is below.\nFor this part, using custom_cartpole.py as an enviroment. This version of cartpole is slower, which allows for the benefits of distributed experience collection to be observed. In particular, the time to generate an experience tuple needs to be non-trivial compared to the time needed to do a neural network model update.\nInstallation Clone the repository:\ngit clone https://github.com/kapshaul/Distributed.Multi-Agents.RL.git cd Distributed.Multi-Agents.RL/Distributed DQN Install the required Python packages:\npip install -r requirements.txt Implementation Set Up the Environment\nThe code is designed to work with a custom CartPole environment. Make sure that the custom_cartpole.py and the necessary model and memory files (dqn_model.py, memory_remote.py) are properly configured and located in the repository.\nExecute the Distributed DQN Python Script\nTo start training the Distributed DQN on the CartPole environment, run python distributed_dqn.py.\n",
+  "wordCount" : "616",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/image.png","datePublished": "2021-12-12T00:00:00Z",
+  "dateModified": "2025-02-10T00:00:00Z",
+  "author":[{
+    "@type": "Person",
+    "name": "Yong-Hwan Lee"
+  }, {
+    "@type": "Person",
+    "name": "Bakhtiyar Doskenov"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/projects/distributed-agents/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yong-Hwan Lee",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-wcIxkf4k558AjM3Yz3BBFQUbk/zgIYC2R0QpeeYb+TwlBVMrlgLqwRjRtGZiK7ww" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoBPJpTUs74ddyc4bFZSM1TVlQDA60VBbJS0oA934VSz82sBx1X7kSx2ATBDIyd" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+            {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+            {left: "\\begin{align}", right: "\\end{align}", display: true},
+            {left: "\\begin{align*}", right: "\\end{align*}", display: true},
+            {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+            {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+            {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+          ],
+          throwOnError : false
+        });
+    });
+</script>
+ 
+
+
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Yong-Hwan Lee">
+                <img src="http://localhost:1313/favicon.ico" alt="" aria-label="logo"
+                    height="18"
+                    width="18">Yong-Hwan Lee</a>
+            <div class="logo-switches">
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/studies/" title="Studies">
+                    <span>Studies</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Scalable Reinforcement Learning: Exploring Distributed Implementations
+    </h1>
+    <div class="post-meta"><span title='2021-12-12 00:00:00 +0000 UTC'>December 2021</span>&nbsp;&middot;&nbsp;Yong-Hwan Lee,&thinsp;Bakhtiyar Doskenov
+
+</div>
+  </header> 
+  <div class="post-content"><hr>
+<h5 id="download">Download</h5>
+<ul>
+<li><a href="https://github.com/kapshaul/Distributed.Multi-Agents.RL" target="_blank">Code</a></li>
+</ul>
+<hr>
+<h5 id="abstract">Abstract</h5>
+<p>The goal of this project is to implement and experiment with both single-core and distributed versions of the deep reinforcement learning algorithm Deep Q Networks (DQN).
+In particular, DQN will be run in the classic RL benchmark Cart-Pole and abblation experiments will be run to observe the impact of the different DQN components.</p>
+<hr>
+<h5 id="dqn-overview">DQN Overview</h5>
+<p>DQN is simply the standard table-based Q-learning algorithm but with three extensions:</p>
+<ol>
+<li>Use of function approximation via a neural network instead of a Q-table.</li>
+<li>Use of experience replay.</li>
+<li>Use of a target network.</li>
+</ol>
+<p>Extension (1) allows for scaling to problems with enormous state spaces, such as when the states correspond to images or sequences of images. Extensions (2) and (3) are claimed to improve the robustness and effectiveness of DQN compared.</p>
+<p>(2) adjusts Q-learning so that updates are not just performed on individual experiences as they arrive. But rather, experiences are stored in a memory buffer and updates are performed by sampling random mini-batches of experience tuples from the memory buffer and updating the network based on the mini-batch. This allows for reuse of experience as well as helping to reduce correlation between successive updates, which is claimed to be beneficial.</p>
+<p>(3) adjusts the way that target values are computed for the Q-learning updates. Let $Q_{\theta}(s,a)$ be the function approximation network with parameters $\theta$ for representing the Q-function. Given an experience tuple $(s, a, r, s&rsquo;)$ the origional Q-learning algorithm updates the parameters so that $Q_{\theta}(s,a)$ moves closer to the target value:</p>
+<p>$$
+r + \beta \max_a&rsquo; Q_{\theta}(s&rsquo;,a&rsquo;)
+$$</p>
+<p>Rather, DQN stores two function approximation networks. The first is the update network with parameters $\theta$, which is the network that is continually updated during learning. The second is a target network with parameters $\theta&rsquo;$. Given the same experience tuple, DQN will update the parameters $\theta$ so that $Q_{\theta}(s,a)$ moves toward a target value based on the target network:</p>
+<p>$$
+r + \beta \max_a&rsquo; Q_{\theta&rsquo;}(s&rsquo;,a&rsquo;)
+$$</p>
+<p>Periodically the target network is updated with the most recent parameters $\theta&rsquo; \leftarrow \theta$. This use of a target network is claimed to stabilize learning.</p>
+<hr>
+<h5 id="distributed-dqn-agent">Distributed DQN agent</h5>
+<p>The idea is to speedup learning by creating actors to collect data and a model server to update the neural network model.</p>
+<ul>
+<li>Collector: There is a simulator inside each collector. Their job is to collect exprience from the simulator, and send them to the memory server. They follow the explore_or_exploit policy, getting greedy action from model server. Also, call update function of model server to update the model.</li>
+<li>Evaluator: There is a simulator inside the evaluator. It is called by the the Model Server, taking eval_model from it, and test its performance.</li>
+<li>Model Server: Stores the evalation and target networks. It Takes experiences from Memory Server and updates the Q-network, also replacing target Q-network periodically. It also interfaces to the evaluator periodically.</li>
+<li>Memory Server: It is used to store/sample experience relays.</li>
+</ul>
+<p>An image of this architecture is below.</p>
+<img src="image.png" width="800">
+<p>For this part, using <code>custom_cartpole.py</code> as an enviroment. This version of cartpole is slower, which allows for the benefits of distributed experience collection to be observed. In particular, the time to generate an experience tuple needs to be non-trivial compared to the time needed to do a neural network model update.</p>
+<hr>
+<h5 id="installation">Installation</h5>
+<ol>
+<li>
+<p>Clone the repository:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/kapshaul/Distributed.Multi-Agents.RL.git
+</span></span><span style="display:flex;"><span><span style="color:#0aa">cd</span> Distributed.Multi-Agents.RL/Distributed DQN
+</span></span></code></pre></div></li>
+<li>
+<p>Install the required Python packages:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>pip install -r requirements.txt
+</span></span></code></pre></div></li>
+</ol>
+<hr>
+<h5 id="implementation">Implementation</h5>
+<ol>
+<li>
+<p>Set Up the Environment</p>
+<p>The code is designed to work with a custom CartPole environment. Make sure that the <code>custom_cartpole.py</code> and the necessary model and memory files (<code>dqn_model.py</code>, <code>memory_remote.py</code>) are properly configured and located in the repository.</p>
+</li>
+<li>
+<p>Execute the Distributed DQN Python Script</p>
+<p>To start training the Distributed DQN on the CartPole environment, run <code>python distributed_dqn.py</code>.</p>
+</li>
+</ol>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/reinforcement-learning-/">Reinforcement Learning </a></li>
+      <li><a href="http://localhost:1313/tags/parallel-learning/">Parallel Learning</a></li>
+      <li><a href="http://localhost:1313/tags/scalable-rl/">Scalable RL</a></li>
+      <li><a href="http://localhost:1313/tags/multi-agent-rl/">Multi-Agent RL</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="http://localhost:1313/">Yong-Hwan Lee</a></span> ·     
+    <span>
+    Powered by 
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/pmichaillat/hugo-website/" rel="noopener" target="_blank">a modified version</a>
+         of 
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+</html>

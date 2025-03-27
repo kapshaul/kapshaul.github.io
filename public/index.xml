@@ -41,11 +41,32 @@ Data Science and Engineering and Artificial Intelligence group at Oregon State U
       <description>This study was carried out as a project at Oregon State University.</description>
     </item>
     <item>
+      <title>Natural Language Processing (NLP) - Attention Mechanisms in Sequence-to-Sequence Models</title>
+      <link>http://localhost:1313/studies/attention-mechanism/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/attention-mechanism/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
       <title>Location</title>
       <link>http://localhost:1313/location/</link>
       <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/location/</guid>
       <description>Professor Dr von Igelfeld&amp;#39;s mailing and office addresses at the Institute of Romance Philology.</description>
+    </item>
+    <item>
+      <title>Natural Language Processing (NLP) - Word Vector</title>
+      <link>http://localhost:1313/studies/word-vector/</link>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/word-vector/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
+      <title>Comparison of Online Learning Algorithms</title>
+      <link>http://localhost:1313/studies/comparison-ol/</link>
+      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/comparison-ol/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
     </item>
     <item>
       <title>Scalable Reinforcement Learning: Exploring Distributed Implementations</title>

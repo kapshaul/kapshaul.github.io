@@ -6,7 +6,7 @@
     <description>Recent content in LLM on Yong-Hwan Lee</description>
     <generator>Hugo -- 0.143.1</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 30 Aug 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/llm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>LLM Fine-Tunning for Code Vulnerability Detection</title>
@@ -14,6 +14,13 @@
       <pubDate>Thu, 13 Jun 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/projects/vul-detection/</guid>
       <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
+      <title>LLM Fine-Tunning with GRPO (On Process)</title>
+      <link>http://localhost:1313/projects/rl-fine-tunning/</link>
+      <pubDate>Wed, 01 Jan 1000 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/projects/rl-fine-tunning/</guid>
+      <description>This study was carried out as a personal project.</description>
     </item>
   </channel>
 </rss>

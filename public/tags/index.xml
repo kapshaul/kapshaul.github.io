@@ -44,6 +44,181 @@
       <description></description>
     </item>
     <item>
+      <title>Code Vulnerability Detection</title>
+      <link>http://localhost:1313/tags/code-vulnerability-detection/</link>
+      <pubDate>Thu, 13 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/code-vulnerability-detection/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fine-Tunning</title>
+      <link>http://localhost:1313/tags/fine-tunning/</link>
+      <pubDate>Thu, 13 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/fine-tunning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LLM</title>
+      <link>http://localhost:1313/tags/llm/</link>
+      <pubDate>Thu, 13 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/llm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Quantization</title>
+      <link>http://localhost:1313/tags/quantization/</link>
+      <pubDate>Thu, 13 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/quantization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>ArtificialIntelligence</title>
+      <link>http://localhost:1313/tags/artificialintelligence/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/artificialintelligence/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Attention Mechanism</title>
+      <link>http://localhost:1313/tags/attention-mechanism/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/attention-mechanism/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>BLEU Score</title>
+      <link>http://localhost:1313/tags/bleu-score/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/bleu-score/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Deep Learning</title>
+      <link>http://localhost:1313/tags/deep-learning/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/deep-learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Machine Learning</title>
+      <link>http://localhost:1313/tags/machine-learning/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>NLP</title>
+      <link>http://localhost:1313/tags/nlp/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/nlp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Transformer</title>
+      <link>http://localhost:1313/tags/transformer/</link>
+      <pubDate>Fri, 07 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/transformer/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>GloVe</title>
+      <link>http://localhost:1313/tags/glove/</link>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/glove/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PPMI</title>
+      <link>http://localhost:1313/tags/ppmi/</link>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/ppmi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tokenization</title>
+      <link>http://localhost:1313/tags/tokenization/</link>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/tokenization/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TSNE</title>
+      <link>http://localhost:1313/tags/tsne/</link>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/tsne/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Word Embeddings</title>
+      <link>http://localhost:1313/tags/word-embeddings/</link>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/word-embeddings/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Word2Vec</title>
+      <link>http://localhost:1313/tags/word2vec/</link>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/word2vec/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Adversarial Learning</title>
+      <link>http://localhost:1313/tags/adversarial-learning/</link>
+      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/adversarial-learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Linear Regression</title>
+      <link>http://localhost:1313/tags/linear-regression/</link>
+      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/linear-regression/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Recomendation</title>
+      <link>http://localhost:1313/tags/recomendation/</link>
+      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/recomendation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>UCB</title>
+      <link>http://localhost:1313/tags/ucb/</link>
+      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/ucb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Multi-Agent RL</title>
+      <link>http://localhost:1313/tags/multi-agent-rl/</link>
+      <pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/multi-agent-rl/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Parallel Learning</title>
+      <link>http://localhost:1313/tags/parallel-learning/</link>
+      <pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/parallel-learning/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Reinforcement Learning </title>
+      <link>http://localhost:1313/tags/reinforcement-learning-/</link>
+      <pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/reinforcement-learning-/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Scalable RL</title>
+      <link>http://localhost:1313/tags/scalable-rl/</link>
+      <pubDate>Sun, 12 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/scalable-rl/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Academia</title>
       <link>http://localhost:1313/tags/academia/</link>
       <pubDate>Tue, 06 Apr 2021 00:00:00 +0000</pubDate>
@@ -76,6 +251,62 @@
       <link>http://localhost:1313/tags/social-psychology/</link>
       <pubDate>Tue, 06 Apr 2021 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/social-psychology/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CT Imaging</title>
+      <link>http://localhost:1313/tags/ct-imaging/</link>
+      <pubDate>Tue, 10 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/ct-imaging/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Image Denoising</title>
+      <link>http://localhost:1313/tags/image-denoising/</link>
+      <pubDate>Tue, 10 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/image-denoising/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>MLE</title>
+      <link>http://localhost:1313/tags/mle/</link>
+      <pubDate>Tue, 10 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/mle/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Non-Parametric Estimation</title>
+      <link>http://localhost:1313/tags/non-parametric-estimation/</link>
+      <pubDate>Tue, 10 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/non-parametric-estimation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Statistical Estimation</title>
+      <link>http://localhost:1313/tags/statistical-estimation/</link>
+      <pubDate>Tue, 10 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/statistical-estimation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kalman Filter</title>
+      <link>http://localhost:1313/tags/kalman-filter/</link>
+      <pubDate>Mon, 05 Dec 2016 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/kalman-filter/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Robotics</title>
+      <link>http://localhost:1313/tags/robotics/</link>
+      <pubDate>Mon, 05 Dec 2016 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/robotics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sensor Fusion</title>
+      <link>http://localhost:1313/tags/sensor-fusion/</link>
+      <pubDate>Mon, 05 Dec 2016 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/sensor-fusion/</guid>
       <description></description>
     </item>
     <item>

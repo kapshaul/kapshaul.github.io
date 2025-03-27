@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Natural Language Processing (NLP) - Word Vector | Yong-Hwan Lee</title>
+<meta name="keywords" content="NLP, Word Embeddings, GloVe, Word2Vec, Machine Learning, Tokenization, tSNE, PPMI">
+<meta name="description" content="This study was carried out as a project at Oregon State University.">
+<meta name="author" content="Yong-Hwan Lee">
+<link rel="canonical" href="http://localhost:1313/studies/word-vector-copy/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6cf4a8fa527330d9574f36d8d000fdaf90ca838ff09ab72fc27d3cb7ca1ddc5.css" integrity="sha256-1s9Kj6UnMw2VdPNtjQAP2vkMqDj/Caty/CfTy3yh3cU=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/studies/word-vector-copy/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Natural Language Processing (NLP) - Word Vector" />
+<meta property="og:description" content="This study was carried out as a project at Oregon State University." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/studies/word-vector-copy/" /><meta property="article:section" content="studies" />
+<meta property="article:published_time" content="2024-04-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-07-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Natural Language Processing (NLP) - Word Vector"/>
+<meta name="twitter:description" content="This study was carried out as a project at Oregon State University."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Studies",
+      "item": "http://localhost:1313/studies/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Natural Language Processing (NLP) - Word Vector",
+      "item": "http://localhost:1313/studies/word-vector-copy/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Natural Language Processing (NLP) - Word Vector",
+  "name": "Natural Language Processing (NLP) - Word Vector",
+  "description": "This study was carried out as a project at Oregon State University.",
+  "keywords": [
+    "NLP", "Word Embeddings", "GloVe", "Word2Vec", "Machine Learning", "Tokenization", "tSNE", "PPMI"
+  ],
+  "articleBody": "Overview This project delves into the foundational aspects of natural language processing, focusing on the creation and analysis of word vectors, distributed representations of words, and the exploration of inherent biases in these representations. The AG News Benchmark dataset is used for implementing tokenization, vocabulary building, and investigating various techniques for generating and analyzing word vectors.\nInstallation To get started, clone the repository and install the required dependencies:\ngit clone https://github.com/kapshaul/NLP-WordVector.git cd NLP-WordVector pip install -r requirements.txt Implementation To implement Tokenization and Vocabulary Building, run build_freq_vectors.py. To implement Frequency-Based Word Vectors and Learning-Based Word Vectors with GloVe, run build_glove_vectors.py. To implement Exploring Bias in Word Vectors, run Exploring_learned_biases.py. Tokenization and Vocabulary Building The project begins by transforming raw text into tokenized forms, with experimentation on different tokenization methods, including lemmatization. A vocabulary is then built based on the frequency of tokens, using heuristics to optimize the vocabulary size for computational efficiency.\nFigure 1: Token frequency distribution (top) and cumulative fraction covered (bottom)\nFigure 1 shows the effect of applying a cutoff heuristic where tokens with a frequency of 12 or higher are retained, capturing 96% of the tokens in the dataset. This threshold was chosen for computational feasibility, as it allows the co-occurrence matrix $C$ to remain approximately 1GB in size. Expanding the vocabulary beyond this point would significantly increase memory requirements, potentially exceeding available resources. The figure illustrates how this cutoff effectively balances the coverage of the dataset with the constraints of computational capacity.\nFrequency-Based Word Vectors Frequency-based word vectors are explored using Pointwise Mutual Information (PPMI). This involves constructing a co-occurrence matrix from the corpus, computing PPMI values, and then reducing the dimensionality of the word vectors through techniques like Truncated SVD. Visualization of these word vectors is performed using t-SNE to better understand the captured semantic relationships.\nFigure 2: t-SNE Visualization\nFigure 3: t-SNE clusters — War (Top), Technology (Middle), and Politics (Bottom)\nLearning-Based Word Vectors with GloVe The GloVe algorithm is implemented to generate word vectors by modeling word co-occurrences as a weighted log-bilinear regression problem. The process includes deriving gradients, optimizing the objective via stochastic gradient descent, and visualizing the resulting word vectors. The behavior of the loss during training is monitored to ensure proper convergence. The GloVe objective can be written as a sum of weighted squared error terms for each word-pair in a vocabulary,\n$$ J = \\overbrace{\\sum_{i,j \\in V}}^{\\text{{sum over\\ word pairs}}} \\underbrace{f(C_{ij})}_ {\\text{weight}} ~~~( \\overbrace{w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij}}^{\\text{error term}})^2 $$\nwhere each word $i$ is associated with word vector $w_i$, context vector $\\tilde{w}_ i$, and word/context biases $b_i$ and $\\tilde{b}_ i$. The $f(C_{ij})$ term is a weighting to avoid frequent co-occurrences from dominating the objective and is defined as,\n$$ f(X_{ij}) = min(1, C_{ij}/100)^{0.75} $$\nThe derivation of the gradient for the objective $J$ is expressed as follows,\n$\\nabla_{w_i}J=\\nabla_{w_i}\\sum_{i,j \\in V}f(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})^2$\n$\\hspace{0.75cm}=2{\\tilde{w}_ j}f(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})$\n$\\nabla_{\\tilde{w}_ j}J=\\nabla_{\\tilde{w}_ j}\\sum_{i,j \\in V}f(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})^2$\n$\\hspace{0.75cm}=2w_if(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})$\n$\\nabla_{b_i}J=\\nabla_{b_i}\\sum_{i,j \\in V}f(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})^2$\n$\\hspace{0.75cm}=2f(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})$\n$\\nabla_{\\tilde{b}_ j}J=\\nabla_{\\tilde{b}_ j}\\sum_{i,j \\in V}f(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})^2$\n$\\hspace{0.75cm}=2f(C_{ij})(w_i^T\\tilde{w}_ j + b_i + \\tilde{b}_ j - \\log C_{ij})$\nTraining GloVe vectors involved monitoring the loss function throughout the process. The behavior of the loss during training is detailed below,\n2024-04-17 04:09:49 INFO Iter 14400 / 15227: avg. loss over last 100 batches = 0.046686563985831216 2024-04-17 04:09:49 INFO Iter 14500 / 15227: avg. loss over last 100 batches = 0.04769956457112328 2024-04-17 04:09:49 INFO Iter 14600 / 15227: avg. loss over last 100 batches = 0.04687950216720886 2024-04-17 04:09:49 INFO Iter 14700 / 15227: avg. loss over last 100 batches = 0.04827717854832922 2024-04-17 04:09:49 INFO Iter 14800 / 15227: avg. loss over last 100 batches = 0.047144581882744535 2024-04-17 04:09:49 INFO Iter 14900 / 15227: avg. loss over last 100 batches = 0.047903630422071866 2024-04-17 04:09:49 INFO Iter 15000 / 15227: avg. loss over last 100 batches = 0.04676183418646468 2024-04-17 04:09:49 INFO Iter 15100 / 15227: avg. loss over last 100 batches = 0.048071157216658514 2024-04-17 04:09:49 INFO Iter 15200 / 15227: avg. loss over last 100 batches = 0.04732485846561704 Exploring Bias in Word Vectors A significant focus of this project is the exploration of biases that can be inherent in word vectors. Relationships learned by word2vec are analyzed, revealing how these vectors can reinforce gender, racial, or other societal biases. This highlights the importance of understanding and addressing these biases, particularly in the deployment of NLP models in real-world applications.\nThe following examples illustrate how word2vec reinforces gender stereotypes in medicine,\n\u003e\u003e\u003e analogy('man', 'doctor', 'woman') man : doctor :: woman : ? [('gynecologist', 0.709), ('nurse', 0.648), ('doctors', 0.647), ('physician', 0.644), ('pediatrician', 0.625), ('nurse_practitioner', 0.622), ('obstetrician', 0.607), ('ob_gyn', 0.599), ('midwife', 0.593), ('dermatologist', 0.574)] \u003e\u003e\u003e analogy('woman', 'doctor', 'man') woman : doctor :: man : ? [('physician', 0.646), ('doctors', 0.586), ('surgeon', 0.572), ('dentist', 0.552), ('cardiologist', 0.541), ('neurologist', 0.527), ('neurosurgeon', 0.525), ('urologist', 0.525), ('Doctor', 0.524), ('internist', 0.518)] These results show that word2vec tends to associate female doctors with roles in nursing or specializations focused on women’s or children’s health, thus reinforcing gender stereotypes in the medical field.\n",
+  "wordCount" : "886",
+  "inLanguage": "en",
+  "datePublished": "2024-04-10T00:00:00Z",
+  "dateModified": "2024-07-12T00:00:00Z",
+  "author":[{
+    "@type": "Person",
+    "name": "Yong-Hwan Lee"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/studies/word-vector-copy/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yong-Hwan Lee",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-wcIxkf4k558AjM3Yz3BBFQUbk/zgIYC2R0QpeeYb+TwlBVMrlgLqwRjRtGZiK7ww" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoBPJpTUs74ddyc4bFZSM1TVlQDA60VBbJS0oA934VSz82sBx1X7kSx2ATBDIyd" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+            {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+            {left: "\\begin{align}", right: "\\end{align}", display: true},
+            {left: "\\begin{align*}", right: "\\end{align*}", display: true},
+            {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+            {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+            {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+          ],
+          throwOnError : false
+        });
+    });
+</script>
+ 
+
+
+</head>
+
+<body class=" dark" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Yong-Hwan Lee">
+                <img src="http://localhost:1313/favicon.ico" alt="" aria-label="logo"
+                    height="18"
+                    width="18">Yong-Hwan Lee</a>
+            <div class="logo-switches">
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/studies/" title="Studies">
+                    <span>Studies</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Natural Language Processing (NLP) - Word Vector
+    </h1>
+    <div class="post-meta"><span title='2024-04-10 00:00:00 +0000 UTC'>April 2024</span>&nbsp;&middot;&nbsp;Yong-Hwan Lee&nbsp;&middot;&nbsp;<a href="https://github.com/kapshaul/NLP-WordVector" rel="noopener noreferrer" target="_blank">GitHub</a>
+
+</div>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#implementation">Implementation</a></li>
+    <li><a href="#tokenization-and-vocabulary-building">Tokenization and Vocabulary Building</a></li>
+    <li><a href="#frequency-based-word-vectors">Frequency-Based Word Vectors</a></li>
+    <li><a href="#learning-based-word-vectors-with-glove">Learning-Based Word Vectors with GloVe</a></li>
+    <li><a href="#exploring-bias-in-word-vectors">Exploring Bias in Word Vectors</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
+<p>This project delves into the foundational aspects of natural language processing, focusing on the creation and analysis of word vectors, distributed representations of words, and the exploration of inherent biases in these representations. The AG News Benchmark dataset is used for implementing tokenization, vocabulary building, and investigating various techniques for generating and analyzing word vectors.</p>
+<hr>
+<h2 id="installation">Installation<a hidden class="anchor" aria-hidden="true" href="#installation">#</a></h2>
+<p>To get started, clone the repository and install the required dependencies:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/kapshaul/NLP-WordVector.git
+</span></span><span style="display:flex;"><span><span style="color:#0aa">cd</span> NLP-WordVector
+</span></span><span style="display:flex;"><span>pip install -r requirements.txt
+</span></span></code></pre></div><hr>
+<h2 id="implementation">Implementation<a hidden class="anchor" aria-hidden="true" href="#implementation">#</a></h2>
+<ol>
+<li>To implement <em>Tokenization and Vocabulary Building</em>, run <code>build_freq_vectors.py</code>.</li>
+<li>To implement <em>Frequency-Based Word Vectors</em> and <em>Learning-Based Word Vectors with GloVe</em>, run <code>build_glove_vectors.py</code>.</li>
+<li>To implement <em>Exploring Bias in Word Vectors</em>, run <code>Exploring_learned_biases.py</code>.</li>
+</ol>
+<hr>
+<h2 id="tokenization-and-vocabulary-building">Tokenization and Vocabulary Building<a hidden class="anchor" aria-hidden="true" href="#tokenization-and-vocabulary-building">#</a></h2>
+<p>The project begins by transforming raw text into tokenized forms, with experimentation on different tokenization methods, including lemmatization. A vocabulary is then built based on the frequency of tokens, using heuristics to optimize the vocabulary size for computational efficiency.</p>
+<div align="center">
+<img src="/word-vector/Figure_1.png" alt="Cumulative Regret of UCB" width="600">
+<p><strong>Figure 1</strong>: Token frequency distribution (top) and cumulative fraction covered (bottom)</p>
+</div>
+<br>
+<p>Figure 1 shows the effect of applying a cutoff heuristic where tokens with a frequency of 12 or higher are retained, capturing 96% of the tokens in the dataset. This threshold was chosen for computational feasibility, as it allows the co-occurrence matrix $C$ to remain approximately 1GB in size. Expanding the vocabulary beyond this point would significantly increase memory requirements, potentially exceeding available resources. The figure illustrates how this cutoff effectively balances the coverage of the dataset with the constraints of computational capacity.</p>
+<hr>
+<h2 id="frequency-based-word-vectors">Frequency-Based Word Vectors<a hidden class="anchor" aria-hidden="true" href="#frequency-based-word-vectors">#</a></h2>
+<p>Frequency-based word vectors are explored using <em>Pointwise Mutual Information (PPMI)</em>. This involves constructing a co-occurrence matrix from the corpus, computing PPMI values, and then reducing the dimensionality of the word vectors through techniques like Truncated SVD. Visualization of these word vectors is performed using <em>t-SNE</em> to better understand the captured semantic relationships.</p>
+<div align="center">
+<img src="/word-vector/Figure_2.png" alt="t-SNE Visualization" width="600">
+<p><strong>Figure 2</strong>: t-SNE Visualization</p>
+<br>
+<img src="/word-vector/Figure_3.png" alt="t-SNE Visualization" width="1000">
+<img src="/word-vector/Figure_4.png" alt="t-SNE Visualization" width="1000">
+<img src="/word-vector/Figure_5.png" alt="t-SNE Visualization" width="1000">
+<p><strong>Figure 3</strong>: t-SNE clusters — War (Top), Technology (Middle), and Politics (Bottom)</p>
+</div>
+<br>
+<hr>
+<h2 id="learning-based-word-vectors-with-glove">Learning-Based Word Vectors with GloVe<a hidden class="anchor" aria-hidden="true" href="#learning-based-word-vectors-with-glove">#</a></h2>
+<p>The GloVe algorithm is implemented to generate word vectors by modeling word co-occurrences as a weighted log-bilinear regression problem. The process includes deriving gradients, optimizing the objective via stochastic gradient descent, and visualizing the resulting word vectors. The behavior of the loss during training is monitored to ensure proper convergence.
+The GloVe objective can be written as a sum of weighted squared error terms for each word-pair in a vocabulary,</p>
+<p>$$
+J = \overbrace{\sum_{i,j  \in V}}^{\text{{sum over\ word pairs}}} \underbrace{f(C_{ij})}_ {\text{weight}} ~~~( \overbrace{w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij}}^{\text{error term}})^2
+$$</p>
+<p>where each word $i$ is associated with word vector $w_i$, context vector $\tilde{w}_ i$, and word/context biases $b_i$ and $\tilde{b}_ i$.
+The $f(C_{ij})$ term is a weighting to avoid frequent co-occurrences from dominating the objective and is defined as,</p>
+<p>$$
+f(X_{ij}) = min(1, C_{ij}/100)^{0.75}
+$$</p>
+<p>The derivation of the gradient for the objective $J$ is expressed as follows,</p>
+<p>$\nabla_{w_i}J=\nabla_{w_i}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$</p>
+<p>$\hspace{0.75cm}=2{\tilde{w}_ j}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$</p>
+<p>$\nabla_{\tilde{w}_ j}J=\nabla_{\tilde{w}_ j}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$</p>
+<p>$\hspace{0.75cm}=2w_if(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$</p>
+<p>$\nabla_{b_i}J=\nabla_{b_i}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$</p>
+<p>$\hspace{0.75cm}=2f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$</p>
+<p>$\nabla_{\tilde{b}_ j}J=\nabla_{\tilde{b}_ j}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$</p>
+<p>$\hspace{0.75cm}=2f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$</p>
+<br>
+<p>Training GloVe vectors involved monitoring the loss function throughout the process. The behavior of the loss during training is detailed below,</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">14400</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.046686563985831216</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">14500</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.04769956457112328</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">14600</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.04687950216720886</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">14700</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.04827717854832922</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">14800</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.047144581882744535</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">14900</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.047903630422071866</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">15000</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.04676183418646468</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">15100</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.048071157216658514</span>
+</span></span><span style="display:flex;"><span><span style="color:#099">2024</span>-<span style="color:#099">04</span>-<span style="color:#099">17</span> <span style="color:#099">04</span>:<span style="color:#099">09</span>:<span style="color:#099">49</span> INFO     Iter <span style="color:#099">15200</span> / <span style="color:#099">15227</span>: avg. loss over last <span style="color:#099">100</span> batches = <span style="color:#099">0.04732485846561704</span>
+</span></span></code></pre></div><hr>
+<h2 id="exploring-bias-in-word-vectors">Exploring Bias in Word Vectors<a hidden class="anchor" aria-hidden="true" href="#exploring-bias-in-word-vectors">#</a></h2>
+<p>A significant focus of this project is the exploration of biases that can be inherent in word vectors. Relationships learned by word2vec are analyzed, revealing how these vectors can reinforce gender, racial, or other societal biases. This highlights the importance of understanding and addressing these biases, particularly in the deployment of NLP models in real-world applications.</p>
+<p>The following examples illustrate how word2vec reinforces gender stereotypes in medicine,</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>&gt;&gt;&gt; analogy(<span style="color:#a50">&#39;man&#39;</span>, <span style="color:#a50">&#39;doctor&#39;</span>, <span style="color:#a50">&#39;woman&#39;</span>)
+</span></span><span style="display:flex;"><span>    man : doctor :: woman : <span style="color:#f00;background-color:#faa">?</span>
+</span></span><span style="display:flex;"><span>    [(<span style="color:#a50">&#39;gynecologist&#39;</span>, <span style="color:#099">0.709</span>), (<span style="color:#a50">&#39;nurse&#39;</span>, <span style="color:#099">0.648</span>), (<span style="color:#a50">&#39;doctors&#39;</span>, <span style="color:#099">0.647</span>), (<span style="color:#a50">&#39;physician&#39;</span>, <span style="color:#099">0.644</span>), (<span style="color:#a50">&#39;pediatrician&#39;</span>, <span style="color:#099">0.625</span>), (<span style="color:#a50">&#39;nurse_practitioner&#39;</span>, <span style="color:#099">0.622</span>), (<span style="color:#a50">&#39;obstetrician&#39;</span>, <span style="color:#099">0.607</span>), (<span style="color:#a50">&#39;ob_gyn&#39;</span>, <span style="color:#099">0.599</span>), (<span style="color:#a50">&#39;midwife&#39;</span>, <span style="color:#099">0.593</span>), (<span style="color:#a50">&#39;dermatologist&#39;</span>, <span style="color:#099">0.574</span>)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&gt;&gt;&gt; analogy(<span style="color:#a50">&#39;woman&#39;</span>, <span style="color:#a50">&#39;doctor&#39;</span>, <span style="color:#a50">&#39;man&#39;</span>)
+</span></span><span style="display:flex;"><span>    woman : doctor :: man : <span style="color:#f00;background-color:#faa">?</span>
+</span></span><span style="display:flex;"><span>    [(<span style="color:#a50">&#39;physician&#39;</span>, <span style="color:#099">0.646</span>), (<span style="color:#a50">&#39;doctors&#39;</span>, <span style="color:#099">0.586</span>), (<span style="color:#a50">&#39;surgeon&#39;</span>, <span style="color:#099">0.572</span>), (<span style="color:#a50">&#39;dentist&#39;</span>, <span style="color:#099">0.552</span>), (<span style="color:#a50">&#39;cardiologist&#39;</span>, <span style="color:#099">0.541</span>), (<span style="color:#a50">&#39;neurologist&#39;</span>, <span style="color:#099">0.527</span>), (<span style="color:#a50">&#39;neurosurgeon&#39;</span>, <span style="color:#099">0.525</span>), (<span style="color:#a50">&#39;urologist&#39;</span>, <span style="color:#099">0.525</span>), (<span style="color:#a50">&#39;Doctor&#39;</span>, <span style="color:#099">0.524</span>), (<span style="color:#a50">&#39;internist&#39;</span>, <span style="color:#099">0.518</span>)]
+</span></span></code></pre></div><p>These results show that word2vec tends to associate female doctors with roles in nursing or specializations focused on women’s or children’s health, thus reinforcing gender stereotypes in the medical field.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/nlp/">NLP</a></li>
+      <li><a href="http://localhost:1313/tags/word-embeddings/">Word Embeddings</a></li>
+      <li><a href="http://localhost:1313/tags/glove/">GloVe</a></li>
+      <li><a href="http://localhost:1313/tags/word2vec/">Word2Vec</a></li>
+      <li><a href="http://localhost:1313/tags/machine-learning/">Machine Learning</a></li>
+      <li><a href="http://localhost:1313/tags/tokenization/">Tokenization</a></li>
+      <li><a href="http://localhost:1313/tags/tsne/">TSNE</a></li>
+      <li><a href="http://localhost:1313/tags/ppmi/">PPMI</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="http://localhost:1313/">Yong-Hwan Lee</a></span> ·     
+    <span>
+    Powered by 
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/pmichaillat/hugo-website/" rel="noopener" target="_blank">a modified version</a>
+         of 
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+</html>

@@ -68,7 +68,7 @@ params:
             - name: Projects
               url: projects/
             - name: Studies
-              url: papers/
+              url: studies/
             #- name: Papers
             #  url: papers/
             #- name: Courses

@@ -65,20 +65,24 @@ params:
           imageWidth: 160
           imageHeight: 160
           buttons:
+            - name: Projects
+              url: projects/
+            #- name: Studies
+            #  url: studies/
             - name: Papers
               url: papers/
-            - name: Courses
-              url: courses/
-            - name: Data
-              url: data/
-            - name: Books
-              url: books/
-            - name: Tags
-              url: tags/
-            - name: Archive
-              url: archive/
-            - name: Blog
-              url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
+            #- name: Courses
+            #  url: courses/
+            #- name: Data
+            #  url: data/
+            #- name: Books
+            #  url: books/
+            #- name: Tags
+            #  url: tags/
+            #- name: Archive
+            #  url: archive/
+            #- name: Blog
+            #  url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
 
     socialIcons:
         #- name: CV

@@ -5,14 +5,15 @@ hidemeta: true
 ---
 
 --- 
-#### Research Group
+### Research Group
 
 [IDEA](https://research.engr.oregonstate.edu/idea/home)
+
 Data Science and Engineering and Artificial Intelligence group at Oregon State University
 
 ---
 
-#### Useful Websites
+### Useful Websites
 
 ##### Large Language Model
 
@@ -21,3 +22,5 @@ Data Science and Engineering and Artificial Intelligence group at Oregon State U
 ##### Reinforcement Learning
 
 [SFT Memorizes, RL Generalizes](https://tianzhechu.com/SFTvsRL)
+
+---

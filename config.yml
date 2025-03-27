@@ -12,25 +12,25 @@ menu:
     main:
         - name: Projects
           url: projects/
-          weight: 8
+          weight: 7
         - name: Studies
           url: studies/
-          weight: 7     
-        - name: Books
-          url: books/
-          weight: 5 
-        - name: Papers
-          url: papers/
-          weight: 2
-        - name: Courses
-          url: courses/
-          weight: 3
-        - name: Data
-          url: data/
-          weight: 4 
-        - name: Blog
-          url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
-          weight: 6
+          weight: 8     
+        #- name: Books
+        #  url: books/
+        #  weight: 5 
+        #- name: Papers
+        #  url: papers/
+        #  weight: 2
+        #- name: Courses
+        #  url: courses/
+        #  weight: 3
+        #- name: Data
+        #  url: data/
+        #  weight: 4 
+        #- name: Blog
+        #  url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
+        #  weight: 6
 
 params:
     description: "I'm a recent AI graduate from Oregon State University, specializing in integrating online learning with database management systems."
@@ -67,10 +67,10 @@ params:
           buttons:
             - name: Projects
               url: projects/
-            #- name: Studies
-            #  url: studies/
-            - name: Papers
+            - name: Studies
               url: papers/
+            #- name: Papers
+            #  url: papers/
             #- name: Courses
             #  url: courses/
             #- name: Data

@@ -8,7 +8,7 @@ hidemeta: true
 ### Research Group
 
 [IDEA](https://research.engr.oregonstate.edu/idea/home)
-
+<br>
 Data Science and Engineering and Artificial Intelligence group at Oregon State University
 
 ---

@@ -1,5 +1,5 @@
-baseURL: "https://pascalmichaillat.org/hugo-website/" 
-title: Moritz-Maria von Igelfeld
+baseURL: "https://kapshaul.github.io/" 
+title: Yong-Hwan Lee
 theme: PaperMod
 
 enableInlineShortcodes: true
@@ -10,6 +10,12 @@ taxonomies:
 
 menu:
     main:
+        - name: Projects
+          url: projects/
+          weight: 8
+        - name: Studies
+          url: studies/
+          weight: 7     
         - name: Books
           url: books/
           weight: 5 
@@ -27,11 +33,11 @@ menu:
           weight: 6
 
 params:
-    description: "I am a Professor of Philology at the Institute of Romance Philology in Regensburg, Germany. My research focuses mostly on Portuguese irregular verbs."
-    author: Moritz-Maria von Igelfeld
+    description: "I'm a recent AI graduate from Oregon State University, specializing in integrating online learning with database management systems."
+    author: Yong-Hwan Lee
     # googleAnalyticsID: "G-XXXXX"
     DateFormat: "January 2006"
-    defaultTheme: light
+    defaultTheme: dark
     hideFooter: false
     disableThemeToggle: true
     ShowShareButtons: false
@@ -42,7 +48,8 @@ params:
     ShowBreadCrumbs: false
     ShowCodeCopyButtons: true
     ShowAllPagesInArchive: false
-    MainSections: ["books","courses","papers","data"]
+    MainSections: ["projects","studies"]
+    #MainSections: ["books","courses","papers","data"]
     ShowToc: false
     disableScrollToTop: true
     TocOpen: true
@@ -52,8 +59,8 @@ params:
     math: true
     profileMode:
           enabled: true
-          title: Professor Dr von Igelfeld
-          subtitle: "I am a Professor in the Institute of Romance Philology at the University of Regensburg, Germany. My research focuses on Portuguese irregular verbs. I was a doctoral student of Professor Dr Dieter Vogelsang in Munich, and later a second assistant of Professor Walter Schoeffler-Henschell at the University of Wiesbaden."
+          title: Yong-Hwan Lee (이용환)
+          subtitle: "I recently completed my AI program at Oregon State University, specializing in developing machine learning models with a focus on reinforcement learning, online learning, and applications involving fine-tuning large language models (LLMs)."
           imageUrl: "picture.jpeg"
           imageWidth: 160
           imageHeight: 160
@@ -74,26 +81,28 @@ params:
               url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
 
     socialIcons:
-        - name: CV
-          url: cv.pdf
+        #- name: CV
+        #  url: cv.pdf
         - name: Email
-          url: mailto:moritz.maria.von.igelfeld@gmail.com
-        - name: Zoom
-          url: https://www.zoom.us/my/igelfeld
-        - name: Location
-          url: location/
-        - name: Office Hours
-          url: officehours/
-        - name: Google Scholar
-          url: https://scholar.google.com/citations?user=cL23w-4AAAAJ
+          url: mailto:kapshaul@gmail.com
+        #- name: Zoom
+        #  url: https://www.zoom.us/my/igelfeld
+        #- name: Location
+        #  url: location/
+        #- name: Office Hours
+        #  url: officehours/
+        #- name: Google Scholar
+        #  url: https://scholar.google.com/citations?user=cL23w-4AAAAJ
         - name: GitHub
-          url: https://github.com/pmichaillat
-        - name: Substack
-          url: https://pmichaillat.substack.com
-        - name: YouTube
-          url: https://www.youtube.com/@alexandermccallsmithoffici9000
-        - name: Twitter
-          url: https://twitter.com/McCallSmith
+          url: https://github.com/kapshaul
+        #- name: Substack
+        #  url: https://pmichaillat.substack.com
+        #- name: YouTube
+        #  url: https://www.youtube.com/@alexandermccallsmithoffici9000
+        #- name: Twitter
+        #  url: https://twitter.com/McCallSmith
+        - name: Website
+          url: websites/
 
     assets:
         disableScrollBarStyle: true
@@ -101,7 +110,7 @@ params:
         hiddenInList: false
         hiddenInSingle: true
     label:
-      text: "Moritz-Maria von Igelfeld"
+      text: "Yong-Hwan Lee"
       icon: favicon.ico
       iconHeight: 18
 

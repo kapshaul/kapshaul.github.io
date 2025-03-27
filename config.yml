@@ -15,7 +15,7 @@ menu:
           weight: 7
         - name: Studies
           url: studies/
-          weight: 8     
+          weight: 8               
         #- name: Books
         #  url: books/
         #  weight: 5 
@@ -68,7 +68,7 @@ params:
             - name: Projects
               url: projects/
             - name: Studies
-              url: studies/
+              url: studies/                                      
             #- name: Papers
             #  url: papers/
             #- name: Courses

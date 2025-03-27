@@ -89,8 +89,8 @@ params:
         #  url: cv.pdf
         - name: Email
           url: mailto:kapshaul@gmail.com
-        #- name: Zoom
-        #  url: https://www.zoom.us/my/igelfeld
+        - name: Zoom
+          url: https://us05web.zoom.us/j/8045804731?pwd=7iVKcXXSoFJ339vbfD5bV8nYUcM7b5.1
         #- name: Location
         #  url: location/
         #- name: Office Hours

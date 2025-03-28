@@ -60,10 +60,10 @@ params:
     profileMode:
           enabled: true
           title: Yong-Hwan Lee (이용환)
-          subtitle: "I recently completed my AI program at Oregon State University, specializing in developing machine learning models with a focus on reinforcement learning, online learning, and applications involving fine-tuning large language models (LLMs)."
-          imageUrl: "profile.jpg"
-          imageWidth: 160
-          imageHeight: 160
+          subtitle: "I am a recent graduate of the AI program at Oregon State University. My research centered on applying reinforcement learning to query optimization in database management systems. I have a strong interest in reinforcement learning, online learning, and the fine-tuning of large language models (LLMs). **I am currently seeking opportunities in machine learning (ML) and artificial intelligence (AI)**."
+          imageUrl: "profile_main.jpg"
+          imageWidth: 165
+          imageHeight: 200
           buttons:
             - name: Projects
               url: projects/
@@ -85,8 +85,8 @@ params:
             #  url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
 
     socialIcons:
-        #- name: CV
-        #  url: cv.pdf
+        - name: CV
+          url: cv.pdf
         - name: Email
           url: mailto:kapshaul@gmail.com
         - name: Zoom

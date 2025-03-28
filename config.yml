@@ -62,8 +62,8 @@ params:
           title: Yong-Hwan Lee (이용환)
           subtitle: "I am a recent graduate of the AI program at Oregon State University. My research centered on applying reinforcement learning to query optimization in database management systems. I have a strong interest in reinforcement learning, online learning, and the fine-tuning of large language models (LLMs). **I am currently seeking opportunities in machine learning (ML) and artificial intelligence (AI)**."
           imageUrl: "profile_main.jpg"
-          imageWidth: 165
-          imageHeight: 200
+          imageWidth: 140
+          imageHeight: 160
           buttons:
             - name: Projects
               url: projects/

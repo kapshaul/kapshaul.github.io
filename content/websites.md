@@ -9,8 +9,6 @@ hidemeta: true
 
 [IDEA](https://research.engr.oregonstate.edu/idea/home) ([GitHub](https://github.com/OSU-IDEA-Lab))
 
-<br>
-
 Data Science and Engineering and Artificial Intelligence group at Oregon State University
 
 ---

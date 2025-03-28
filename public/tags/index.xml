@@ -121,45 +121,108 @@
       <description></description>
     </item>
     <item>
+      <title>LSTM</title>
+      <link>http://localhost:1313/tags/lstm/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/lstm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>RNN</title>
+      <link>http://localhost:1313/tags/rnn/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/rnn/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sequence Modeling</title>
+      <link>http://localhost:1313/tags/sequence-modeling/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/sequence-modeling/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>GloVe</title>
       <link>http://localhost:1313/tags/glove/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/glove/</guid>
       <description></description>
     </item>
     <item>
       <title>PPMI</title>
       <link>http://localhost:1313/tags/ppmi/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/ppmi/</guid>
       <description></description>
     </item>
     <item>
       <title>Tokenization</title>
       <link>http://localhost:1313/tags/tokenization/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/tokenization/</guid>
       <description></description>
     </item>
     <item>
       <title>TSNE</title>
       <link>http://localhost:1313/tags/tsne/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/tsne/</guid>
       <description></description>
     </item>
     <item>
       <title>Word Embeddings</title>
       <link>http://localhost:1313/tags/word-embeddings/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/word-embeddings/</guid>
       <description></description>
     </item>
     <item>
       <title>Word2Vec</title>
       <link>http://localhost:1313/tags/word2vec/</link>
-      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/word2vec/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Beam Search</title>
+      <link>http://localhost:1313/tags/beam-search/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/beam-search/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sampling Search</title>
+      <link>http://localhost:1313/tags/sampling-search/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/sampling-search/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Temperature Scaled</title>
+      <link>http://localhost:1313/tags/temperature-scaled/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/temperature-scaled/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Text Generation</title>
+      <link>http://localhost:1313/tags/text-generation/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/text-generation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Top-K</title>
+      <link>http://localhost:1313/tags/top-k/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/top-k/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Top-P</title>
+      <link>http://localhost:1313/tags/top-p/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/top-p/</guid>
       <description></description>
     </item>
     <item>

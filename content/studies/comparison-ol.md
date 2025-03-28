@@ -7,7 +7,7 @@ author: ["Yong-Hwan Lee"]
 description: "This study was carried out as a project at Oregon State University."
 summary: "Experiment with and compare online learning algorithms, including Bandits, UCB, and related methods."
 editPost:
-    URL: "https://github.com/kapshaul/OnlineLearning"
+    URL: "https://github.com/kapshaul/OnlineLearning/tree/bandits-comparison-analysis"
     Text: "GitHub"
 showToc: true
 disableAnchoredHeadings: false

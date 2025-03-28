@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 22 Oct 2023 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/adversarial-learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Comparison of Bandit Algorithms</title>
-      <link>http://localhost:1313/studies/comparison-bandit/</link>
+      <title>Comparison of Online Learning Algorithms</title>
+      <link>http://localhost:1313/studies/comparison-ol/</link>
       <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/studies/comparison-bandit/</guid>
+      <guid>http://localhost:1313/studies/comparison-ol/</guid>
       <description>This study was carried out as a project at Oregon State University.</description>
     </item>
   </channel>

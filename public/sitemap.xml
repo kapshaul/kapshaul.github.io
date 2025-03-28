@@ -101,13 +101,10 @@
     <loc>http://localhost:1313/tags/adversarial-learning/</loc>
     <lastmod>2023-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/studies/comparison-bandit/</loc>
+    <loc>http://localhost:1313/studies/comparison-ol/</loc>
     <lastmod>2023-10-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/linear-regression/</loc>
-    <lastmod>2023-10-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/recomendation/</loc>
     <lastmod>2023-10-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/ucb/</loc>

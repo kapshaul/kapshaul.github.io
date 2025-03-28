@@ -123,43 +123,57 @@
     <item>
       <title>GloVe</title>
       <link>http://localhost:1313/tags/glove/</link>
-      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/glove/</guid>
       <description></description>
     </item>
     <item>
       <title>PPMI</title>
       <link>http://localhost:1313/tags/ppmi/</link>
-      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/ppmi/</guid>
       <description></description>
     </item>
     <item>
       <title>Tokenization</title>
       <link>http://localhost:1313/tags/tokenization/</link>
-      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/tokenization/</guid>
       <description></description>
     </item>
     <item>
       <title>TSNE</title>
       <link>http://localhost:1313/tags/tsne/</link>
-      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/tsne/</guid>
       <description></description>
     </item>
     <item>
       <title>Word Embeddings</title>
       <link>http://localhost:1313/tags/word-embeddings/</link>
-      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/word-embeddings/</guid>
       <description></description>
     </item>
     <item>
       <title>Word2Vec</title>
       <link>http://localhost:1313/tags/word2vec/</link>
-      <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/word2vec/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Linear Regression</title>
+      <link>http://localhost:1313/tags/linear-regression/</link>
+      <pubDate>Sun, 03 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/linear-regression/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>UCB</title>
+      <link>http://localhost:1313/tags/ucb/</link>
+      <pubDate>Sun, 03 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/ucb/</guid>
       <description></description>
     </item>
     <item>
@@ -167,20 +181,6 @@
       <link>http://localhost:1313/tags/adversarial-learning/</link>
       <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/tags/adversarial-learning/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Linear Regression</title>
-      <link>http://localhost:1313/tags/linear-regression/</link>
-      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/linear-regression/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>UCB</title>
-      <link>http://localhost:1313/tags/ucb/</link>
-      <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/ucb/</guid>
       <description></description>
     </item>
     <item>

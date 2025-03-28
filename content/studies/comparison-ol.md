@@ -1,5 +1,5 @@
 ---
-title: "Comparison of Online Learning Algorithms" 
+title: "Online Learning - Comparison of Online Learning Algorithms" 
 date: 2023-10-20
 lastmod: 2023-10-22
 tags: ["Linear Regression","Online Learning","Adversarial Learning","Recommendation System","UCB"]

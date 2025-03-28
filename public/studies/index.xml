@@ -16,6 +16,13 @@
       <description>This study was carried out as a project at Oregon State University.</description>
     </item>
     <item>
+      <title>Natural Language Processing (NLP) - Finite State Machine with RNN</title>
+      <link>http://localhost:1313/studies/finite-state-machine/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/finite-state-machine/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
       <title>Natural Language Processing (NLP) - Word Vector</title>
       <link>http://localhost:1313/studies/word-vector/</link>
       <pubDate>Wed, 10 Apr 2024 00:00:00 +0000</pubDate>
@@ -23,7 +30,21 @@
       <description>This study was carried out as a project at Oregon State University.</description>
     </item>
     <item>
-      <title>Comparison of Online Learning Algorithms</title>
+      <title>Natural Language Processing (NLP) - Sampling Search </title>
+      <link>http://localhost:1313/studies/sampling-search/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/sampling-search/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
+      <title>Online Learning - Discounted UCB</title>
+      <link>http://localhost:1313/studies/discount-ucb/</link>
+      <pubDate>Sun, 03 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/discount-ucb/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
+      <title>Online Learning - Comparison of Online Learning Algorithms</title>
       <link>http://localhost:1313/studies/comparison-ol/</link>
       <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/studies/comparison-ol/</guid>

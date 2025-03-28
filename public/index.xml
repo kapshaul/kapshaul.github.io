@@ -15,9 +15,8 @@
       <guid>http://localhost:1313/websites/</guid>
       <description>&lt;hr&gt;
 &lt;h3 id=&#34;research-group&#34;&gt;Research Group&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://research.engr.oregonstate.edu/idea/home&#34; target=&#34;_blank&#34;&gt;IDEA&lt;/a&gt;
-&lt;br&gt;
-Data Science and Engineering and Artificial Intelligence group at Oregon State University&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://research.engr.oregonstate.edu/idea/home&#34; target=&#34;_blank&#34;&gt;IDEA&lt;/a&gt; (&lt;a href=&#34;https://github.com/OSU-IDEA-Lab&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Data Science and Engineering and Artificial Intelligence group at Oregon State University&lt;/p&gt;
 &lt;hr&gt;
 &lt;h3 id=&#34;useful-websites&#34;&gt;Useful Websites&lt;/h3&gt;
 &lt;h5 id=&#34;large-language-model&#34;&gt;Large Language Model&lt;/h5&gt;
@@ -48,6 +47,13 @@ Data Science and Engineering and Artificial Intelligence group at Oregon State U
       <description>This study was carried out as a project at Oregon State University.</description>
     </item>
     <item>
+      <title>Natural Language Processing (NLP) - Finite State Machine with RNN</title>
+      <link>http://localhost:1313/studies/finite-state-machine/</link>
+      <pubDate>Fri, 10 May 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/finite-state-machine/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
       <title>Location</title>
       <link>http://localhost:1313/location/</link>
       <pubDate>Wed, 08 May 2024 00:00:00 +0000</pubDate>
@@ -62,7 +68,21 @@ Data Science and Engineering and Artificial Intelligence group at Oregon State U
       <description>This study was carried out as a project at Oregon State University.</description>
     </item>
     <item>
-      <title>Comparison of Online Learning Algorithms</title>
+      <title>Natural Language Processing (NLP) - Sampling Search </title>
+      <link>http://localhost:1313/studies/sampling-search/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/sampling-search/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
+      <title>Online Learning - Discounted UCB</title>
+      <link>http://localhost:1313/studies/discount-ucb/</link>
+      <pubDate>Sun, 03 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/studies/discount-ucb/</guid>
+      <description>This study was carried out as a project at Oregon State University.</description>
+    </item>
+    <item>
+      <title>Online Learning - Comparison of Online Learning Algorithms</title>
       <link>http://localhost:1313/studies/comparison-ol/</link>
       <pubDate>Fri, 20 Oct 2023 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/studies/comparison-ol/</guid>

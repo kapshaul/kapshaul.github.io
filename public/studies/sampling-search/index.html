@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Natural Language Processing (NLP) - Sampling Search  | Yong-Hwan Lee</title>
+<meta name="keywords" content="NLP, LSTM, Sampling Search, Text Generation, Beam Search, Temperature Scaled, Top-k, Top-p">
+<meta name="description" content="This study was carried out as a project at Oregon State University.">
+<meta name="author" content="Yong-Hwan Lee">
+<link rel="canonical" href="http://localhost:1313/studies/sampling-search/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6cf4a8fa527330d9574f36d8d000fdaf90ca838ff09ab72fc27d3cb7ca1ddc5.css" integrity="sha256-1s9Kj6UnMw2VdPNtjQAP2vkMqDj/Caty/CfTy3yh3cU=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/studies/sampling-search/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript><meta property="og:title" content="Natural Language Processing (NLP) - Sampling Search " />
+<meta property="og:description" content="This study was carried out as a project at Oregon State University." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/studies/sampling-search/" /><meta property="article:section" content="studies" />
+<meta property="article:published_time" content="2024-03-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Natural Language Processing (NLP) - Sampling Search "/>
+<meta name="twitter:description" content="This study was carried out as a project at Oregon State University."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Studies",
+      "item": "http://localhost:1313/studies/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Natural Language Processing (NLP) - Sampling Search ",
+      "item": "http://localhost:1313/studies/sampling-search/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Natural Language Processing (NLP) - Sampling Search ",
+  "name": "Natural Language Processing (NLP) - Sampling Search ",
+  "description": "This study was carried out as a project at Oregon State University.",
+  "keywords": [
+    "NLP", "LSTM", "Sampling Search", "Text Generation", "Beam Search", "Temperature Scaled", "Top-k", "Top-p"
+  ],
+  "articleBody": "Overview This study explores a pre-trained language model built with a multi-layer LSTM architecture. The model is trained on text from the first five Game of Thrones novels, capturing both short- and long-range dependencies in the data. By examining its internal architecture and forward pass, we gain insight into how it transforms input tokens into meaningful hidden representations, ultimately predicting the next token in a sequence.\nKey points include:\n3-layer LSTM with an embedding layer for token representations. Hidden size of 512, capturing rich contextual information. Vocabulary management using a separate text processing pipeline. Trained on a large fantasy corpus, showcasing the model’s capacity to learn diverse linguistic patterns. Installation Clone the repository and install dependencies:\ngit clone https://github.com/kapshaul/NLP-sampling.search cd NLP-sampling.search pip install torchtext==0.6.0 torch==1.13.1 Implementation To test search configurations (temperature, top-k, top-p, beam search), run:\npython decoder.py Sampling-based Decoding This section explores various stochastic decoding strategies for autoregressive language generation using the pre-trained LSTM model. The goal is to sample text sequences from the model under different probabilistic constraints, which affect creativity, coherence, and diversity in generated text.\nDecoding Methods Implemented Vanilla Sampling\nAt each step, the next token is sampled directly from the softmax distribution of the model’s output logits. This approach retains the full probability distribution, offering high variance in the results.\nTemperature-Scaled Sampling\nA temperature parameter $\\tau$ is introduced to control the sharpness of the softmax distribution:\n$\\tau \u003c 1$: Sharper distributions; more deterministic behavior. $\\tau \u003e 1$: Flatter distributions; increased randomness. $\\tau = 1$: Equivalent to vanilla sampling. Top-k Sampling\nRestricts the sampling pool to the top $k$ most probable tokens, setting all others to zero before re-normalization. This limits randomness to a focused subset of likely candidates.\nNucleus (Top-p) Sampling\nSelects the smallest possible set of words whose cumulative probability exceeds $p$. This dynamically adjusts the candidate set size based on distribution shape, balancing control and diversity.\nTesting Overview Each of these strategies was implemented within a unified sample() function that supports prompt conditioning and customizable parameters (temp, k, p). A single model forward pass is performed at each step, and the output distribution is adjusted based on the chosen sampling strategy.\ndef sample(model, text_field, prompt=\"\", max_len=50, temp=1.0, k=0, p=1): assert (k == 0 or p == 1), \"Cannot combine top-k and top-p sampling\" ... return decodedString Prompt Conditioning Sampling can be initialized with a text prompt. The prompt is numeralized and passed through the model to update the internal hidden states before generation begins.\nVisualization of Sampling Behavior The following table summarizes outputs generated from the prompt:\nPrompt: \"the night is dark and full of terrors\"\nMethod Settings Notable Behavior Vanilla Sampling temp = 1 High variance; coherent but unpredictable stories Temperature-scaled τ = 0.0001 Very deterministic, repetitive or generic continuations Temperature-scaled τ = 100 Extreme randomness; nonsensical token-level outputs Top-k Sampling k = 1 Very deterministic (equivalent to greedy search) Top-k Sampling k = 20 Balanced between diversity and fluency Top-p Sampling p = 0.001 Similar to top-1, often repetitive Top-p Sampling p = 0.75 Naturally diverse yet still contextually reasonable Top-p Sampling p = 1 Equivalent to vanilla sampling Example Output (Top-p, p=0.75) “the night is dark and full of terrors . with the ryswells , the knights of the golden mountains burst off and come down in the attempt…”\nThis illustrates the potential for coherent storytelling using nucleus sampling while avoiding overly deterministic sequences.\nObservations Lower temperatures and small top-k or top-p values produce more deterministic results. Higher temperatures and larger values introduce randomness and narrative exploration. Nucleus sampling (top-p) offers an adaptive alternative to fixed cutoffs, providing smoother trade-offs between creativity and coherence. Search-based Decoding with Beam Search Unlike stochastic sampling methods, beam search is a deterministic decoding strategy that aims to identify the most probable sequence under the model. It maintains multiple hypotheses at each time step, expanding and retaining only the top candidates based on cumulative probability.\nBeam Search Algorithm At each time step t, beam search performs two operations:\nExpansion: Each current hypothesis (beam) is extended by all possible next words from the vocabulary. Selection: The resulting candidates are scored using their cumulative log-probabilities. Only the top B beams are kept for the next step. Formally, the score of a candidate is computed as:\nlogP(w₀, ..., wₜ, w) = logP(w₀, ..., wₜ) + logP(w | w₀, ..., wₜ) This process is repeated until a specified maximum sequence length is reached. The candidate with the highest score is returned as the final output.\nTesting Overview The beamsearch() function is implemented with support for prompt conditioning and variable beam width:\ndef beamsearch(model, text_field, beams=5, prompt=\"\", max_len=50): ... return decodedString Key features:\nMaintains B candidate sequences at each step. Tracks hidden and cell states for each beam. Performs efficient batched inference using PyTorch. Beam Width Comparison Using the same prompt \"the night is dark and full of terrors\", the model is evaluated under different beam widths:\nBeam Width Sample Output Snippet B = 1 “a smile , the storm girl staring , and the shapes were beautiful…” B = 10 “meereen is deceit , and the common soldiers held through the woods…” B = 50 “meereen was laid up , crowned with three - finger hobb with a pair of faces…” Observations B = 1 acts like greedy decoding — fast but potentially shortsighted. B = 10 strikes a balance between coherence and diversity. B = 50 provides highly diverse outputs but may generate less coherent or overly ornate sequences. While beam search increases decoding stability and reduces randomness, larger beam sizes also increase computation and don’t always guarantee better fluency. It is important to balance performance and quality depending on application needs.\nExample Outputs Below are selected examples from different decoding strategies applied to the prompt:\nPrompt: \"the night is dark and full of terrors\"\nSampling-based Decoding Vanilla Sampling\n“the night is dark and full of terrors . after no one was dead . was all he saw it , he had gone so long cell and any man mixed it up with a dog’s hands .”\nTemperature-scaled Sampling (τ = 0.0001)\n“the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished; half a hundred of the free folk to defend the vale…”\nTemperature-scaled Sampling (τ = 100)\n“the night is dark and full of terrors herring depart: endearments cargoes tucked areo confessed frost traces prepared piety crude fortune nowhere miss betoken whistles…”\nTop-k Sampling (k = 1)\n“the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished…”\nTop-k Sampling (k = 20)\n“the night is dark and full of terrors . though tyrion had the sort of being returned to the new . she had forgotten who she was…”\nTop-p Sampling (p = 0.001)\n“the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished…”\nTop-p Sampling (p = 0.75)\n“the night is dark and full of terrors . with the ryswells , the knights of the golden mountains burst off and come down in the attempt…”\nTop-p Sampling (p = 1)\n“the night is dark and full of terrors . after no one was dead . was all he saw it , he had gone so long cell and any man mixed it up with a dog’s hands…”\nSearch-based Decoding (Beam Search) Beam Search (B = 1)\n“the night is dark and full of terrors . a smile , the storm girl staring , and the shapes were beautiful . all the vaults are rising from horizon were wind and branches…”\nBeam Search (B = 10)\n“the night is dark and full of terrors . meereen is deceit , and the common soldiers held through the woods and down the waters they could walk…”\nBeam Search (B = 50)\n“the night is dark and full of terrors . meereen was laid up , crowned with three - finger hobb with a pair of faces beneath the silk - and - white banner…”\n",
+  "wordCount" : "1357",
+  "inLanguage": "en",
+  "datePublished": "2024-03-12T00:00:00Z",
+  "dateModified": "2024-03-12T00:00:00Z",
+  "author":[{
+    "@type": "Person",
+    "name": "Yong-Hwan Lee"
+  }],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/studies/sampling-search/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Yong-Hwan Lee",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-wcIxkf4k558AjM3Yz3BBFQUbk/zgIYC2R0QpeeYb+TwlBVMrlgLqwRjRtGZiK7ww" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-hIoBPJpTUs74ddyc4bFZSM1TVlQDA60VBbJS0oA934VSz82sBx1X7kSx2ATBDIyd" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+            {left: "\\begin{equation*}", right: "\\end{equation*}", display: true},
+            {left: "\\begin{align}", right: "\\end{align}", display: true},
+            {left: "\\begin{align*}", right: "\\end{align*}", display: true},
+            {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+            {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+            {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+          ],
+          throwOnError : false
+        });
+    });
+</script>
+ 
+
+
+</head>
+
+<body class="" id="top">
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Yong-Hwan Lee">
+                <img src="http://localhost:1313/favicon.ico" alt="" aria-label="logo"
+                    height="18"
+                    width="18">Yong-Hwan Lee</a>
+            <div class="logo-switches">
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/projects/" title="Projects">
+                    <span>Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/studies/" title="Studies">
+                    <span>Studies</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+    <main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Natural Language Processing (NLP) - Sampling Search 
+    </h1>
+    <div class="post-meta"><span title='2024-03-12 00:00:00 +0000 UTC'>March 2024</span>&nbsp;&middot;&nbsp;Yong-Hwan Lee&nbsp;&middot;&nbsp;<a href="https://github.com/kapshaul/NLP-sampling.search" rel="noopener noreferrer" target="_blank">GitHub</a>
+
+</div>
+  </header> <div class="toc">
+    <details  open>
+        <summary accesskey="c">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#implementation">Implementation</a></li>
+    <li><a href="#sampling-based-decoding">Sampling-based Decoding</a></li>
+    <li><a href="#search-based-decoding-with-beam-search">Search-based Decoding with Beam Search</a></li>
+    <li><a href="#example-outputs">Example Outputs</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="overview">Overview<a hidden class="anchor" aria-hidden="true" href="#overview">#</a></h2>
+<p>This study explores a <strong>pre-trained language model</strong> built with a multi-layer LSTM architecture. The model is trained on text from the first five <em>Game of Thrones</em> novels, capturing both short- and long-range dependencies in the data. By examining its internal architecture and forward pass, we gain insight into how it transforms input tokens into meaningful hidden representations, ultimately predicting the next token in a sequence.</p>
+<p>Key points include:</p>
+<ul>
+<li><strong>3-layer LSTM</strong> with an embedding layer for token representations.</li>
+<li><strong>Hidden size of 512</strong>, capturing rich contextual information.</li>
+<li><strong>Vocabulary management</strong> using a separate text processing pipeline.</li>
+<li><strong>Trained on a large fantasy corpus</strong>, showcasing the model’s capacity to learn diverse linguistic patterns.</li>
+</ul>
+<hr>
+<h2 id="installation">Installation<a hidden class="anchor" aria-hidden="true" href="#installation">#</a></h2>
+<p>Clone the repository and install dependencies:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/kapshaul/NLP-sampling.search
+</span></span><span style="display:flex;"><span><span style="color:#0aa">cd</span> NLP-sampling.search
+</span></span><span style="display:flex;"><span>pip install <span style="color:#a00">torchtext</span>==0.6.0 <span style="color:#a00">torch</span>==1.13.1
+</span></span></code></pre></div><hr>
+<h2 id="implementation">Implementation<a hidden class="anchor" aria-hidden="true" href="#implementation">#</a></h2>
+<p>To test search configurations (temperature, top-k, top-p, beam search), run:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python decoder.py
+</span></span></code></pre></div><hr>
+<h2 id="sampling-based-decoding">Sampling-based Decoding<a hidden class="anchor" aria-hidden="true" href="#sampling-based-decoding">#</a></h2>
+<p>This section explores various stochastic decoding strategies for autoregressive language generation using the pre-trained LSTM model. The goal is to sample text sequences from the model under different probabilistic constraints, which affect creativity, coherence, and diversity in generated text.</p>
+<h4 id="decoding-methods-implemented">Decoding Methods Implemented<a hidden class="anchor" aria-hidden="true" href="#decoding-methods-implemented">#</a></h4>
+<ol>
+<li>
+<p><strong>Vanilla Sampling</strong><br>
+At each step, the next token is sampled directly from the softmax distribution of the model’s output logits. This approach retains the full probability distribution, offering high variance in the results.</p>
+</li>
+<li>
+<p><strong>Temperature-Scaled Sampling</strong><br>
+A temperature parameter $\tau$ is introduced to control the sharpness of the softmax distribution:</p>
+<ul>
+<li>$\tau &lt; 1$: Sharper distributions; more deterministic behavior.</li>
+<li>$\tau &gt; 1$: Flatter distributions; increased randomness.</li>
+<li>$\tau = 1$: Equivalent to vanilla sampling.</li>
+</ul>
+</li>
+<li>
+<p><strong>Top-k Sampling</strong><br>
+Restricts the sampling pool to the top $k$ most probable tokens, setting all others to zero before re-normalization. This limits randomness to a focused subset of likely candidates.</p>
+</li>
+<li>
+<p><strong>Nucleus (Top-p) Sampling</strong><br>
+Selects the smallest possible set of words whose cumulative probability exceeds $p$. This dynamically adjusts the candidate set size based on distribution shape, balancing control and diversity.</p>
+</li>
+</ol>
+<h4 id="testing-overview">Testing Overview<a hidden class="anchor" aria-hidden="true" href="#testing-overview">#</a></h4>
+<p>Each of these strategies was implemented within a unified <code>sample()</code> function that supports prompt conditioning and customizable parameters (<code>temp</code>, <code>k</code>, <code>p</code>). A single model forward pass is performed at each step, and the output distribution is adjusted based on the chosen sampling strategy.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#00a">def</span> <span style="color:#0a0">sample</span>(model, text_field, prompt=<span style="color:#a50">&#34;&#34;</span>, max_len=<span style="color:#099">50</span>, temp=<span style="color:#099">1.0</span>, k=<span style="color:#099">0</span>, p=<span style="color:#099">1</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#00a">assert</span> (k == <span style="color:#099">0</span> <span style="color:#00a">or</span> p == <span style="color:#099">1</span>), <span style="color:#a50">&#34;Cannot combine top-k and top-p sampling&#34;</span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#00a">return</span> decodedString
+</span></span></code></pre></div><h4 id="prompt-conditioning">Prompt Conditioning<a hidden class="anchor" aria-hidden="true" href="#prompt-conditioning">#</a></h4>
+<p>Sampling can be initialized with a text prompt. The prompt is numeralized and passed through the model to update the internal hidden states before generation begins.</p>
+<h4 id="visualization-of-sampling-behavior">Visualization of Sampling Behavior<a hidden class="anchor" aria-hidden="true" href="#visualization-of-sampling-behavior">#</a></h4>
+<p>The following table summarizes outputs generated from the prompt:</p>
+<p><strong>Prompt</strong>: <code>&quot;the night is dark and full of terrors&quot;</code></p>
+<table>
+  <thead>
+      <tr>
+          <th>Method</th>
+          <th>Settings</th>
+          <th>Notable Behavior</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Vanilla Sampling</td>
+          <td>temp = 1</td>
+          <td>High variance; coherent but unpredictable stories</td>
+      </tr>
+      <tr>
+          <td>Temperature-scaled</td>
+          <td>τ = 0.0001</td>
+          <td>Very deterministic, repetitive or generic continuations</td>
+      </tr>
+      <tr>
+          <td>Temperature-scaled</td>
+          <td>τ = 100</td>
+          <td>Extreme randomness; nonsensical token-level outputs</td>
+      </tr>
+      <tr>
+          <td>Top-k Sampling</td>
+          <td>k = 1</td>
+          <td>Very deterministic (equivalent to greedy search)</td>
+      </tr>
+      <tr>
+          <td>Top-k Sampling</td>
+          <td>k = 20</td>
+          <td>Balanced between diversity and fluency</td>
+      </tr>
+      <tr>
+          <td>Top-p Sampling</td>
+          <td>p = 0.001</td>
+          <td>Similar to top-1, often repetitive</td>
+      </tr>
+      <tr>
+          <td>Top-p Sampling</td>
+          <td>p = 0.75</td>
+          <td>Naturally diverse yet still contextually reasonable</td>
+      </tr>
+      <tr>
+          <td>Top-p Sampling</td>
+          <td>p = 1</td>
+          <td>Equivalent to vanilla sampling</td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="example-output-top-p-p075">Example Output (Top-p, p=0.75)<a hidden class="anchor" aria-hidden="true" href="#example-output-top-p-p075">#</a></h4>
+<blockquote>
+<p><em>&ldquo;the night is dark and full of terrors . with the ryswells , the knights of the golden mountains burst off and come down in the attempt&hellip;&rdquo;</em></p></blockquote>
+<p>This illustrates the potential for coherent storytelling using nucleus sampling while avoiding overly deterministic sequences.</p>
+<h4 id="observations">Observations<a hidden class="anchor" aria-hidden="true" href="#observations">#</a></h4>
+<ul>
+<li>Lower temperatures and small top-k or top-p values produce more deterministic results.</li>
+<li>Higher temperatures and larger values introduce randomness and narrative exploration.</li>
+<li>Nucleus sampling (<code>top-p</code>) offers an adaptive alternative to fixed cutoffs, providing smoother trade-offs between creativity and coherence.</li>
+</ul>
+<hr>
+<h2 id="search-based-decoding-with-beam-search">Search-based Decoding with Beam Search<a hidden class="anchor" aria-hidden="true" href="#search-based-decoding-with-beam-search">#</a></h2>
+<p>Unlike stochastic sampling methods, <strong>beam search</strong> is a deterministic decoding strategy that aims to identify the most probable sequence under the model. It maintains multiple hypotheses at each time step, expanding and retaining only the top candidates based on cumulative probability.</p>
+<h3 id="beam-search-algorithm">Beam Search Algorithm<a hidden class="anchor" aria-hidden="true" href="#beam-search-algorithm">#</a></h3>
+<p>At each time step <code>t</code>, beam search performs two operations:</p>
+<ol>
+<li><strong>Expansion</strong>: Each current hypothesis (beam) is extended by all possible next words from the vocabulary.</li>
+<li><strong>Selection</strong>: The resulting candidates are scored using their cumulative log-probabilities. Only the top <code>B</code> beams are kept for the next step.</li>
+</ol>
+<p>Formally, the score of a candidate is computed as:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>logP(w₀, ..., wₜ, w) = logP(w₀, ..., wₜ) + logP(w | w₀, ..., wₜ)
+</span></span></code></pre></div><p>This process is repeated until a specified maximum sequence length is reached. The candidate with the highest score is returned as the final output.</p>
+<h3 id="testing-overview-1">Testing Overview<a hidden class="anchor" aria-hidden="true" href="#testing-overview-1">#</a></h3>
+<p>The <code>beamsearch()</code> function is implemented with support for prompt conditioning and variable beam width:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#00a">def</span> <span style="color:#0a0">beamsearch</span>(model, text_field, beams=<span style="color:#099">5</span>, prompt=<span style="color:#a50">&#34;&#34;</span>, max_len=<span style="color:#099">50</span>):
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>    <span style="color:#00a">return</span> decodedString
+</span></span></code></pre></div><p>Key features:</p>
+<ul>
+<li>Maintains <code>B</code> candidate sequences at each step.</li>
+<li>Tracks hidden and cell states for each beam.</li>
+<li>Performs efficient batched inference using PyTorch.</li>
+</ul>
+<h3 id="beam-width-comparison">Beam Width Comparison<a hidden class="anchor" aria-hidden="true" href="#beam-width-comparison">#</a></h3>
+<p>Using the same prompt <code>&quot;the night is dark and full of terrors&quot;</code>, the model is evaluated under different beam widths:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Beam Width</th>
+          <th>Sample Output Snippet</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>B = 1</td>
+          <td>&ldquo;a smile , the storm girl staring , and the shapes were beautiful&hellip;&rdquo;</td>
+      </tr>
+      <tr>
+          <td>B = 10</td>
+          <td>&ldquo;meereen is deceit , and the common soldiers held through the woods&hellip;&rdquo;</td>
+      </tr>
+      <tr>
+          <td>B = 50</td>
+          <td>&ldquo;meereen was laid up , crowned with three - finger hobb with a pair of faces&hellip;&rdquo;</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="observations-1">Observations<a hidden class="anchor" aria-hidden="true" href="#observations-1">#</a></h3>
+<ul>
+<li><strong>B = 1</strong> acts like greedy decoding — fast but potentially shortsighted.</li>
+<li><strong>B = 10</strong> strikes a balance between coherence and diversity.</li>
+<li><strong>B = 50</strong> provides highly diverse outputs but may generate less coherent or overly ornate sequences.</li>
+</ul>
+<p>While beam search increases decoding stability and reduces randomness, larger beam sizes also increase computation and don&rsquo;t always guarantee better fluency. It is important to balance performance and quality depending on application needs.</p>
+<hr>
+<h2 id="example-outputs">Example Outputs<a hidden class="anchor" aria-hidden="true" href="#example-outputs">#</a></h2>
+<p>Below are selected examples from different decoding strategies applied to the prompt:</p>
+<p><strong>Prompt</strong>: <code>&quot;the night is dark and full of terrors&quot;</code></p>
+<h4 id="sampling-based-decoding-1">Sampling-based Decoding<a hidden class="anchor" aria-hidden="true" href="#sampling-based-decoding-1">#</a></h4>
+<ul>
+<li>
+<p><strong>Vanilla Sampling</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . after no one was dead . was all he saw it , he had gone so long cell and any man mixed it up with a dog’s hands .&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Temperature-scaled Sampling (τ = 0.0001)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished; half a hundred of the free folk to defend the vale&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Temperature-scaled Sampling (τ = 100)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors herring depart: endearments cargoes tucked areo confessed frost traces prepared piety crude fortune nowhere miss betoken whistles&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Top-k Sampling (k = 1)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Top-k Sampling (k = 20)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . though tyrion had the sort of <unk> being returned to the new . she had forgotten who she was&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Top-p Sampling (p = 0.001)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Top-p Sampling (p = 0.75)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . with the ryswells , the knights of the golden mountains burst off and come down in the attempt&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Top-p Sampling (p = 1)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . after no one was dead . was all he saw it , he had gone so long cell and any man mixed it up with a dog’s hands&hellip;&rdquo;</p></blockquote>
+</li>
+</ul>
+<h4 id="search-based-decoding-beam-search">Search-based Decoding (Beam Search)<a hidden class="anchor" aria-hidden="true" href="#search-based-decoding-beam-search">#</a></h4>
+<ul>
+<li>
+<p><strong>Beam Search (B = 1)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . a smile , the storm girl staring , and the shapes were beautiful . all the vaults are rising from horizon were wind and branches&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Beam Search (B = 10)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . meereen is deceit , and the common soldiers held through the woods and down the waters they could walk&hellip;&rdquo;</p></blockquote>
+</li>
+<li>
+<p><strong>Beam Search (B = 50)</strong></p>
+<blockquote>
+<p>&ldquo;the night is dark and full of terrors . meereen was laid up , crowned with three - finger hobb with a pair of faces beneath the silk - and - white banner&hellip;&rdquo;</p></blockquote>
+</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/nlp/">NLP</a></li>
+      <li><a href="http://localhost:1313/tags/lstm/">LSTM</a></li>
+      <li><a href="http://localhost:1313/tags/sampling-search/">Sampling Search</a></li>
+      <li><a href="http://localhost:1313/tags/text-generation/">Text Generation</a></li>
+      <li><a href="http://localhost:1313/tags/beam-search/">Beam Search</a></li>
+      <li><a href="http://localhost:1313/tags/temperature-scaled/">Temperature Scaled</a></li>
+      <li><a href="http://localhost:1313/tags/top-k/">Top-K</a></li>
+      <li><a href="http://localhost:1313/tags/top-p/">Top-P</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2025 <a href="http://localhost:1313/">Yong-Hwan Lee</a></span> ·     
+    <span>
+    Powered by 
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/pmichaillat/hugo-website/" rel="noopener" target="_blank">a modified version</a>
+         of 
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+</html>

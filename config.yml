@@ -85,8 +85,8 @@ params:
             #  url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
 
     socialIcons:
-        - name: CV
-          url: cv.pdf
+        #- name: CV
+        #  url: cv.pdf
         - name: Email
           url: mailto:kapshaul@gmail.com
         - name: Zoom

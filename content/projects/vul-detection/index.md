@@ -34,7 +34,7 @@ A key innovation of our work is the incorporation of our custom adaptation of `Q
 
 <div align="center">
     
-<img src="lora.png" width="500">
+<img src="lora.png" width="450">
 
 **Figure 1**: LoRA adapter illustration
 

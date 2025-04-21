@@ -105,8 +105,8 @@ params:
         #  url: https://www.youtube.com/@alexandermccallsmithoffici9000
         #- name: Twitter
         #  url: https://twitter.com/McCallSmith
-        - name: Website
-          url: websites/
+        #- name: Website
+        #  url: websites/
 
     assets:
         disableScrollBarStyle: true

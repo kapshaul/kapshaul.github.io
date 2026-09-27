@@ -7,7 +7,7 @@ import { getEntrySummaries } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Projects in LLM fine-tuning, reinforcement learning, database optimization, and statistical estimation by Yong-Hwan Lee.",
+    "Projects in AI agents, multi-agent orchestration, conversational CAD, LLM fine-tuning, reinforcement learning, and statistical estimation by Yong-Hwan Lee.",
   alternates: { canonical: "/projects/" },
 };
 

@@ -2,14 +2,35 @@
 // Highlights below are grounded in the existing project write-ups.
 export type ProjectDisplay = {
   title: string;
-  category: "LLMs" | "Reinforcement Learning" | "Statistical Learning";
+  category: "AI Agents" | "LLMs" | "Reinforcement Learning" | "Statistical Learning";
   summary: string;
   highlight: string;
   tags: string[];
   status?: string;
+  period?: string;
 };
 
 export const projectDisplay: Record<string, ProjectDisplay> = {
+  jarvis: {
+    title: "JARVIS",
+    category: "AI Agents",
+    summary:
+      "A conversational CAD agent that connects natural-language requests to modeling tools, geometry validation, and an interactive 3D view.",
+    highlight: "Natural language → CAD tools → verified geometry",
+    tags: ["LangChain", "Tool Calling", "CAD", "3D Visualization"],
+    status: "In progress",
+    period: "Mar. 2026 – Present",
+  },
+  "construction-ai-agent": {
+    title: "Civil & Construction AI Agent",
+    category: "AI Agents",
+    summary:
+      "Developing domain agents for workflow automation, with multi-agent orchestration, tool integration, and memory and context management.",
+    highlight: "Domain knowledge connected to agent execution",
+    tags: ["LangChain", "OpenAI Agents SDK", "Multi-Agent Orchestration"],
+    status: "In progress",
+    period: "Jun. 2025 – Present",
+  },
   "database-join": {
     title: "Learning to optimize database joins",
     category: "Reinforcement Learning",
@@ -34,15 +55,6 @@ export const projectDisplay: Record<string, ProjectDisplay> = {
     highlight: "From a single DQN to distributed actors",
     tags: ["DQN", "Distributed Training", "CartPole"],
   },
-  "rl-fine-tunning": {
-    title: "LLM alignment with GRPO",
-    category: "LLMs",
-    summary:
-      "A personal exploration of Group Relative Policy Optimization for reinforcement learning based LLM fine-tuning.",
-    highlight: "Exploring reinforcement learning for alignment",
-    tags: ["GRPO", "LLM Alignment", "Reinforcement Learning"],
-    status: "In progress",
-  },
   "image-denoising": {
     title: "Recovering images from Poisson noise",
     category: "Statistical Learning",
@@ -62,6 +74,8 @@ export const projectDisplay: Record<string, ProjectDisplay> = {
 };
 
 export const featuredSlugs = [
+  "jarvis",
+  "construction-ai-agent",
   "database-join",
   "vul-detection",
   "distributed-agents",

@@ -38,7 +38,6 @@ function strings(value: unknown): string[] {
 function date(value: unknown): string | null {
   if (!value) return null;
   const parsed = value instanceof Date ? value : new Date(String(value));
-  // A year of 1000 is an ordering placeholder in the original GRPO article.
   if (Number.isNaN(parsed.getTime()) || parsed.getUTCFullYear() < 1900)
     return null;
   return parsed.toISOString().slice(0, 10);

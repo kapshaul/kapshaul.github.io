@@ -62,7 +62,9 @@ export default function EntryPage({ entry }: { entry: Entry }) {
           </div>
           <div className="space-y-1 text-xs leading-relaxed text-muted-foreground">
             <p>{entry.authors.join(" · ")}</p>
-            {entry.date && (
+            {display?.period ? (
+              <p>Period · {display.period}</p>
+            ) : entry.date && (
               <p>
                 Published{" "}
                 <time dateTime={entry.date}>{formatDate(entry.date)}</time>

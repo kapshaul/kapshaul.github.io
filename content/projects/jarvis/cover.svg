@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" fill="none">
+  <title>JARVIS — conversational CAD agent</title>
+  <desc>A concept diagram connecting a conversation panel to a three-dimensional CAD block.</desc>
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" stroke="#A5BCD0" stroke-opacity=".22"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" rx="24" fill="#EAF0F5"/>
+  <rect width="800" height="500" rx="24" fill="url(#grid)"/>
+  <text x="52" y="83" fill="#142C46" font-family="Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="3">JARVIS</text>
+  <text x="54" y="117" fill="#526D85" font-family="Arial, sans-serif" font-size="18" letter-spacing="1">CONVERSATIONAL CAD AGENT</text>
+  <rect x="52" y="171" width="272" height="232" rx="18" fill="#FFFFFF" stroke="#ACC1D3" stroke-width="2"/>
+  <circle cx="78" cy="197" r="5" fill="#6389AA"/>
+  <circle cx="96" cy="197" r="5" fill="#ACC1D3"/>
+  <circle cx="114" cy="197" r="5" fill="#D5E1EB"/>
+  <path d="M52 217H324" stroke="#D5E1EB"/>
+  <rect x="76" y="239" width="191" height="52" rx="12" fill="#EAF0F5"/>
+  <path d="M92 258H244M92 272H213" stroke="#6389AA" stroke-width="5" stroke-linecap="round"/>
+  <rect x="107" y="308" width="191" height="64" rx="12" fill="#244C70"/>
+  <path d="M126 329H274M126 346H242" stroke="#D5E1EB" stroke-width="5" stroke-linecap="round"/>
+  <path d="M351 287H423M410 274L423 287L410 300" stroke="#6389AA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M464 256L604 183L744 256L604 330Z" fill="#B9D0E2" stroke="#244C70" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M464 256V340L604 414V330Z" fill="#87ABC8" stroke="#244C70" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M604 330V414L744 340V256Z" fill="#577E9F" stroke="#244C70" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="604" cy="255" rx="47" ry="25" fill="#244C70"/>
+  <path d="M562 266C580 244 628 244 646 266" stroke="#87ABC8" stroke-width="3"/>
+  <path d="M481 366L581 418M481 358V374M581 410V426" stroke="#6389AA" stroke-width="2"/>
+  <path d="M604 158V175M444 256H456M752 256H764" stroke="#6389AA" stroke-width="2"/>
+  <text x="54" y="454" fill="#526D85" font-family="Arial, sans-serif" font-size="16">LangChain · Tool Calling · Geometry Validation</text>
+</svg>

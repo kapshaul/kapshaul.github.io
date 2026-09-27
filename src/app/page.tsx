@@ -89,7 +89,7 @@ export default function Home() {
               </Badge>
               <span className="h-px flex-1 bg-border" />
               <span className="font-mono text-[10px] text-muted-foreground">
-                01 — 04
+                01 — {String(featured.length).padStart(2, "0")}
               </span>
             </div>
             <h2

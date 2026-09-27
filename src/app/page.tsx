@@ -103,7 +103,7 @@ export default function Home() {
               work.
             </p>
           </div>
-          <div className="grid auto-rows-fr gap-4 sm:grid-cols-2">
+          <div className="grid items-start gap-4 sm:grid-cols-2">
             {featured.map((entry) => (
               <ProjectCard key={entry.slug} entry={entry} />
             ))}

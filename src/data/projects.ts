@@ -8,6 +8,14 @@ export type ProjectDisplay = {
   tags: string[];
   status?: string;
   period?: string;
+  video?: {
+    src: string;
+    poster: string;
+    width: number;
+    height: number;
+    title: string;
+    caption: string;
+  };
 };
 
 export const projectDisplay: Record<string, ProjectDisplay> = {
@@ -20,6 +28,15 @@ export const projectDisplay: Record<string, ProjectDisplay> = {
     tags: ["LangChain", "Tool Calling", "CAD", "3D Visualization"],
     status: "In progress",
     period: "Mar. 2026 – Present",
+    video: {
+      src: "/projects/jarvis/bracket-ribs-demo.mp4",
+      poster: "/projects/jarvis/bracket-ribs-poster.jpg",
+      width: 1280,
+      height: 596,
+      title: "JARVIS demo: selecting a bracket face and adding two reinforcing ribs",
+      caption:
+        "Select a bracket face, request two reinforcing ribs, and inspect the updated geometry. This 10-second local demo uses a scripted command with real CAD tool execution.",
+    },
   },
   "construction-ai-agent": {
     title: "Civil & Construction AI Agent",

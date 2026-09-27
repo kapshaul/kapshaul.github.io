@@ -7,11 +7,9 @@ author: ["Yong-Hwan Lee"]
 description: "A conversational CAD agent with LangChain, tool calling, geometry validation, and web-based 3D visualization."
 summary: "A conversational CAD agent that connects natural-language requests to modeling tools, geometry validation, and an interactive 3D view."
 cover:
-  image: "cover.svg"
-  alt: "JARVIS concept diagram connecting a conversation to a CAD model"
+  image: "bracket-ribs-poster.jpg"
+  alt: "JARVIS displaying a bracket with two triangular reinforcing ribs"
 ---
-
-![JARVIS concept diagram: a conversation connected to a CAD model](cover.svg)
 
 ## Overview
 
@@ -30,7 +28,7 @@ The project covers the agent workflow, CAD tool integration, validation, revisio
 
 Python manages the agent, model state, validation, and application API. Replicad and OpenCascade perform geometry operations in an isolated server-side Node.js process. The browser uses Three.js to display the resulting mesh and support interaction with the model.
 
-The workflow connects **conversation → tool execution → validation → 3D review**, with revision history available for subsequent edits. The illustration above is a concept diagram, rather than an application screenshot.
+The workflow connects **conversation → tool execution → validation → 3D review**, with revision history available for subsequent edits.
 
 ## Current scope
 

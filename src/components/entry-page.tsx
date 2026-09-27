@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { MarkdownContent } from "@/components/markdown-content";
+import ProjectVideo from "@/components/project-video";
 import { projectDisplay } from "@/data/projects";
 import { getEntries, type Entry } from "@/lib/content";
 import { formatDate } from "@/lib/utils";
@@ -98,6 +99,16 @@ export default function EntryPage({ entry }: { entry: Entry }) {
           )}
         </header>
         <div className="py-8">
+          {display?.video && (
+            <figure className="mb-8">
+              <div className="overflow-hidden rounded-xl border">
+                <ProjectVideo video={display.video} />
+              </div>
+              <figcaption className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                {display.video.caption}
+              </figcaption>
+            </figure>
+          )}
           <MarkdownContent
             content={body}
             basePath={`/${entry.section}/${entry.slug}/`}

@@ -1,10 +1,10 @@
 ---
 title: "Database Join Optimization with Online Learning" 
 date: 2024-12-15
-lastmod: 2025-03-20
+lastmod: 2026-09-27
 tags: ["Reinforcement Learning","Online Learning","Recommendation System","Database Join", "PostgreSQL"]
 author: ["Yong-Hwan Lee","Arash Termehchy", "Huazheng Wang"]
-description: "This study is currently under review for the Proceedings of the VLDB Endowment (PVLDB), 2025." 
+description: "Submitted to Proceedings of the VLDB Endowment (PVLDB) in 2025."
 summary: "Online learning approaches to optimize database join operations in PostgreSQL." 
 cover:
     image: "image.jpg"
@@ -20,7 +20,6 @@ editPost:
 
 ##### Download
 
-+ [Paper (Under Review)]()
 + [Code](https://github.com/kapshaul/Join-Game)
 
 ---
@@ -38,9 +37,9 @@ Join algorithms usually spend a long time scanning and attempting to join parts 
 
 ---
 
-##### Citation
+##### Publication status
 
-This paper is currently under review for PVLDB (to be presented at VLDB 2025).
+Submitted to Proceedings of the VLDB Endowment (PVLDB) in 2025.
 
 ---
 

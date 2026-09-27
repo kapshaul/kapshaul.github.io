@@ -30,7 +30,7 @@ export default function Home() {
           <div className="flex items-start justify-between gap-5">
             <div className="min-w-0 space-y-3">
               <p className="font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                AI Engineer · Learning & Systems
+                AI Engineer · Agent Architecture
               </p>
               <h1
                 id="intro"
@@ -96,11 +96,11 @@ export default function Home() {
               id="projects-heading"
               className="text-2xl font-semibold tracking-tight sm:text-3xl"
             >
-              From research to implementation.
+              AI agents and learning systems.
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              A closer look at the models, decisions, and systems behind my
-              work.
+              Agent applications and research projects, with the architecture,
+              implementation, and validation behind each.
             </p>
           </div>
           <div className="grid items-start gap-4 sm:grid-cols-2">
@@ -236,11 +236,11 @@ export default function Home() {
             id="contact-heading"
             className="text-2xl font-semibold tracking-tight"
           >
-            Let’s build something thoughtful.
+            Let’s talk about AI engineering.
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-            For conversations about AI engineering, research, or a project you
-            have in mind.
+            For conversations about agent systems, workflow automation, or
+            applied machine learning.
           </p>
           <a
             href={`mailto:${profile.email}`}

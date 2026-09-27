@@ -1,14 +1,14 @@
 ---
-title: "Scalable Reinforcement Learning: Exploring Distributed Implementations" 
+title: "DQN with Parallel Experience Collection"
 date: 2021-12-12
-lastmod: 2025-02-10
-tags: ["Reinforcement Learning ", "Parallel Learning", "Scalable RL", "Multi-Agent RL"]
+lastmod: 2026-09-27
+tags: ["Reinforcement Learning", "DQN", "Parallel Experience Collection", "CartPole"]
 author: ["Yong-Hwan Lee", "Bakhtiyar Doskenov"]
 description: "This study was carried out as a project at Oregon State University." 
-summary: "This project focuses on implementing and experimenting with both single-core and distributed versions of RL." 
+summary: "Comparing DQN with sequential and parallel experience collection, using a shared learner and replay memory."
 cover:
     image: "image.png"
-    alt: "CT Image Denoising"
+    alt: "DQN architecture with parallel collectors, a model server, replay memory, and an evaluator"
     relative: false
 
 ---
@@ -23,8 +23,7 @@ cover:
 
 ##### Abstract
 
-The goal of this project is to implement and experiment with both single-core and distributed versions of the deep reinforcement learning algorithm Deep Q Networks (DQN).
-In particular, DQN will be run in the classic RL benchmark Cart-Pole and abblation experiments will be run to observe the impact of the different DQN components.
+This project implements and compares DQN with sequential and parallel experience collection in CartPole. Parallel collectors generate experience for a shared replay memory and learner; neural network updates are handled by the model server. Ablation experiments examine the effects of individual DQN components.
 
 ---
 
@@ -54,9 +53,9 @@ Periodically the target network is updated with the most recent parameters $\\th
 
 ---
 
-##### Distributed DQN agent
+##### DQN with parallel collectors
 
-The idea is to speedup learning by creating actors to collect data and a model server to update the neural network model.
+The architecture separates parallel experience collection from model updates, with collector actors feeding a shared learner and replay memory.
 - Collector: There is a simulator inside each collector. Their job is to collect exprience from the simulator, and send them to the memory server. They follow the explore_or_exploit policy, getting greedy action from model server. Also, call update function of model server to update the model.
 - Evaluator: There is a simulator inside the evaluator. It is called by the the Model Server, taking eval_model from it, and test its performance.
 - Model Server: Stores the evalation and target networks. It Takes experiences from Memory Server and updates the Q-network, also replacing target Q-network periodically. It also interfaces to the evaluator periodically.
@@ -66,7 +65,7 @@ An image of this architecture is below.
 
 <img src="image.png" width="800">
 
-For this part, using ```custom_cartpole.py``` as an enviroment. This version of cartpole is slower, which allows for the benefits of distributed experience collection to be observed. In particular, the time to generate an experience tuple needs to be non-trivial compared to the time needed to do a neural network model update.
+This experiment uses `custom_cartpole.py`, a slower CartPole environment, to examine parallel experience collection when generating experience takes a significant amount of time relative to a model update.
 
 ---
 
@@ -93,6 +92,6 @@ For this part, using ```custom_cartpole.py``` as an enviroment. This version of 
 
    The code is designed to work with a custom CartPole environment. Make sure that the `custom_cartpole.py` and the necessary model and memory files (`dqn_model.py`, `memory_remote.py`) are properly configured and located in the repository.
 
-2. Execute the Distributed DQN Python Script
+2. Run DQN with parallel experience collection
 
-   To start training the Distributed DQN on the CartPole environment, run `python distributed_dqn.py`.
+   To start training on the CartPole environment, run `python distributed_dqn.py`.

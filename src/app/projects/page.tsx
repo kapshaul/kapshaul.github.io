@@ -22,11 +22,12 @@ export default function Projects() {
       </Link>
       <header>
         <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Research · Experiments · Systems
+          AI Agents · Applied ML · Research
         </p>
         <h1 className="text-4xl font-semibold tracking-tighter">Projects</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          The problem, the approach, and what I learned along the way.
+          Agent applications and machine learning projects, covering the problem,
+          implementation, and validation.
         </p>
       </header>
       <EntryIndex entries={getEntrySummaries("projects")} section="projects" />

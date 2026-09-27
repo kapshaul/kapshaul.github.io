@@ -4,7 +4,7 @@ date: 2025-06-01
 lastmod: 2026-09-27
 tags: ["AI Agents", "LangChain", "OpenAI Agents SDK", "Multi-Agent Orchestration", "Agent Memory", "Domain Ontology"]
 author: ["Yong-Hwan Lee"]
-description: "LLM-based domain agents for civil and construction workflow automation, developed at MetaBizDesign."
+description: "LLM-based domain agents for civil and construction workflow automation."
 summary: "Developing domain agents for workflow automation, with multi-agent orchestration, tool integration, and memory and context management."
 cover:
   image: "cover.png"
@@ -15,7 +15,7 @@ cover:
 
 ## Overview
 
-At MetaBizDesign, I design and develop LLM-based domain agents for workflow automation in civil engineering and construction. My responsibilities include agent architecture, tool integration, and the memory and context mechanisms needed to carry out tasks across multiple steps.
+I design and develop LLM-based domain agents for workflow automation in civil engineering and construction. My responsibilities include agent architecture, tool integration, and the memory and context mechanisms needed to carry out tasks across multiple steps.
 
 This work began in June 2025 and is ongoing. The description below summarizes my engineering contributions at a general level.
 

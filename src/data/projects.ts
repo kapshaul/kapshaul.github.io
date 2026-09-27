@@ -65,12 +65,12 @@ export const projectDisplay: Record<string, ProjectDisplay> = {
     tags: ["QLoRA", "LLM Fine-Tuning", "Code Security"],
   },
   "distributed-agents": {
-    title: "Distributed reinforcement learning",
+    title: "DQN with parallel experience collection",
     category: "Reinforcement Learning",
     summary:
-      "Building single-core and distributed DQN implementations with separate collectors, model, replay memory, and evaluation.",
-    highlight: "From a single DQN to distributed actors",
-    tags: ["DQN", "Distributed Training", "CartPole"],
+      "Implementing and comparing DQN with sequential and parallel experience collection, using a shared learner, replay memory, and separate evaluation.",
+    highlight: "Parallel collectors feeding a shared DQN learner",
+    tags: ["DQN", "Parallel Experience Collection", "CartPole"],
   },
   "image-denoising": {
     title: "Recovering images from Poisson noise",

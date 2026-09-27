@@ -98,7 +98,7 @@ export default function EntryIndex({
       </p>
       {filtered.length ? (
         section === "projects" ? (
-          <div className="grid items-start gap-4 sm:grid-cols-2">
+          <div className="grid items-start gap-4 min-[520px]:grid-cols-2">
             {filtered.map((entry) => (
               <ProjectCard key={entry.slug} entry={entry} />
             ))}

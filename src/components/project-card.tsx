@@ -8,6 +8,7 @@ import ProjectVideo from "@/components/project-video";
 
 export default function ProjectCard({ entry }: { entry: Omit<Entry, "body"> }) {
   const display = projectDisplay[entry.slug];
+  const isJarvis = entry.slug === "jarvis";
   const href = `/projects/${entry.slug}/`;
   const code = entry.links.find((link) =>
     link.url.startsWith("https://github.com/"),
@@ -15,7 +16,7 @@ export default function ProjectCard({ entry }: { entry: Omit<Entry, "body"> }) {
   const report = entry.links.find((link) => /\.pdf(?:$|[?#])/i.test(link.url));
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-[box-shadow,border-color] duration-200 hover:border-foreground/25 hover:shadow-md hover:shadow-black/5">
+    <article className={`group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-[box-shadow,border-color] duration-200 hover:border-foreground/25 hover:shadow-md hover:shadow-black/5 ${isJarvis ? "min-[520px]:col-span-2" : ""}`}>
       {display?.video ? (
         <div className="overflow-hidden border-b">
           <ProjectVideo video={display.video} />
@@ -25,7 +26,7 @@ export default function ProjectCard({ entry }: { entry: Omit<Entry, "body"> }) {
           href={href}
           tabIndex={-1}
           aria-hidden="true"
-          className="relative block aspect-[16/10] overflow-hidden border-b bg-white"
+          className="relative block aspect-[16/10] max-h-56 overflow-hidden border-b bg-white"
         >
           {entry.image ? (
             <Image
@@ -47,13 +48,13 @@ export default function ProjectCard({ entry }: { entry: Omit<Entry, "body"> }) {
           )}
         </Link>
       )}
-      <div className="flex flex-col gap-3 p-5">
+      <div className={`flex flex-col gap-3 p-5 ${isJarvis ? "sm:p-6" : ""}`}>
         <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           {display?.category || "Project"}
           {entry.date ? ` · ${entry.date.slice(0, 4)}` : ""}
           {display?.video && display.status ? ` · ${display.status}` : ""}
         </p>
-        <h3 className="text-base font-semibold leading-snug tracking-tight">
+        <h3 className={`text-base font-semibold leading-snug tracking-tight ${isJarvis ? "sm:text-xl" : ""}`}>
           <Link href={href} className="hover:underline underline-offset-4">
             {display?.title || entry.title}
           </Link>

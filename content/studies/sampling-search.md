@@ -1,213 +1,144 @@
 ---
-title: "Natural Language Processing (NLP) - Sampling Search "
+title: "Language Model Decoding: Sampling & Beam Search"
 date: 2024-03-12
-lastmod: 2024-03-12
-tags: ["NLP","LSTM","Sampling Search","Text Generation","Beam Search","Temperature Scaled","Top-k","Top-p"]
+lastmod: 2026-09-27
+category: "NLP"
+tags: ["Text Generation", "Sampling", "Beam Search"]
 author: ["Yong-Hwan Lee"]
-description: "This study was carried out as a project at Oregon State University."
-summary: "Explore decoding methods for language models by implementing sampling-based (vanilla, temperature-scaled, top-k, top-p) and search-based (beam search) techniques using a 3-layer LSTM trained on Game of Thrones text, and analyze their text generation behavior."
+summary: "Compare temperature, top-k, nucleus sampling, and beam search, with attention to probability filtering, recurrent state, and reproducibility."
 editPost:
     URL: "https://github.com/kapshaul/NLP-sampling.search"
     Text: "GitHub"
-showToc: true
-disableAnchoredHeadings: false
-
 ---
 
 ## Overview
 
-This study explores a **pre-trained language model** built with a multi-layer LSTM architecture. The model is trained on text from the first five *Game of Thrones* novels, capturing both short- and long-range dependencies in the data. By examining its internal architecture and forward pass, we gain insight into how it transforms input tokens into meaningful hidden representations, ultimately predicting the next token in a sequence.
+This Oregon State University study implements decoding strategies around a provided, pre-trained LSTM language model. The model has three recurrent layers, a hidden size of 512, and 100-dimensional token embeddings. Its checkpoint was trained on text from the first five *A Song of Ice and Fire* novels.
 
-Key points include:
-- **3-layer LSTM** with an embedding layer for token representations.
-- **Hidden size of 512**, capturing rich contextual information.
-- **Vocabulary management** using a separate text processing pipeline.
-- **Trained on a large fantasy corpus**, showcasing the model’s capacity to learn diverse linguistic patterns.
+The contribution explored here is the decoder: how next-token probabilities are filtered or searched, and how those choices affect generated text. The examples are qualitative observations from the original experiment, not a benchmark of language quality.
 
----
+## Sampling methods
 
-## Installation
+Let $z_i$ be the logit of token $i$. For a strictly positive temperature $\tau$,
 
-Clone the repository and install dependencies:
+$$
+p_i(\tau)=\frac{\exp(z_i/\tau)}{\sum_j \exp(z_j/\tau)}.
+$$
 
-```bash
-git clone https://github.com/kapshaul/NLP-sampling.search
-cd NLP-sampling.search
-pip install torchtext==0.6.0 torch==1.13.1
-```
+| Method | Rule | Boundary cases |
+| --- | --- | --- |
+| Vanilla sampling | Draw from the full softmax distribution | Equivalent to temperature 1 with no filtering |
+| Temperature | Divide logits by $\tau>0$ before softmax | Small $\tau$ concentrates mass near the largest logits; large $\tau$ flattens it |
+| Top-k | Keep the $k$ highest-probability tokens and renormalize | $k=1$ is greedy decoding; require $1\leq k\leq V$ |
+| Top-p / nucleus | Keep the smallest sorted prefix whose cumulative probability is at least $p$ | Require $0<p\leq1$; $p=1$ preserves the distribution |
 
----
+Here $V$ is vocabulary size. Top-p must retain the token that crosses the probability threshold. Removing that token can leave less than the requested mass—or even an empty set when the highest-probability token alone exceeds $p$.
 
-## Implementation
+A very small positive temperature is not the same as setting temperature to zero, which is invalid in this formula. With tied maximum logits, the low-temperature limit can retain more than one candidate.
 
-To test search configurations (temperature, top-k, top-p, beam search), run:
+### A filtering example
 
-```bash
-python decoder.py
-```
-
----
-
-## Sampling-based Decoding
-
-This section explores various stochastic decoding strategies for autoregressive language generation using the pre-trained LSTM model. The goal is to sample text sequences from the model under different probabilistic constraints, which affect creativity, coherence, and diversity in generated text.
-
-#### Decoding Methods Implemented
-
-1. **Vanilla Sampling**  
-   At each step, the next token is sampled directly from the softmax distribution of the model’s output logits. This approach retains the full probability distribution, offering high variance in the results.
-
-2. **Temperature-Scaled Sampling**  
-   A temperature parameter $\tau$ is introduced to control the sharpness of the softmax distribution:
-   - $\tau < 1$: Sharper distributions; more deterministic behavior.
-   - $\tau > 1$: Flatter distributions; increased randomness.
-   - $\tau = 1$: Equivalent to vanilla sampling.
-
-3. **Top-k Sampling**  
-   Restricts the sampling pool to the top $k$ most probable tokens, setting all others to zero before re-normalization. This limits randomness to a focused subset of likely candidates.
-
-4. **Nucleus (Top-p) Sampling**  
-   Selects the smallest possible set of words whose cumulative probability exceeds $p$. This dynamically adjusts the candidate set size based on distribution shape, balancing control and diversity.
-
-#### Testing Overview
-
-Each of these strategies was implemented within a unified `sample()` function that supports prompt conditioning and customizable parameters (`temp`, `k`, `p`). A single model forward pass is performed at each step, and the output distribution is adjusted based on the chosen sampling strategy.
+This standalone helper illustrates the probability-filtering step for a one-dimensional vector of finite logits. It follows the original exercise's convention of selecting either top-k or top-p. Prompt processing and recurrent state management are separate.
 
 ```python
-def sample(model, text_field, prompt="", max_len=50, temp=1.0, k=0, p=1):
-    assert (k == 0 or p == 1), "Cannot combine top-k and top-p sampling"
-    ...
-    return decodedString
+import torch
+
+
+def next_token_probs(logits, temperature=1.0, k=0, p=1.0):
+    if logits.ndim != 1 or logits.numel() == 0:
+        raise ValueError("Expected a nonempty vocabulary vector")
+    if not logits.is_floating_point() or not torch.isfinite(logits).all():
+        raise ValueError("Expected finite floating-point logits")
+    if not (0 < temperature < float("inf") and 0 < p <= 1):
+        raise ValueError("Require finite temperature > 0 and 0 < p <= 1")
+    if not isinstance(k, int) or not 0 <= k <= logits.numel():
+        raise ValueError("k must be an integer between 0 and vocabulary size")
+    if k and p != 1.0:
+        raise ValueError("Choose top-k or top-p for this example")
+
+    scores = (logits - logits.max()) / temperature
+    if k:
+        values, indices = torch.topk(scores, k)
+        scores = torch.full_like(scores, -torch.inf).scatter(0, indices, values)
+    elif p < 1.0:
+        sorted_scores, order = torch.sort(scores, descending=True)
+        sorted_probs = torch.softmax(sorted_scores, dim=0)
+        # Remove a token only when earlier tokens already reach p.
+        preceding_mass = torch.cat(
+            (sorted_probs.new_zeros(1), sorted_probs.cumsum(0)[:-1])
+        )
+        sorted_scores = sorted_scores.masked_fill(preceding_mass >= p, -torch.inf)
+        scores = torch.empty_like(scores).scatter(0, order, sorted_scores)
+
+    return torch.softmax(scores, dim=0)
 ```
 
-#### Prompt Conditioning
+For probabilities `[0.60, 0.25, 0.15]` and `p=0.75`, the retained prefix is the first two tokens, with mass `0.85` before renormalization. Top-p changes candidate-set size with the distribution; it does not guarantee that every sampled continuation will be fluent.
 
-Sampling can be initialized with a text prompt. The prompt is numeralized and passed through the model to update the internal hidden states before generation begins.
+### Recorded observations
 
-#### Visualization of Sampling Behavior
+The original experiment used the same opening prompt while varying the decoder.
 
-The following table summarizes outputs generated from the prompt:
+| Configuration | Observation in the recorded examples |
+| --- | --- |
+| $\tau=0.0001$ | Similar continuation to greedy decoding |
+| $\tau=100$ | Disconnected, largely incoherent token sequences |
+| $k=1$ | One candidate per step |
+| $k=20$ | More varied output, including awkward phrases and unknown tokens |
+| $p=0.001$ | Greedy-like output in this example |
+| $p=0.75$ | A wider range of continuations, with remaining grammatical errors |
+| $p=1$ | Same sampling distribution as vanilla sampling |
 
-**Prompt**: `"the night is dark and full of terrors"`
+Equal distributions do not imply identical sampled strings unless the random state and every other generation setting also match. A few examples cannot establish an optimal temperature, $k$, or $p$.
 
-| Method                   | Settings               | Notable Behavior                                                  |
-|--------------------------|------------------------|--------------------------------------------------------------------|
-| Vanilla Sampling         | temp = 1               | High variance; coherent but unpredictable stories                 |
-| Temperature-scaled       | τ = 0.0001             | Very deterministic, repetitive or generic continuations           |
-| Temperature-scaled       | τ = 100                | Extreme randomness; nonsensical token-level outputs               |
-| Top-k Sampling           | k = 1                  | Very deterministic (equivalent to greedy search)                  |
-| Top-k Sampling           | k = 20                 | Balanced between diversity and fluency                            |
-| Top-p Sampling           | p = 0.001              | Similar to top-1, often repetitive                                 |
-| Top-p Sampling           | p = 0.75               | Naturally diverse yet still contextually reasonable               |
-| Top-p Sampling           | p = 1                  | Equivalent to vanilla sampling                                    |
+## Beam search
 
-#### Example Output (Top-p, p=0.75)
+Beam search maintains up to $B$ candidate prefixes. At each step, it extends the candidates and keeps the highest-scoring prefixes according to accumulated log probability:
 
-> *"the night is dark and full of terrors . with the ryswells , the knights of the golden mountains burst off and come down in the attempt..."*
+$$
+s(y_{1:t})=\sum_{j=1}^{t}\log P(y_j\mid y_{<j},\text{prompt}).
+$$
 
-This illustrates the potential for coherent storytelling using nucleus sampling while avoiding overly deterministic sequences.
+It approximates the search for a high-probability sequence. Finite-width pruning can discard the globally best completion, so the method is not an exact global optimizer.
 
-#### Observations
+1. Process the prompt once to obtain its recurrent state and next-token logits.
+2. Expand each retained prefix and add the next token's log probability to its score.
+3. Keep the best $B$ candidates together with the matching hidden and cell states.
+4. Feed each new token with its associated state, then repeat.
 
-- Lower temperatures and small top-k or top-p values produce more deterministic results.
-- Higher temperatures and larger values introduce randomness and narrative exploration.
-- Nucleus sampling (`top-p`) offers an adaptive alternative to fixed cutoffs, providing smoother trade-offs between creativity and coherence.
+The linked implementation loops over beams individually. It does **not** perform batched inference across all beams. It stops at a fixed maximum length and does not implement EOS-aware completion or length normalization; comparisons with decoders that do require those conventions to be aligned.
 
----
+### Interpreting beam width
 
-## Search-based Decoding with Beam Search
+| Width | Interpretation |
+| --- | --- |
+| $B=1$ | Greedy decoding, provided prompt processing, scoring, and stopping rules match |
+| Larger $B$ | Retains more search alternatives and increases computation |
+| Any fixed $B$ | Deterministic under fixed model behavior and tie-breaking; no sampling is introduced |
 
-Unlike stochastic sampling methods, **beam search** is a deterministic decoding strategy that aims to identify the most probable sequence under the model. It maintains multiple hypotheses at each time step, expanding and retaining only the top candidates based on cumulative probability.
+A larger beam is not a higher-randomness setting. Returning one best sequence also does not measure output diversity. Better model probability need not correspond to better fluency, and wider search is not a guarantee of better text.
 
-### Beam Search Algorithm
+## Reproducibility checks
 
-At each time step `t`, beam search performs two operations:
+The original write-up showed different continuations for top-k with $k=1$ and beam width $B=1$. Under matching settings, those methods should make the same greedy choices. The archived outputs alone do not identify the cause of the mismatch.
 
-1. **Expansion**: Each current hypothesis (beam) is extended by all possible next words from the vocabulary.
-2. **Selection**: The resulting candidates are scored using their cumulative log-probabilities. Only the top `B` beams are kept for the next step.
+Before using those examples as a comparison, rerun both paths with:
 
-Formally, the score of a candidate is computed as:
+- The same checkpoint, vocabulary, tokenization, prompt, and initial recurrent state.
+- Evaluation mode and consistent handling of dropout, special tokens, and stopping.
+- Prompt tokens consumed exactly once and the correct state attached to each prefix.
+- The same tie-breaking rule; fixed seeds for any genuinely stochastic decoder.
 
-```
-logP(w₀, ..., wₜ, w) = logP(w₀, ..., wₜ) + logP(w | w₀, ..., wₜ)
-```
+The repository entry point is `decoder.py`. Its comments record a historical environment with `torchtext==0.6.0` and `torch==1.13.1`; these are reproduction details, not a recommendation to install them into a current environment. The revised helper above does not replace the external repository's decoder, and generation has not been rerun for this review.
 
-This process is repeated until a specified maximum sequence length is reached. The candidate with the highest score is returned as the final output.
+## Takeaways
 
-### Testing Overview
+- Sampling changes the distribution from which a token is drawn; beam search changes which prefixes survive a search.
+- Nucleus filtering must keep the threshold-crossing token and renormalize.
+- Recurrent-state and prompt-handling mistakes can invalidate an otherwise reasonable decoder comparison.
+- Compare quality across multiple prompts and runs before concluding that one configuration is best.
 
-The `beamsearch()` function is implemented with support for prompt conditioning and variable beam width:
+## Sources
 
-```python
-def beamsearch(model, text_field, beams=5, prompt="", max_len=50):
-    ...
-    return decodedString
-```
-
-Key features:
-- Maintains `B` candidate sequences at each step.
-- Tracks hidden and cell states for each beam.
-- Performs efficient batched inference using PyTorch.
-
-### Beam Width Comparison
-
-Using the same prompt `"the night is dark and full of terrors"`, the model is evaluated under different beam widths:
-
-| Beam Width | Sample Output Snippet |
-|------------|------------------------|
-| B = 1      | "a smile , the storm girl staring , and the shapes were beautiful..." |
-| B = 10     | "meereen is deceit , and the common soldiers held through the woods..." |
-| B = 50     | "meereen was laid up , crowned with three - finger hobb with a pair of faces..." |
-
-### Observations
-
-- **B = 1** acts like greedy decoding — fast but potentially shortsighted.
-- **B = 10** strikes a balance between coherence and diversity.
-- **B = 50** provides highly diverse outputs but may generate less coherent or overly ornate sequences.
-
-While beam search increases decoding stability and reduces randomness, larger beam sizes also increase computation and don't always guarantee better fluency. It is important to balance performance and quality depending on application needs.
-
----
-
-## Example Outputs
-
-Below are selected examples from different decoding strategies applied to the prompt:
-
-**Prompt**: `"the night is dark and full of terrors"`
-
-#### Sampling-based Decoding
-
-- **Vanilla Sampling**  
-  > "the night is dark and full of terrors . after no one was dead . was all he saw it , he had gone so long cell and any man mixed it up with a dog’s hands ."
-
-- **Temperature-scaled Sampling (τ = 0.0001)**  
-  > "the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished; half a hundred of the free folk to defend the vale..."
-
-- **Temperature-scaled Sampling (τ = 100)**  
-  > "the night is dark and full of terrors herring depart: endearments cargoes tucked areo confessed frost traces prepared piety crude fortune nowhere miss betoken whistles..."
-
-- **Top-k Sampling (k = 1)**  
-  > "the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished..."
-
-- **Top-k Sampling (k = 20)**  
-  > "the night is dark and full of terrors . though tyrion had the sort of <unk> being returned to the new . she had forgotten who she was..."
-
-- **Top-p Sampling (p = 0.001)**  
-  > "the night is dark and full of terrors . with stannis and most of the queen’s men gone , her flock was much diminished..."
-
-- **Top-p Sampling (p = 0.75)**  
-  > "the night is dark and full of terrors . with the ryswells , the knights of the golden mountains burst off and come down in the attempt..."
-
-- **Top-p Sampling (p = 1)**  
-  > "the night is dark and full of terrors . after no one was dead . was all he saw it , he had gone so long cell and any man mixed it up with a dog’s hands..."
-
-#### Search-based Decoding (Beam Search)
-
-- **Beam Search (B = 1)**  
-  > "the night is dark and full of terrors . a smile , the storm girl staring , and the shapes were beautiful . all the vaults are rising from horizon were wind and branches..."
-
-- **Beam Search (B = 10)**  
-  > "the night is dark and full of terrors . meereen is deceit , and the common soldiers held through the woods and down the waters they could walk..."
-
-- **Beam Search (B = 50)**  
-  > "the night is dark and full of terrors . meereen was laid up , crowned with three - finger hobb with a pair of faces beneath the silk - and - white banner..."
+- [Original decoder and language model](https://github.com/kapshaul/NLP-sampling.search)
+- [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751), which introduces nucleus sampling

@@ -1,293 +1,175 @@
 ---
-title: "Natural Language Processing (NLP) - Finite State Machine with RNN"
+title: "LSTMs: Parity, State Machines & POS Tagging"
 date: 2024-05-10
-lastmod: 2024-05-10
-tags: ["NLP","LSTM","RNN","Sequence Modeling","Machine Learning"]
+lastmod: 2026-09-27
+category: "NLP"
+tags: ["LSTM", "Sequence Modeling", "POS Tagging"]
 author: ["Yong-Hwan Lee"]
-description: "This study was carried out as a project at Oregon State University."
-summary: "This study focuses on using LSTMs for parity detection, finite state machine learning, and part-of-speech tagging with a BiLSTM. It applies theoretical concepts and PyTorch to build and evaluate sequential models."
+summary: "Explore what a small LSTM can remember through parity and grammar tasks, then examine a BiLSTM tagger's results and failure cases."
 editPost:
     URL: "https://github.com/kapshaul/NLP-finite.state.machine.RNN"
     Text: "GitHub"
-showToc: true
-disableAnchoredHeadings: false
-
 ---
 
 ## Overview
 
-This study demonstrates the power of recurrent neural networks (RNNs), particularly long short-term memory (LSTM) models, across a range of natural language processing tasks. It begins with a manually engineered LSTM for binary parity classification and progresses to training LSTM networks for generalization, embedded Reber grammar recognition, and part-of-speech tagging using a BiLSTM.
+This Oregon State University study examines recurrent models at three scales: a hand-configured scalar LSTM, learned finite-state behavior, and token-level part-of-speech (POS) tagging. The central question is whether a model learns a reusable state transition or only fits the sequences it sees during training.
 
----
+The figures and reported training metrics below are from the original experiments. The explanations and example code have been reviewed against the repository; the revised code has not been used to retrain those models.
 
-## Installation
+## A scalar LSTM for parity
 
-Clone the repository and install dependencies:
+Binary parity is a two-state problem. Reading a zero preserves the current state; reading a one flips it. With initial states $h_0=c_0=0$, the manually chosen gates are
 
-```bash
-git clone https://github.com/kapshaul/NLP-finite.state.machine.RNN
-cd NLP-finite.state.machine.RNN
-pip install torch torchtext matplotlib portalocker
-```
+$$
+\begin{aligned}
+i_t &= \sigma(10x_t+10h_{t-1}-5),\\
+f_t &= \sigma(-10),\\
+o_t &= \sigma(-10x_t-10h_{t-1}+15),\\
+g_t &= \tanh(10),\\
+c_t &= f_t c_{t-1}+i_t g_t,\\
+h_t &= o_t\tanh(c_t).
+\end{aligned}
+$$
 
----
+Classify the sequence as odd when $h_t\geq 0.5$, and even otherwise.
 
-## Implementation
+For Boolean-like inputs, the input gate approximates OR and the output gate approximates NAND. Since $f_t$ is near zero and $g_t$ is near one, the cell state approximately follows the input gate. **The cell state is not an AND gate.** The combination of the input and output gates produces XOR-like behavior: OR is active for either input, while NAND suppresses the output when both are active.
 
-1. To test **manual LSTM configuration for binary parity**, run:
+These are smooth gates, not exact Boolean operators. In particular, the positive hidden state is below one, and recurrence changes the gate inputs. The original `univariate_tester.py` checks all $2^{14}=16{,}384$ binary strings of length 14. Passing this finite test is evidence for the construction, not a proof for arbitrary sequence length.
 
-   ```bash
-   python univariate_tester.py
-   ```
+## Learning and generalization
 
-2. To train and evaluate **LSTM models on parity tasks**, run:
+The learned parity model packs variable-length sequences, passes them through an LSTM, and classifies the final hidden state. The source driver's default training set contains every binary string of lengths 1–5. Evaluation samples 500 strings at each length from 1 to 256.
 
-   ```bash
-   python driver_parity.py
-   ```
-
-3. To implement and train **BiLSTM for POS tagging**, run:
-
-   ```bash
-   python driver_udpos.py
-   ```
-
----
-
-## Demystifying Recurrent Neural Networks
-
-#### Hand Designing an LSTM for Parity
-
-In this section, we manually explore the capability of LSTM networks to handle sequential tasks, specifically determining the parity of binary strings (i.e., whether the number of ones is even or odd). A simple binary string parity classification can be represented by recursive XOR operations, an ideal use-case for an LSTM's recurrent structure.
-
-#### Univariate LSTM Setup
-We can consider a LSTM where inputs, outputs, and weights are scalars, defined by:
-
-$i_t = \sigma(w_{ix}x_t + w_{ih}h_{t-1} + b_i)$<br>
-$f_t = \sigma(w_{fx}x_t + w_{fh}h_{t-1} + b_f)$<br>
-$o_t = \sigma(w_{ox}x_t + w_{oh}h_{t-1} + b_o)$<br>
-$g_t = \tanh(w_{gx}x_t + w_{gh}h_{t-1} + b_g)$<br>
-$c_t = f_t c_{t-1} + i_t g_t$<br>
-$h_t = o_t \tanh(c_t)$
-
-#### Manual Parameter Setting for XOR
-We can find weights and biases to perform parity classification manually. The goal was to have the final hidden state (`h_t`) ≥ 0.5 for odd parity and < 0.5 for even parity. The selected weights and biases:
-
-- **Input gate**: `wix = 10`, `wih = 10`, `bi = -5`
-- **Forget gate**: `wfx = 0`, `wfh = 0`, `bf = -10`
-- **Output gate**: `wox = -10`, `woh = -10`, `bo = 15`
-- **Gate `g`**: `wgx = 0`, `wgh = 0`, `bg = 10`
-
-With these parameters:
-- `i_t` acts as an OR gate.
-- `o_t` acts as a NAND gate.
-- `c_t` effectively behaves as an AND gate.
-
-This demonstrates that even a minimal LSTM can solve the parity problem through careful manual configuration.
-
-#### Understanding
-We have demonstrated that a single-dimensional LSTM can theoretically compute parity for binary sequences of arbitrary length, setting the foundation to later explore learning these parameters automatically.
-
-
----
-
-## Learning Finite State Machines with LSTM
-
-This section explores the capacity of LSTMs to model deterministic finite state machines (FSMs), including both synthetic binary classification and structured language sequences.
-
-#### Parity Task: Generalization to Longer Sequences
-
-The LSTM is trained on binary sequences of varying lengths to predict their parity (even or odd number of 1s). The dataset is generated with all binary combinations up to a `max_length`, and the labels are calculated as `sum(seq) % 2`.
-
-#### Model Summary
-
-```python
-class ParityLSTM(nn.Module):
-    def __init__(self, hidden_dim=64):
-        super().__init__()
-        self.rnn = nn.LSTM(input_size=1, hidden_size=hidden_dim, batch_first=True)
-        self.fc = nn.Linear(hidden_dim, 2)
-
-    def forward(self, x, lengths):
-        x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
-        _, (h_n, _) = self.rnn(x)
-        output = self.fc(h_n[-1])
-        return output
-```
-
-- Input is padded to batch format, and packed before passing to the LSTM.
-- Final hidden state is used for classification via a fully connected output layer.
-
-#### Understanding
-
-<div align="center">
-
-<div style="display: flex; gap: 10px; justify-content: center; align-items: flex-start; flex-wrap: wrap;">
-
-  <div style="text-align: center;">
-    <img src="/finite-state-machine/LSTM-1_parity_generalization.png" width="230">
-    <div>(a) Hidden size = 1</div>
-  </div>
-
-  <div style="text-align: center;">
-    <img src="/finite-state-machine/LSTM-16_parity_generalization.png" width="230">
-    <div>(b) Hidden size = 16</div>
-  </div>
-
-  <div style="text-align: center;">
-    <img src="/finite-state-machine/LSTM-256_parity_generalization.png" width="230">
-    <div>(c) Hidden size = 256</div>
-  </div>
-
+<div class="study-figure-grid">
+<figure><img src="/finite-state-machine/LSTM-1_parity_generalization.png" alt="Parity accuracy by sequence length for hidden size 1"><figcaption>Hidden size 1</figcaption></figure>
+<figure><img src="/finite-state-machine/LSTM-16_parity_generalization.png" alt="Parity accuracy by sequence length for hidden size 16"><figcaption>Hidden size 16</figcaption></figure>
+<figure><img src="/finite-state-machine/LSTM-256_parity_generalization.png" alt="Parity accuracy by sequence length for hidden size 256"><figcaption>Hidden size 256</figcaption></figure>
 </div>
 
-**Figure 1**: LSTM Parity Detection Accuracy with Varying Hidden Sizes
+The hidden-size-1 plot records perfect accuracy on the sampled evaluation sequences, including lengths much longer than the training examples. The other plots show that adding capacity does not automatically improve length generalization. These curves do not establish convergence speed or isolate the cause of errors; that would require training curves and repeated runs with controlled settings.
 
-</div>
+## Embedded Reber grammar
 
-- LSTM with hidden size of **1** can learn the task to **100% accuracy**, validating the theoretical result.
-- Larger hidden sizes speed up convergence but may **overfit** on shorter training sequences.
-- Generalization to sequences up to **length 256** is tested, and performance drops slightly unless tuned properly.
+The embedded Reber grammar shown below is a **regular language represented by a finite-state machine**. Its internal loops can produce long strings, but it does not require an unbounded stack or recursive nesting.
 
----
-
-#### Embedded Reber Grammar (ERG): Recognizing Structured Sequences
-
-The LSTM is further challenged with a more complex task: classifying whether a string was generated by a structured **Embedded Reber Grammar (ERG)**.
-To evaluate how recurrent models handle structured, long-range dependencies, we use the **Embedded Reber Grammar (ERG)** task. This synthetic task challenges a model to classify whether a given sequence follows the strict rules of ERG generation.
-
-#### What is the Embedded Reber Grammar?
-
-The **Embedded Reber Grammar** is a state machine used to generate sequences of characters following recursive, nested patterns. It contains two identical sub-networks (Reber grammars) that can repeat multiple times before the sequence ends.
-
-- A valid ERG string example:  
-  `BTBTXSEBTXSEBPVVEBTXXVVETE`
-
-  This decomposes into:  
-  `BT | BTXSE | BTXSE | BPVVE | BTXXVVE | TE`
-
-- The task is to classify whether a given sequence is valid (follows ERG rules) or invalid (e.g., due to character-level perturbations).
-
-<div align="center">
-    
-<img src="/finite-state-machine/erg.png" width="500">
-
-**Figure 2**: ERG generation diagram
-
-</div>
-
-#### Models Compared
-
-Two models are evaluated on this task:
-
-| Model        | Train Accuracy | Validation Generalization |
-|--------------|----------------|----------------------------|
-| RNN          | High           | Poor (overfits)            |
-| LSTM         | High           | Strong generalization      |
-
-<div align="center">
-    
-<img src="/finite-state-machine/graph.png" width="500">
-
-**Figure 3**: RNN vs LSTM
-
-</div>
-
-- **RNN**: Struggles with long-term dependencies, fails to generalize despite fitting the training set.
-- **LSTM**: Learns the underlying recursive structure and performs well on unseen examples.
-
-#### Why LSTM Outperforms RNN?
-
-LSTM's design includes key architectural features:
-- **Input, forget, and output gates** allow selective memory retention.
-- **Cell state** enables long-distance signal propagation without degradation.
-- **Effective for recursion and repeated structures**, unlike RNNs, which suffer from vanishing gradients.
-
-As a result, LSTMs can maintain context across complex, nested subsequences — which is essential for modeling grammars like ERG.
-
----
-
-## Part-of-Speech Tagging with BiLSTM
-
-This task applies BiLSTM models to a real-world NLP application — tagging each word in an English sentence with its corresponding part-of-speech (POS) using the [UDPOS dataset](https://universaldependencies.org/).
-
-#### Dataset Overview
-
-- Comes with `train`, `valid`, and `test` splits.
-- Includes a mix of topics (e.g., family, employment, science).
-- POS distribution is **imbalanced**, so majority label baseline is used as a sanity check.
-
-#### Preprocessing
-
-- Custom `pad_collate()` is used to batch variable-length sequences.
-- Lemmatization is not applied, but could help reduce sparsity.
-- Words are converted to token IDs via a vocabulary object or `torchtext` pipeline.
-
-<div align="center">
-    
-<img src="/finite-state-machine/Histogram.png" width="500">
-
-**Figure 4**: POS Histogram
-
-</div>
-
-#### BiLSTM Model Architecture
-
-```python
-class BILSTM_POS(nn.Module):
-    def __init__(self, vocab_size, tag_size, embedding_dim=128, hidden_dim=256):
-        super().__init__()
-        self.embedding = nn.Embedding(vocab_size, embedding_dim)
-        self.bilstm = nn.LSTM(embedding_dim, hidden_dim, bidirectional=True, batch_first=True)
-        self.dropout = nn.Dropout(0.5)
-        self.fc = nn.Linear(hidden_dim * 2, tag_size)
-
-    def forward(self, x, lengths):
-        x = self.embedding(x)
-        x = pack_padded_sequence(x, lengths, batch_first=True, enforce_sorted=False)
-        o, _ = self.bilstm(x)
-        o, _ = pad_packed_sequence(o, batch_first=True)
-        o = self.dropout(o)
-        o = self.fc(o)
-        return torch.log_softmax(o, dim=-1)
-```
-
-- Embedding layer → BiLSTM → dropout → linear output → log-softmax over tags
-- Bidirectional structure ensures each word is contextualized with both left and right neighbors.
-
-#### Training Observations
-
-- Training accuracy improves steadily and outpaces validation loss after ~30 epochs.
-- Likely due to over-representation of common tokens like `UNK`, which default to the `NOUN` tag early in training.
-- Dropout regularization helps mitigate overfitting.
-
-<div align="center">
-    
-<img src="/finite-state-machine/Loss.png" width="500">
-
-**Figure 5**: Train and Validation Loss
-
-</div>
-
-#### Loss Trend
+An outer branch chooses `T` or `P`, traverses an inner Reber grammar, and requires the matching branch symbol before the final `E`. For example, a valid path in this diagram is:
 
 ```text
-Epoch 40/40
-Train Loss: 0.0227
-Valid Loss: 0.2679
-Test Accuracy: 86.23%
+B T [B T X S E] T E
 ```
 
-#### POS Tagging Inference Examples
+The brackets explain the inner grammar; they are not part of the generated string. The resulting string is `BTBTXSETE`. Remembering the outer branch while traversing the inner graph creates a delayed dependency.
 
-**Example 1:**  
-`The old man the boat.`  
-`DET ADJ NOUN DET NOUN PUNCT`
+<figure>
+<img src="/finite-state-machine/erg.png" alt="Embedded Reber grammar with matching outer T and P branches">
+<figcaption>Embedded Reber grammar used in the original study.</figcaption>
+</figure>
 
-**Example 2:**  
-`The complex houses married and single soldiers and their families.`  
-`DET ADJ NOUN VERB CCONJ ADJ NOUN CCONJ PRON NOUN PUNCT`
+<figure>
+<img src="/finite-state-machine/graph.png" alt="Archived training and validation accuracy comparison for RNN and LSTM">
+<figcaption>Original RNN/LSTM comparison: both fit the training set, while the LSTM has higher validation accuracy in this recorded run.</figcaption>
+</figure>
 
-**Example 3:**  
-`The man who hunts ducks out on weekends.`  
-`DET NOUN PRON PROPN VERB ADV ADP NOUN PUNCT`
+The comparison is consistent with gated memory helping on this task. It does not prove that LSTMs always generalize better, or that their gradients never vanish. The linked repository's parity and POS drivers do not provide enough information to reproduce this archived grammar comparison independently.
+
+## POS tagging with a BiLSTM
+
+The POS experiment uses the English UDPOS dataset. A bidirectional LSTM combines left and right context before assigning a tag to each token. This is appropriate when the whole sentence is available.
+
+<figure>
+<img src="/finite-state-machine/Histogram.png" alt="Frequency of part-of-speech labels in the dataset">
+<figcaption>Original label distribution. Class imbalance makes a majority-label baseline a useful comparison.</figcaption>
+</figure>
+
+### Correctly excluding padding
+
+The original driver pads target labels with `0` and uses `CrossEntropyLoss()` without an ignore index for those padded targets. Consequently, padded positions contribute to training loss even though test accuracy is computed over real tokens. This should be corrected before rerunning the experiment.
+
+The following example uses a distinct target padding value, `-100`. Input padding IDs and target padding values serve different purposes. It returns raw logits because cross-entropy applies log-softmax internally.
+
+```python
+import torch
+from torch import nn
+from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
+
+
+class BiLSTMTagger(nn.Module):
+    def __init__(self, vocab_size, tag_size, pad_id, embedding_dim=128, hidden_dim=256):
+        super().__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=pad_id)
+        self.lstm = nn.LSTM(
+            embedding_dim, hidden_dim, bidirectional=True, batch_first=True
+        )
+        self.dropout = nn.Dropout(0.5)
+        self.classifier = nn.Linear(2 * hidden_dim, tag_size)
+
+    def forward(self, tokens, lengths):
+        embedded = self.embedding(tokens)
+        packed = pack_padded_sequence(
+            embedded, lengths.cpu(), batch_first=True, enforce_sorted=False
+        )
+        packed_output, _ = self.lstm(packed)
+        output, _ = pad_packed_sequence(
+            packed_output, batch_first=True, total_length=tokens.size(1)
+        )
+        return self.classifier(self.dropout(output))
+
+
+def tagging_loss(logits, targets):
+    # targets: [batch, sequence], with -100 at every padded position
+    return nn.functional.cross_entropy(
+        logits.reshape(-1, logits.size(-1)), targets.reshape(-1), ignore_index=-100
+    )
+```
+
+### Recorded performance
+
+<figure>
+<img src="/finite-state-machine/Loss.png" alt="Training and validation loss across POS tagging epochs">
+<figcaption>Original loss curves. Compare training loss with validation loss; accuracy and loss are different quantities.</figcaption>
+</figure>
+
+| Original report, epoch 40 | Value |
+| --- | ---: |
+| Training loss | 0.0227 |
+| Validation loss | 0.2679 |
+| Test token accuracy | 86.23% |
+
+These are historical results from the original implementation, including its padding behavior. They are not results of the corrected example above. The training–validation gap warrants checking overfitting and the loss calculation; the plot alone cannot attribute the gap to unknown tokens or prove that dropout fixed it.
+
+### Error analysis
+
+The original inference examples contain errors and should not be presented as correct reference tags. These garden-path sentences require a reading that may differ from a token's most frequent use.
+
+| Sentence | Token | Recorded prediction | Intended tag in this reading |
+| --- | --- | --- | --- |
+| The old man the boat. | man | NOUN | VERB: the old people operate the boat |
+| The complex houses married and single soldiers and their families. | houses | NOUN | VERB: the complex accommodates people |
+| The man who hunts ducks out on weekends. | hunts | PROPN | VERB: “who hunts” modifies “the man” |
+
+In the third sentence, `ducks` is the main verb in “ducks out,” and the recorded model already tags it as VERB. These examples illustrate contextual ambiguity; they do not measure performance across the test set.
+
+## Reproduction notes
+
+| Entry point | Purpose |
+| --- | --- |
+| `univariate_tester.py` | Exhaustive length-14 test of the manually configured cell |
+| `driver_parity.py` | Train parity models and evaluate length generalization |
+| `driver_udpos.py` | Train and evaluate the POS tagger |
+
+The repository uses historical TorchText APIs. Reproduction requires a compatible Python/PyTorch/TorchText environment and the original data, rather than an unpinned install of the newest packages. Before comparing new results, record versions and seeds, correct target padding, and report accuracy only on non-padding tokens.
+
+## Takeaways
+
+- A compact recurrent state can represent parity; sampled or bounded tests still have a limited scope.
+- Embedded Reber grammar tests delayed finite-state dependencies, not unrestricted recursion.
+- Padding and loss definitions are part of the experiment. They must agree with the evaluation mask.
+- Inspecting ambiguous sentences reveals errors that a single accuracy score hides.
+
+## Sources
+
+- [Original experiment repository](https://github.com/kapshaul/NLP-finite.state.machine.RNN)
+- [PyTorch LSTM documentation](https://docs.pytorch.org/docs/stable/generated/torch.nn.LSTM.html)
+- [PyTorch cross-entropy documentation](https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html)

@@ -9,6 +9,7 @@ export type Entry = {
   section: Section;
   title: string;
   summary: string;
+  category: string | null;
   date: string | null;
   updated: string | null;
   tags: string[];
@@ -89,6 +90,7 @@ function readEntry(
     section,
     title: normalizeLabel(data.title) || slug,
     summary: normalizeLabel(data.summary),
+    category: normalizeLabel(data.category) || null,
     date: date(data.date),
     updated: date(data.lastmod),
     tags: strings(data.tags),

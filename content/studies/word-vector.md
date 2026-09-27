@@ -1,153 +1,137 @@
 ---
-title: "Natural Language Processing (NLP) - Word Vector" 
+title: "Word Embeddings: PPMI, GloVe & Bias"
 date: 2024-04-10
-lastmod: 2024-07-12
-tags: ["NLP","Word Embeddings","GloVe","Word2Vec","Machine Learning","Tokenization","tSNE","PPMI"]
+lastmod: 2026-09-27
+category: "NLP"
+tags: ["Word Embeddings", "GloVe", "PPMI"]
 author: ["Yong-Hwan Lee"]
-description: "This study was carried out as a project at Oregon State University."
-summary: "Explore word vectors in NLP, including tokenization, vocabulary building, and generating vectors with PPMI and GloVe, using t-SNE to visualize semantic relationships."
+summary: "Build count-based and learned word vectors, derive GloVe gradients, and interpret embedding visualizations and analogy results."
 editPost:
-    URL: "https://github.com/kapshaul/NLP-WordVector"
-    Text: "GitHub"
-showToc: true
-disableAnchoredHeadings: false
-
+  URL: "https://github.com/kapshaul/NLP-WordVector"
+  Text: "GitHub"
 ---
 
 ## Overview
 
-This project delves into the foundational aspects of natural language processing, focusing on the creation and analysis of word vectors, distributed representations of words, and the exploration of inherent biases in these representations. The AG News Benchmark dataset is used for implementing tokenization, vocabulary building, and investigating various techniques for generating and analyzing word vectors.
+This study uses AG News text to compare positive pointwise mutual information (PPMI) with dimensionality reduction and learned GloVe vectors. A separate analysis examines analogy outputs from pretrained word2vec embeddings.
 
----
+The charts, training log, and analogy scores below come from the original experiment. They are not newly measured results.
 
-## Installation
+## Vocabulary and memory
 
-To get started, clone the repository and install the required dependencies:
+The original report retained tokens occurring at least 12 times and reported approximately 96% token coverage. Coverage means the fraction of token occurrences represented, not the fraction of distinct word types.
 
-```bash
-git clone https://github.com/kapshaul/NLP-WordVector.git
-cd NLP-WordVector
-pip install -r requirements.txt
+<figure><img src="/word-vector/Figure_1.png" alt="Token frequency distribution and cumulative token coverage in the AG News vocabulary" /><figcaption>Vocabulary frequency and coverage in the recorded experiment.</figcaption></figure>
+
+A dense co-occurrence matrix with vocabulary size $V$ requires $V^2b$ bytes, where $b$ is the number of bytes per entry. The earlier estimate of about 1 GB applies to that experiment's vocabulary and representation; it is not a general memory bound. Probability calculations and factorization can require additional copies.
+
+## Count-based vectors with PPMI
+
+Let $C_{ij}$ count occurrences of word $i$ with context $j$, and let $N=\sum_{i,j}C_{ij}$. Estimate
+
+$$
+P(i,j)=\frac{C_{ij}}{N},\quad
+P(i)=\frac{\sum_j C_{ij}}{N},\quad
+P(j)=\frac{\sum_i C_{ij}}{N}.
+$$
+
+For positive joint and marginal probabilities,
+
+$$
+\operatorname{PPMI}(i,j)=
+\max\left(0,\log\frac{P(i,j)}{P(i)P(j)}\right).
+$$
+
+PPMI stands for **positive pointwise mutual information**. Zero-count pairs need explicit handling to avoid evaluating $\log 0$.
+
+The repository computes $M\approx U_k\Sigma_kV_k^\top$, concatenates $U_k\Sigma_k^{1/2}$ and $V_k\Sigma_k^{1/2}$, and normalizes each row. With its default $k=16$, this produces 32-dimensional vectors before visualization.
+
+<figure><img src="/word-vector/Figure_2.png" alt="Two-dimensional t-SNE projection of count-based word embeddings" /><figcaption>t-SNE projection of the reduced PPMI vectors.</figcaption></figure>
+
+<details>
+<summary>View the three topic close-ups</summary>
+<figure><img src="/word-vector/Figure_3.png" alt="Close-up of war-related words in the embedding projection" /><figcaption>War-related words</figcaption></figure>
+<figure><img src="/word-vector/Figure_4.png" alt="Close-up of technology-related words in the embedding projection" /><figcaption>Technology-related words</figcaption></figure>
+<figure><img src="/word-vector/Figure_5.png" alt="Close-up of politics-related words in the embedding projection" /><figcaption>Politics-related words</figcaption></figure>
+</details>
+
+These views help inspect local neighborhoods. Distances between distant clusters, cluster sizes, and empty spaces in t-SNE should not be read as direct measurements of the original embedding geometry. See the [t-SNE paper](https://jmlr.org/papers/v9/vandermaaten08a.html).
+
+## GloVe objective and gradients
+
+For a pair with $C_{ij}>0$, define
+
+$$
+e_{ij}=\mathbf w_i^\top\widetilde{\mathbf w}_j+b_i+\widetilde b_j-\log C_{ij}.
+$$
+
+The objective and weighting function are
+
+$$
+J=\sum_{i,j:C_{ij}>0}f(C_{ij})e_{ij}^2,\qquad
+f(x)=\min\left(1,\left(\frac{x}{x_{\max}}\right)^\alpha\right).
+$$
+
+The implementation uses $x_{\max}=100$ and $\alpha=0.75$. Zero-count pairs are omitted. This weighted regression objective follows the [GloVe paper](https://nlp.stanford.edu/pubs/glove.pdf).
+
+### One pair versus the full objective
+
+For the **single-pair loss** $\ell_{ij}=f(C_{ij})e_{ij}^2$,
+
+$$
+\begin{aligned}
+\nabla_{\mathbf w_i}\ell_{ij}&=2f(C_{ij})e_{ij}\widetilde{\mathbf w}_j,\\
+\nabla_{\widetilde{\mathbf w}_j}\ell_{ij}&=2f(C_{ij})e_{ij}\mathbf w_i,\\
+\frac{\partial\ell_{ij}}{\partial b_i}
+&=\frac{\partial\ell_{ij}}{\partial\widetilde b_j}
+=2f(C_{ij})e_{ij}.
+\end{aligned}
+$$
+
+The full gradient must sum every contribution involving the parameter:
+
+$$
+\nabla_{\mathbf w_i}J
+=\sum_{j:C_{ij}>0}2f(C_{ij})e_{ij}\widetilde{\mathbf w}_j.
+$$
+
+The context-vector gradient sums over $i$; bias gradients sum over their respective partners. A minibatch implementation must accumulate repeated indices rather than overwrite their contributions.
+
+### Recorded training behavior
+
+The final logged averages over 100 batches were approximately 0.0467–0.0483. This describes the end of the run; a short, stable loss segment alone does not establish convergence or downstream quality.
+
+```text
+Iter 14400 / 15227: average loss = 0.046686563985831216
+Iter 14700 / 15227: average loss = 0.04827717854832922
+Iter 15200 / 15227: average loss = 0.04732485846561704
 ```
 
----
+## Interpreting analogy results
 
-## Implementation
+The separate word2vec analysis queried $\mathbf v_b-\mathbf v_a+\mathbf v_c$. The original nearest-neighbor outputs included:
 
-1. To implement *Tokenization and Vocabulary Building*, run `build_freq_vectors.py`.
-2. To implement *Frequency-Based Word Vectors* and *Learning-Based Word Vectors with GloVe*, run `build_glove_vectors.py`.
-3. To implement *Exploring Bias in Word Vectors*, run `Exploring_learned_biases.py`.
+| Query | Selected returned words | Similarity scores |
+|---|---|---|
+| man : doctor :: woman : ? | gynecologist, nurse, doctors | 0.709, 0.648, 0.647 |
+| woman : doctor :: man : ? | physician, doctors, surgeon | 0.646, 0.586, 0.572 |
 
----
+These asymmetric associations motivate a broader bias evaluation. Scores measure vector similarity, not probabilities or facts about people. Two queries do not establish bias prevalence across the vocabulary or identify its cause. These pretrained word2vec results are separate from the AG News GloVe experiment.
 
-## Tokenization and Vocabulary Building
+## Reproducing the study
 
-The project begins by transforming raw text into tokenized forms, with experimentation on different tokenization methods, including lemmatization. A vocabulary is then built based on the frequency of tokens, using heuristics to optimize the vocabulary size for computational efficiency.
+The [repository](https://github.com/kapshaul/NLP-WordVector) contains:
 
-<div align="center">
+| Script | Purpose |
+|---|---|
+| `build_freq_vectors.py` | Counts, PPMI, SVD, and visualization |
+| `build_glove_vectors.py` | GloVe training |
+| `Exploring_learned_biases.py` | Pretrained embedding analogy analysis |
 
-<img src="/word-vector/Figure_1.png" alt="Cumulative Regret of UCB" width="600">
+Record dependency versions, dataset, tokenizer, vocabulary cutoff, context definition, and random seed when comparing runs. The historical results have not been reproduced in a fresh training run.
 
-**Figure 1**: Token frequency distribution (top) and cumulative fraction covered (bottom)
+## Takeaways
 
-</div>
-
-<br>
-
-Figure 1 shows the effect of applying a cutoff heuristic where tokens with a frequency of 12 or higher are retained, capturing 96\% of the tokens in the dataset. This threshold was chosen for computational feasibility, as it allows the co-occurrence matrix $C$ to remain approximately 1GB in size. Expanding the vocabulary beyond this point would significantly increase memory requirements, potentially exceeding available resources. The figure illustrates how this cutoff effectively balances the coverage of the dataset with the constraints of computational capacity.
-
----
-
-## Frequency-Based Word Vectors
-
-Frequency-based word vectors are explored using *Pointwise Mutual Information (PPMI)*. This involves constructing a co-occurrence matrix from the corpus, computing PPMI values, and then reducing the dimensionality of the word vectors through techniques like Truncated SVD. Visualization of these word vectors is performed using *t-SNE* to better understand the captured semantic relationships.
-
-<div align="center">
-
-<img src="/word-vector/Figure_2.png" alt="t-SNE Visualization" width="600">
-
-**Figure 2**: t-SNE Visualization
-
-<br>
-
-<img src="/word-vector/Figure_3.png" alt="t-SNE Visualization" width="1000">
-<img src="/word-vector/Figure_4.png" alt="t-SNE Visualization" width="1000">
-<img src="/word-vector/Figure_5.png" alt="t-SNE Visualization" width="1000">
-
-**Figure 3**: t-SNE clusters — War (Top), Technology (Middle), and Politics (Bottom)
-
-</div>
-
-<br>
-
----
-
-## Learning-Based Word Vectors with GloVe
-
-The GloVe algorithm is implemented to generate word vectors by modeling word co-occurrences as a weighted log-bilinear regression problem. The process includes deriving gradients, optimizing the objective via stochastic gradient descent, and visualizing the resulting word vectors. The behavior of the loss during training is monitored to ensure proper convergence.
-The GloVe objective can be written as a sum of weighted squared error terms for each word-pair in a vocabulary,
-
-$$
-J = \overbrace{\sum_{i,j  \in V}}^{\text{{sum over\\ word pairs}}} \underbrace{f(C_{ij})}_ {\text{weight}} ~~~( \overbrace{w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij}}^{\text{error term}})^2
-$$
-
-where each word $i$ is associated with word vector $w_i$, context vector $\tilde{w}_ i$, and word/context biases $b_i$ and $\tilde{b}_ i$.
-The $f(C_{ij})$ term is a weighting to avoid frequent co-occurrences from dominating the objective and is defined as,
-
-$$
-f(X_{ij}) = min(1, C_{ij}/100)^{0.75}
-$$
-
-The derivation of the gradient for the objective $J$ is expressed as follows,
-
-$\nabla_{w_i}J=\nabla_{w_i}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$
-
-$\hspace{0.75cm}=2{\tilde{w}_ j}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$
-
-$\nabla_{\tilde{w}_ j}J=\nabla_{\tilde{w}_ j}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$
-
-$\hspace{0.75cm}=2w_if(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$
-
-$\nabla_{b_i}J=\nabla_{b_i}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$
-
-$\hspace{0.75cm}=2f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$
-
-$\nabla_{\tilde{b}_ j}J=\nabla_{\tilde{b}_ j}\sum_{i,j  \in V}f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})^2$
-
-$\hspace{0.75cm}=2f(C_{ij})(w_i^T\tilde{w}_ j + b_i + \tilde{b}_ j - \log C_{ij})$
-
-<br>
-
-Training GloVe vectors involved monitoring the loss function throughout the process. The behavior of the loss during training is detailed below,
-
-```python
-2024-04-17 04:09:49 INFO     Iter 14400 / 15227: avg. loss over last 100 batches = 0.046686563985831216
-2024-04-17 04:09:49 INFO     Iter 14500 / 15227: avg. loss over last 100 batches = 0.04769956457112328
-2024-04-17 04:09:49 INFO     Iter 14600 / 15227: avg. loss over last 100 batches = 0.04687950216720886
-2024-04-17 04:09:49 INFO     Iter 14700 / 15227: avg. loss over last 100 batches = 0.04827717854832922
-2024-04-17 04:09:49 INFO     Iter 14800 / 15227: avg. loss over last 100 batches = 0.047144581882744535
-2024-04-17 04:09:49 INFO     Iter 14900 / 15227: avg. loss over last 100 batches = 0.047903630422071866
-2024-04-17 04:09:49 INFO     Iter 15000 / 15227: avg. loss over last 100 batches = 0.04676183418646468
-2024-04-17 04:09:49 INFO     Iter 15100 / 15227: avg. loss over last 100 batches = 0.048071157216658514
-2024-04-17 04:09:49 INFO     Iter 15200 / 15227: avg. loss over last 100 batches = 0.04732485846561704
-```
-
----
-
-## Exploring Bias in Word Vectors
-
-A significant focus of this project is the exploration of biases that can be inherent in word vectors. Relationships learned by word2vec are analyzed, revealing how these vectors can reinforce gender, racial, or other societal biases. This highlights the importance of understanding and addressing these biases, particularly in the deployment of NLP models in real-world applications.
-
-The following examples illustrate how word2vec reinforces gender stereotypes in medicine,
-
-```python
->>> analogy('man', 'doctor', 'woman')
-    man : doctor :: woman : ?
-    [('gynecologist', 0.709), ('nurse', 0.648), ('doctors', 0.647), ('physician', 0.644), ('pediatrician', 0.625), ('nurse_practitioner', 0.622), ('obstetrician', 0.607), ('ob_gyn', 0.599), ('midwife', 0.593), ('dermatologist', 0.574)]
-
->>> analogy('woman', 'doctor', 'man')
-    woman : doctor :: man : ?
-    [('physician', 0.646), ('doctors', 0.586), ('surgeon', 0.572), ('dentist', 0.552), ('cardiologist', 0.541), ('neurologist', 0.527), ('neurosurgeon', 0.525), ('urologist', 0.525), ('Doctor', 0.524), ('internist', 0.518)]
-```
-
-These results show that word2vec tends to associate female doctors with roles in nursing or specializations focused on women’s or children’s health, thus reinforcing gender stereotypes in the medical field.
+- Coverage and memory depend on tokenization, cutoff, and storage format.
+- Distinguish a pairwise gradient from the full gradient when implementing GloVe.
+- Visualizations and analogy queries support exploration; general claims need broader evaluation.

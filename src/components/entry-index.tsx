@@ -20,15 +20,21 @@ export default function EntryIndex({
     "All",
     ...new Set(
       entries
-        .map((entry) => projectDisplay[entry.slug]?.category)
-        .filter(Boolean),
+        .map((entry) =>
+          section === "projects"
+            ? projectDisplay[entry.slug]?.category
+            : entry.category,
+        )
+        .filter((value): value is string => Boolean(value)),
     ),
   ];
   const filtered = entries.filter((entry) => {
-    const display = projectDisplay[entry.slug];
+    const display = section === "projects" ? projectDisplay[entry.slug] : undefined;
+    const entryCategory = display?.category ?? entry.category;
     const searchable = [
       entry.title,
       entry.summary,
+      entryCategory,
       ...entry.tags,
       display?.title,
       display?.summary,
@@ -38,7 +44,7 @@ export default function EntryIndex({
       .filter(Boolean)
       .join(" ");
     return (
-      (category === "All" || display?.category === category) &&
+      (category === "All" || entryCategory === category) &&
       searchable.toLowerCase().includes(query.toLowerCase().trim())
     );
   });
@@ -59,10 +65,10 @@ export default function EntryIndex({
           className="h-10 w-full rounded-lg border bg-background pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
       </div>
-      {section === "projects" && (
+      {categories.length > 1 && (
         <div
           role="group"
-          aria-label="Filter projects"
+          aria-label={`Filter ${section}`}
           className="flex flex-wrap gap-2"
         >
           {categories.map((item) => (
@@ -105,9 +111,12 @@ export default function EntryIndex({
                 href={`/studies/${entry.slug}/`}
                 className="group block py-6 first:pt-0"
               >
+                <p className="mb-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {[entry.category, entry.date?.slice(0, 4)].filter(Boolean).join(" · ")}
+                </p>
                 <div className="mb-2 flex items-start justify-between gap-3">
                   <h2 className="font-semibold tracking-tight group-hover:underline underline-offset-4">
-                    {entry.title.replace(/^Online Learning - /, "")}
+                    {entry.title}
                   </h2>
                   <ArrowUpRight
                     className="mt-1 size-4 shrink-0 text-muted-foreground"
@@ -118,7 +127,6 @@ export default function EntryIndex({
                   {entry.summary}
                 </p>
                 <p className="mt-3 text-xs text-muted-foreground">
-                  {entry.date?.slice(0, 4)} ·{" "}
                   {entry.tags.slice(0, 3).join(" / ")}
                 </p>
               </Link>

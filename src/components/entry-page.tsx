@@ -36,7 +36,7 @@ export default function EntryPage({ entry }: { entry: Entry }) {
             <span>
               {entry.section === "projects"
                 ? display?.category || "Project"
-                : "Study notes"}
+                : entry.category || "Study notes"}
             </span>
             {display?.status && (
               <span className="rounded-full border px-2 py-0.5">
@@ -112,6 +112,7 @@ export default function EntryPage({ entry }: { entry: Entry }) {
           <MarkdownContent
             content={body}
             basePath={`/${entry.section}/${entry.slug}/`}
+            showTableOfContents={entry.section === "studies"}
           />
         </div>
       </article>

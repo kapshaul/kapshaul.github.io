@@ -203,7 +203,7 @@ export default function Home() {
               >
                 <div>
                   <h3 className="text-sm font-medium group-hover:underline underline-offset-4">
-                    {entry.title.replace(/^Online Learning - /, "")}
+                    {entry.title}
                   </h3>
                   <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
                     {entry.tags.slice(0, 3).join(" · ")}

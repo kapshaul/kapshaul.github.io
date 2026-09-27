@@ -92,11 +92,12 @@ function rehypeLegacyContent() {
 
 const schema = {
   ...defaultSchema,
+  tagNames: [...(defaultSchema.tagNames ?? []), "figure", "figcaption"],
   attributes: {
     ...defaultSchema.attributes,
     div: [
       ...(defaultSchema.attributes?.div ?? []),
-      ["className", "legacy-figure", "legacy-figure-grid"],
+      ["className", "legacy-figure", "legacy-figure-grid", "study-figure-grid"],
     ],
     span: [
       ...(defaultSchema.attributes?.span ?? []),
@@ -109,6 +110,56 @@ const schema = {
     img: [...(defaultSchema.attributes?.img ?? []), "width", "height"],
   },
 };
+
+// Build navigation from the rendered headings so links and IDs cannot drift.
+// Run after sanitization; every ID and class introduced here is generated locally.
+function rehypeStudyNavigation() {
+  return (tree: HtmlNode) => {
+    const headings: { id: string; title: string }[] = [];
+    function textContent(node: HtmlNode): string {
+      return node.value ?? (node.children ?? []).map(textContent).join("");
+    }
+    function walk(node: HtmlNode) {
+      if (node.tagName === "h2") {
+        const id = `study-section-${headings.length + 1}`;
+        node.properties = { ...node.properties, id };
+        headings.push({ id, title: textContent(node) });
+      }
+      node.children?.forEach(walk);
+    }
+    walk(tree);
+    if (headings.length < 2) return;
+    tree.children?.unshift({
+      type: "element",
+      tagName: "nav",
+      properties: { className: ["article-toc"], ariaLabel: "On this page" },
+      children: [
+        {
+          type: "element",
+          tagName: "p",
+          properties: {},
+          children: [{ type: "text", value: "On this page" }],
+        },
+        {
+          type: "element",
+          tagName: "ol",
+          properties: {},
+          children: headings.map(({ id, title }) => ({
+            type: "element",
+            tagName: "li",
+            properties: {},
+            children: [{
+              type: "element",
+              tagName: "a",
+              properties: { href: `#${id}` },
+              children: [{ type: "text", value: title }],
+            }],
+          })),
+        },
+      ],
+    });
+  };
+}
 
 function normalizeLegacyMarkdown(content: string): string {
   let quotedMath = "";
@@ -138,9 +189,11 @@ function normalizeLegacyMarkdown(content: string): string {
 export function MarkdownContent({
   content,
   basePath,
+  showTableOfContents = false,
 }: {
   content: string;
   basePath: string;
+  showTableOfContents?: boolean;
 }) {
   function resolveUrl(value: string): string {
     const safe = defaultUrlTransform(value);
@@ -164,6 +217,7 @@ export function MarkdownContent({
           rehypeRaw,
           rehypeLegacyContent,
           [rehypeSanitize, schema],
+          ...(showTableOfContents ? [rehypeStudyNavigation] : []),
           [rehypeKatex, { strict: false }],
         ]}
         urlTransform={resolveUrl}
@@ -194,7 +248,7 @@ export function MarkdownContent({
             return (
               <img
                 src={src}
-                alt={alt || "Project illustration"}
+                alt={alt || "Article illustration"}
                 width={width}
                 height={height}
                 loading="lazy"

@@ -1,7 +1,7 @@
 ---
 title: "EM Algorithm for CT Image Denoising" 
 date: 2019-12-10
-lastmod: 2025-03-20
+lastmod: 2026-09-28
 tags: ["Statistical Estimation","Non-Parametric Estimation","MLE","CT Imaging", "Image Denoising"]
 author: ["Yong-Hwan Lee","Tony Storey"]
 description: "This study was carried out as a project at Oregon State University." 
@@ -63,41 +63,11 @@ $$
 Y_i = \sum_{j=1}^m N_{ij} \sim \sum_{j=1}^m Pois(a_{ij} \lambda_j)
 $$
 
-##### 2. 3x3 cross section of voxel model
+##### 2. From voxels to a measurement
 
-Each pixel represents the absorption coefficient. Below are examples of voxel models,
+Consider a single 3 × 3 layer of the voxel model. Each voxel $p_j$ ($j = 1, \dots, 9$, numbered row by row) has an unknown absorption coefficient $\lambda_j$. An observation $Y_i$ is collected along one path: every voxel the path crosses contributes a hidden count $N_{ij}$ with mean $a_{ij} \lambda_j$, and voxels off the path have $a_{ij} = 0$. Select a row or column to trace its three contributing voxels.
 
-```
-                                |        *--------------------*       |  
-                                | y3---\ |      |      |      |       | 
-                                |   ---/ |  p1  |  p2  |  p3  |       | 
-                                -        *--------------------*       - 
-                                | y2---\ |      |      |      |       | 
-                                |   ---/ |  p4  |  p5  |  p6  |       | 
-                                -        *--------------------*       - 
-                                | y1---\ |      |      |      |       | 
-                                |   ---/ |  p7  |  p8  |  p9  |       | 
-                                |        *--------------------*       |  
-```
-
-```                            
-                                         -------|------|-------
-                                            y9     y10    y11
-                                            ||     ||     ||
-                                            \/     \/     \/
-                                         *--------------------*          
-                                         |      |      |      |        
-                                         |  p1  |  p2  |  p3  |        
-                                         *--------------------*        
-                                         |      |      |      |        
-                                         |  p4  |  p5  |  p6  |        
-                                         *--------------------*        
-                                         |      |      |      |        
-                                         |  p7  |  p8  |  p9  |        
-                                         *--------------------*         
-                               
-                                         -------|------|------- 
-```
+<div class="voxel-projection"></div>
 
 ---
 

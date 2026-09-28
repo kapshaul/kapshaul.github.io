@@ -5,6 +5,7 @@ import remarkMath from "remark-math";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeKatex from "rehype-katex";
+import { VoxelProjection } from "@/components/voxel-projection";
 
 type HtmlNode = {
   type: string;
@@ -97,7 +98,13 @@ const schema = {
     ...defaultSchema.attributes,
     div: [
       ...(defaultSchema.attributes?.div ?? []),
-      ["className", "legacy-figure", "legacy-figure-grid", "study-figure-grid"],
+      [
+        "className",
+        "legacy-figure",
+        "legacy-figure-grid",
+        "study-figure-grid",
+        "voxel-projection",
+      ],
     ],
     span: [
       ...(defaultSchema.attributes?.span ?? []),
@@ -253,6 +260,15 @@ export function MarkdownContent({
                 height={height}
                 loading="lazy"
               />
+            );
+          },
+          // An empty marker div mounts the interactive voxel figure.
+          div: ({ node, ...props }) => {
+            void node;
+            return props.className === "voxel-projection" ? (
+              <VoxelProjection />
+            ) : (
+              <div {...props} />
             );
           },
           table: ({ children }) => (

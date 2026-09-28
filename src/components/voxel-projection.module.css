@@ -1,0 +1,448 @@
+/* Nested selectors (.root .x) outrank the shared .markdown-content rules. */
+.root {
+  --vp-surface: var(--background);
+  --vp-floor-line: rgb(71 85 105 / 0.45);
+  --vp-top: #fbfcfd;
+  --vp-left: #f1f4f7;
+  --vp-right: #e4e9ef;
+  --vp-edge: #475569;
+  --vp-label: #334155;
+  --vp-sel-top: #eaf1fb;
+  --vp-sel-left: #d9e5f5;
+  --vp-sel-right: #c6d6ec;
+  --vp-sel-edge: #1e3a8a;
+  --vp-sel-label: #1e3a8a;
+  --vp-ray: #1d4ed8;
+  --vp-chip: #eff6ff;
+  --vp-chip-text: #1e3a8a;
+  --vp-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --vp-math: KaTeX_Main, "Times New Roman", serif;
+
+  container-type: inline-size;
+  position: relative;
+  padding: 16px 18px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--vp-surface);
+  color: var(--muted-foreground);
+  overflow-wrap: normal;
+}
+
+:global(.dark) .root {
+  --vp-floor-line: rgb(148 163 184 / 0.4);
+  --vp-top: #232b37;
+  --vp-left: #1c232e;
+  --vp-right: #161c25;
+  --vp-edge: #8391a5;
+  --vp-label: #cbd5e1;
+  --vp-sel-top: #1f3350;
+  --vp-sel-left: #1a2c47;
+  --vp-sel-right: #15253d;
+  --vp-sel-edge: #93c5fd;
+  --vp-sel-label: #dbeafe;
+  --vp-ray: #60a5fa;
+  --vp-chip: #0f1c30;
+  --vp-chip-text: #dbeafe;
+}
+
+.root .header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+}
+
+.root .eyebrow {
+  font:
+    10px/1.6 var(--font-geist-mono),
+    monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.root .title {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.root .controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-top: 12px;
+}
+
+.root .segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--secondary);
+}
+
+.root .segment {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.root .segment:hover {
+  color: var(--foreground);
+}
+
+.root .segment[aria-pressed="true"] {
+  background: var(--background);
+  color: var(--foreground);
+  font-weight: 600;
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.root .segment:focus-visible {
+  outline: 2px solid var(--vp-ray);
+  outline-offset: 2px;
+}
+
+.root .icon {
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.root .icon line {
+  stroke: var(--vp-ray);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.root .segment[aria-pressed="true"] .icon {
+  opacity: 1;
+}
+
+.root .stage {
+  margin: 10px -6px 0;
+}
+
+.root .svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.root .floor {
+  fill: none;
+  stroke: var(--vp-floor-line);
+  stroke-width: 0.75;
+  stroke-dasharray: 5 3;
+}
+
+.root .triadLine {
+  stroke: var(--vp-edge);
+  stroke-width: 1;
+}
+
+.root .triadHead {
+  fill: var(--vp-edge);
+}
+
+.root .triadLabel {
+  fill: var(--vp-label);
+  font-family: var(--vp-mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.root .cube polygon {
+  stroke: var(--vp-edge);
+  stroke-width: 0.9;
+  stroke-linejoin: miter;
+}
+
+.root .cube .top {
+  fill: var(--vp-top);
+}
+
+.root .cube .left {
+  fill: var(--vp-left);
+}
+
+.root .cube .right {
+  fill: var(--vp-right);
+}
+
+.root .cube[data-selected] polygon {
+  stroke: var(--vp-sel-edge);
+  stroke-width: 1.4;
+}
+
+.root .cube[data-selected] .top {
+  fill: var(--vp-sel-top);
+}
+
+.root .cube[data-selected] .left {
+  fill: var(--vp-sel-left);
+}
+
+.root .cube[data-selected] .right {
+  fill: var(--vp-sel-right);
+}
+
+.root .voxelLabel {
+  fill: var(--vp-label);
+  font-family: var(--vp-math);
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.root .cube[data-selected] .voxelLabel {
+  fill: var(--vp-sel-label);
+  font-weight: 600;
+}
+
+.root .sub {
+  font-size: 0.7em;
+  font-style: normal;
+}
+
+.root .ray,
+.root .rayHalo,
+.root .rayHidden {
+  fill: none;
+  stroke-linecap: butt;
+}
+
+.root .ray {
+  stroke: var(--vp-ray);
+  stroke-width: 2;
+}
+
+.root .rayHalo {
+  stroke: var(--vp-surface);
+  stroke-width: 5;
+}
+
+.root .rayHidden {
+  stroke: var(--vp-ray);
+  stroke-width: 1.3;
+  stroke-dasharray: 4 3;
+}
+
+.root .source,
+.root .exit,
+.root .arrow {
+  fill: var(--vp-ray);
+}
+
+.root .source {
+  stroke: var(--vp-surface);
+  stroke-width: 1.5;
+}
+
+.root .arrow {
+  stroke: var(--vp-ray);
+  stroke-width: 0.6;
+  stroke-linejoin: miter;
+}
+
+.root .chip {
+  fill: var(--vp-chip);
+  stroke: var(--vp-ray);
+  stroke-width: 1.2;
+}
+
+.root .chipText {
+  fill: var(--vp-chip-text);
+  font-family: var(--vp-math);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.root .axisLabel {
+  fill: var(--muted-foreground);
+  font-family: var(--vp-mono);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.root .axisLabel[data-selected] {
+  fill: var(--vp-ray);
+  font-weight: 600;
+}
+
+.root .readout {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.root .readoutHead {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--foreground);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.root .tag {
+  flex: none;
+  padding: 0 8px;
+  border: 1px solid var(--vp-ray);
+  border-radius: 2px;
+  background: var(--vp-chip);
+  color: var(--vp-chip-text);
+  font-family: var(--vp-math);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.root .equations {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.root .equationRow {
+  display: contents;
+}
+
+.root .equations dt {
+  padding-top: 4px;
+  font:
+    10px/1.6 var(--font-geist-mono),
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.root .equations dd {
+  margin: 0;
+  color: var(--foreground);
+}
+
+.root .math {
+  font-family: var(--vp-math);
+  font-size: 1.12em;
+}
+
+.root .equations .math {
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.root .term {
+  white-space: nowrap;
+}
+
+.root .hint {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.root .note {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+.root .caption {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.root .srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@container (max-width: 480px) {
+  .root .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .root .segmented {
+    display: flex;
+  }
+
+  .root .segment {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 5px 6px;
+  }
+
+  .root .stage {
+    margin-inline: -10px;
+  }
+
+  .root .voxelLabel {
+    font-size: 29px;
+  }
+
+  .root .axisLabel {
+    font-size: 16px;
+  }
+
+  .root .triadLabel {
+    font-size: 15px;
+  }
+
+  .root .equations {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .root .equationRow + .equationRow dt {
+    padding-top: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .root {
+    padding-inline: 12px;
+  }
+}
+
+@media (forced-colors: active) {
+  .root .segment[aria-pressed="true"] {
+    outline: 2px solid CanvasText;
+  }
+}

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-labelledby="cv-title cv-desc">
+  <title id="cv-title">GRPO: learning from grouped rewards</title>
+  <desc id="cv-desc">A four-step flow. One prompt q is given to the policy, which samples a group of completions. Each completion's reward is compared with the group's mean to give relative rewards, some below and some above the baseline. These relative rewards drive a policy update of pi theta. No learned critic is used; the baseline comes from completions of the same prompt. Conceptual illustration with no results.</desc>
+  <defs>
+    <marker id="cv-ah-navy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1F3A5F"/>
+    </marker>
+    <style>
+      text { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; fill: #1E293B; }
+      .inverse { fill: #FFFFFF; }
+      .title { font-size: 84px; font-weight: 700; fill: #1F3A5F; letter-spacing: 2px; }
+      .subtitle { font-size: 34px; fill: #475569; }
+      .label { font-size: 30px; font-weight: 700; fill: #1F3A5F; }
+      .foot { font-size: 28px; fill: #475569; }
+      .step { fill: #FFFFFF; stroke: #94A3B8; stroke-width: 2; }
+      .data { fill: #E8F5F4; stroke: #0F8B8D; stroke-width: 3; stroke-dasharray: 8 6; }
+      .w { fill: none; stroke: #1F3A5F; stroke-width: 3; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="600" fill="#F4F6F9"/>
+
+  <!-- Heading -->
+  <text class="title" x="60" y="120">GRPO</text>
+  <text class="subtitle" x="62" y="176">Learning from grouped rewards</text>
+
+  <!-- Step boxes -->
+  <rect class="step" x="60" y="228" width="180" height="272" rx="14"/>
+  <rect class="step" x="280" y="228" width="180" height="272" rx="14"/>
+  <rect class="step" x="500" y="228" width="180" height="272" rx="14"/>
+  <rect class="step" x="720" y="228" width="180" height="272" rx="14"/>
+
+  <!-- 1 · One prompt -->
+  <rect class="data" x="90" y="268" width="120" height="80" rx="10"/>
+  <text x="150" y="321" text-anchor="middle" font-size="40" font-style="italic" font-weight="600" fill="#0B6466">q</text>
+  <text class="label" x="150" y="432" text-anchor="middle">One</text>
+  <text class="label" x="150" y="470" text-anchor="middle">prompt</text>
+
+  <!-- 2 · Sample a group -->
+  <circle cx="370" cy="270" r="6" fill="#1F3A5F"/>
+  <path d="M370,270 L322,317 M370,270 L354,317 M370,270 L386,317 M370,270 L418,317" stroke="#64748B" stroke-width="2.5" fill="none"/>
+  <circle cx="322" cy="330" r="13" fill="#FFFFFF" stroke="#1F3A5F" stroke-width="3"/>
+  <circle cx="354" cy="330" r="13" fill="#FFFFFF" stroke="#1F3A5F" stroke-width="3"/>
+  <circle cx="386" cy="330" r="13" fill="#FFFFFF" stroke="#1F3A5F" stroke-width="3"/>
+  <circle cx="418" cy="330" r="13" fill="#FFFFFF" stroke="#1F3A5F" stroke-width="3"/>
+  <text class="label" x="370" y="432" text-anchor="middle">Sample</text>
+  <text class="label" x="370" y="470" text-anchor="middle">a group</text>
+
+  <!-- 3 · Relative rewards: below, at, and above the group baseline -->
+  <line x1="522" y1="308" x2="658" y2="308" stroke="#64748B" stroke-width="2.5" stroke-dasharray="6 5"/>
+  <rect x="529" y="308" width="22" height="40" rx="3" fill="#1F3A5F"/>
+  <circle cx="574" cy="308" r="6" fill="#64748B"/>
+  <circle cx="606" cy="308" r="6" fill="#64748B"/>
+  <rect x="629" y="268" width="22" height="40" rx="3" fill="#0F8B8D"/>
+  <text class="label" x="590" y="432" text-anchor="middle">Relative</text>
+  <text class="label" x="590" y="470" text-anchor="middle">rewards</text>
+
+  <!-- 4 · Policy update -->
+  <rect x="760" y="268" width="100" height="80" rx="10" fill="#1F3A5F"/>
+  <text class="inverse" x="806" y="320" text-anchor="middle" font-size="40" font-style="italic" font-weight="600" fill="#FFFFFF">π<tspan font-size="26" dy="8">θ</tspan></text>
+  <text class="label" x="810" y="432" text-anchor="middle">Policy</text>
+  <text class="label" x="810" y="470" text-anchor="middle">update</text>
+
+  <!-- Flow arrows -->
+  <line class="w" x1="244" y1="364" x2="276" y2="364" marker-end="url(#cv-ah-navy)"/>
+  <line class="w" x1="464" y1="364" x2="496" y2="364" marker-end="url(#cv-ah-navy)"/>
+  <line class="w" x1="684" y1="364" x2="716" y2="364" marker-end="url(#cv-ah-navy)"/>
+
+  <!-- Footer -->
+  <text class="foot" x="60" y="560">Same-prompt baseline · no learned critic</text>
+</svg>

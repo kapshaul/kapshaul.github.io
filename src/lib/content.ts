@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { featuredSlugs } from "@/data/projects";
 
 export type Section = "projects" | "studies";
 
@@ -120,9 +121,16 @@ export function getEntries(section: Section): Entry[] {
       return entry ? [entry] : [];
     });
 
-  return entries.sort((a, b) =>
-    (b.date ?? "0000").localeCompare(a.date ?? "0000"),
-  );
+  const byDate = (a: Entry, b: Entry) =>
+    (b.date ?? "0000").localeCompare(a.date ?? "0000");
+  if (section !== "projects") return entries.sort(byDate);
+
+  // Projects follow the curated homepage order; the rest fall back to date.
+  const rank = (entry: Entry) => {
+    const index = featuredSlugs.indexOf(entry.slug);
+    return index === -1 ? featuredSlugs.length : index;
+  };
+  return entries.sort((a, b) => rank(a) - rank(b) || byDate(a, b));
 }
 
 export function getEntry(section: Section, slug: string): Entry | undefined {

@@ -56,6 +56,14 @@ export const projectDisplay: Record<string, ProjectDisplay> = {
     highlight: "Online learning inside the query engine",
     tags: ["Online Learning", "PostgreSQL", "Query Optimization"],
   },
+  "llm-finetuning-grpo": {
+    title: "Teaching LLMs to reason with GRPO",
+    category: "LLMs",
+    summary:
+      "A pure-PyTorch study implementation of the DeepSeek-R1 training recipes: R1-Zero, the multi-stage R1 pipeline, and distillation.",
+    highlight: "Group-relative advantages · no learned critic",
+    tags: ["GRPO", "PyTorch", "LLM Fine-Tuning"],
+  },
   "vul-detection": {
     title: "Efficient LLMs for vulnerability detection",
     category: "LLMs",
@@ -94,6 +102,7 @@ export const featuredSlugs = [
   "jarvis",
   "construction-ai-agent",
   "database-join",
+  "llm-finetuning-grpo",
   "vul-detection",
   "distributed-agents",
   "image-denoising",

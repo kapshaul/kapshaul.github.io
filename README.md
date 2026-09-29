@@ -26,6 +26,14 @@ npm.cmd run dev
 
 `public/`은 실행·빌드 시 생성되는 에셋 폴더입니다. 직접 수정하지 말고 원본 콘텐츠와 에셋을 수정하세요.
 
+### Project ordering
+
+`featuredSlugs` in `src/data/projects.ts` controls the homepage's selected work
+and the leading order of the project index and “Keep exploring” navigation.
+Unfeatured projects follow in descending publication-date order. Studies remain
+chronological. Use real publication dates in Markdown; change `featuredSlugs`
+to curate the project order.
+
 ## 배포 전 확인
 
 ```powershell

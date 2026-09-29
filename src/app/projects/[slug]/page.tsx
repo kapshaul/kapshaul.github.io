@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import EntryPage from "@/components/entry-page";
+import { projectDisplay } from "@/data/projects";
 import { getEntries, getEntry } from "@/lib/content";
 
 export const dynamicParams = false;
@@ -16,17 +17,22 @@ export async function generateMetadata({
   const { slug } = await params;
   const entry = getEntry("projects", slug);
   if (!entry) return {};
+  const display = projectDisplay[slug];
+  const title = display?.title || entry.title;
+  const description = display?.summary || entry.summary;
   return {
-    title: entry.title,
-    description: entry.summary,
+    title,
+    description,
     alternates: { canonical: `/projects/${slug}/` },
     openGraph: {
-      title: entry.title,
-      description: entry.summary,
+      title,
+      description,
       url: `/projects/${slug}/`,
       type: "article",
       ...(entry.date ? { publishedTime: entry.date } : {}),
+      ...(entry.updated ? { modifiedTime: entry.updated } : {}),
     },
+    twitter: { card: "summary", title, description },
   };
 }
 

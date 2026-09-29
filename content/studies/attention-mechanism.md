@@ -1,13 +1,13 @@
 ---
 title: "Attention in Sequence-to-Sequence Models"
 date: 2024-06-07
-lastmod: 2026-09-27
+lastmod: 2026-09-29
 category: "NLP"
 tags: ["Attention", "Sequence Models", "Machine Translation"]
 author: ["Yong-Hwan Lee"]
 summary: "Derive attention weights, check their limiting behavior, and implement batch-first attention for German-to-English translation."
 editPost:
-  URL: "https://github.com/kapshaul/NLP-attention.mechanism"
+  URL: "https://github.com/kapshaul/NLP-attention.mechanism/tree/main"
   Text: "GitHub"
 ---
 
@@ -124,7 +124,7 @@ class SingleQueryScaledDotProductAttention(nn.Module):
         return context, weights
 ```
 
-`transpose(1, 2)` swaps the source and feature axes; `.T(1, 2)` is not a valid tensor operation. The attention weight shape is `(B, S)`, not `(B, B)`. See [PyTorch's batch matrix multiplication documentation](https://docs.pytorch.org/docs/2.14/generated/torch.bmm.html) and the [original notebook repository](https://github.com/kapshaul/NLP-attention.mechanism).
+`transpose(1, 2)` swaps the source and feature axes; `.T(1, 2)` is not a valid tensor operation. The attention weight shape is `(B, S)`, not `(B, B)`. See [PyTorch's batch matrix multiplication documentation](https://docs.pytorch.org/docs/2.14/generated/torch.bmm.html) and the [original notebook repository](https://github.com/kapshaul/NLP-attention.mechanism/tree/main).
 
 Masking is an explicit addition to this example. The historical runs below were not rerun with this revised snippet.
 

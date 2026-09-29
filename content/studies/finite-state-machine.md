@@ -1,13 +1,13 @@
 ---
 title: "LSTMs: Parity, State Machines & POS Tagging"
 date: 2024-05-10
-lastmod: 2026-09-27
+lastmod: 2026-09-29
 category: "NLP"
 tags: ["LSTM", "Sequence Modeling", "POS Tagging"]
 author: ["Yong-Hwan Lee"]
 summary: "Explore what a small LSTM can remember through parity and grammar tasks, then examine a BiLSTM tagger's results and failure cases."
 editPost:
-    URL: "https://github.com/kapshaul/NLP-finite.state.machine.RNN"
+    URL: "https://github.com/kapshaul/NLP-finite.state.machine.RNN/tree/main"
     Text: "GitHub"
 ---
 
@@ -170,6 +170,6 @@ The repository uses historical TorchText APIs. Reproduction requires a compatibl
 
 ## Sources
 
-- [Original experiment repository](https://github.com/kapshaul/NLP-finite.state.machine.RNN)
+- [Original experiment repository](https://github.com/kapshaul/NLP-finite.state.machine.RNN/tree/main)
 - [PyTorch LSTM documentation](https://docs.pytorch.org/docs/stable/generated/torch.nn.LSTM.html)
 - [PyTorch cross-entropy documentation](https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html)

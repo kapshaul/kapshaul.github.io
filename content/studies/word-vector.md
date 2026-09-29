@@ -1,13 +1,13 @@
 ---
 title: "Word Embeddings: PPMI, GloVe & Bias"
 date: 2024-04-10
-lastmod: 2026-09-27
+lastmod: 2026-09-29
 category: "NLP"
 tags: ["Word Embeddings", "GloVe", "PPMI"]
 author: ["Yong-Hwan Lee"]
 summary: "Build count-based and learned word vectors, derive GloVe gradients, and interpret embedding visualizations and analogy results."
 editPost:
-  URL: "https://github.com/kapshaul/NLP-WordVector"
+  URL: "https://github.com/kapshaul/NLP-WordVector/tree/main"
   Text: "GitHub"
 ---
 
@@ -120,7 +120,7 @@ These asymmetric associations motivate a broader bias evaluation. Scores measure
 
 ## Reproducing the study
 
-The [repository](https://github.com/kapshaul/NLP-WordVector) contains:
+The [repository](https://github.com/kapshaul/NLP-WordVector/tree/main) contains:
 
 | Script | Purpose |
 |---|---|

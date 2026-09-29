@@ -19,7 +19,7 @@ cover:
 
 + [Document](paper.pdf)
 + [LaTeX source](report.tex)
-+ [Code](https://github.com/kapshaul/CT-medical-imaging)
++ [Code](https://github.com/kapshaul/ct-medical-imaging)
 
 ---
 

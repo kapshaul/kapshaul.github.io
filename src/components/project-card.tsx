@@ -13,7 +13,7 @@ export default function ProjectCard({ entry }: { entry: Omit<Entry, "body"> }) {
   const code = entry.links.find((link) =>
     link.url.startsWith("https://github.com/"),
   );
-  const report = entry.links.find((link) => /\.pdf(?:$|[?#])/i.test(link.url));
+  const documentLink = entry.links.find((link) => /\.pdf(?:$|[?#])/i.test(link.url));
 
   return (
     <article className={`group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-[box-shadow,border-color] duration-200 hover:border-foreground/25 hover:shadow-md hover:shadow-black/5 ${isJarvis ? "min-[520px]:col-span-2" : ""}`}>
@@ -92,14 +92,14 @@ export default function ProjectCard({ entry }: { entry: Omit<Entry, "body"> }) {
               <Github className="size-3" aria-hidden="true" /> Code
             </a>
           )}
-          {report && (
+          {documentLink && (
             <a
-              href={report.url}
+              href={documentLink.url}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
             >
-              <FileText className="size-3" aria-hidden="true" /> Report
+              <FileText className="size-3" aria-hidden="true" /> Document
             </a>
           )}
         </div>

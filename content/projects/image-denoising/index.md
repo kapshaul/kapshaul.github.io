@@ -17,7 +17,7 @@ cover:
 
 ##### Download
 
-+ [Report](paper.pdf)
++ [Document](paper.pdf)
 + [Code](https://github.com/kapshaul/CT-medical-imaging)
 
 ---

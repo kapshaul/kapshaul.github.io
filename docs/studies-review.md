@@ -32,6 +32,8 @@ action까지의 값이다. 예전 표를 임의로 새 실험 결과로 바꾸�
 ## 대조한 코드 버전
 
 검토 당시 각 저장소의 HEAD/branch commit이다. 외부 저장소는 수정하지 않았다.
+OnlineLearning 두 행의 commit hash는 2026-09-27에 검토한 기록상의 snapshot이며,
+링크는 아래 통합 이후 `main`에서 같은 내용을 가리키는 현재 경로다.
 
 | 범위 | 확인한 revision |
 | --- | --- |
@@ -39,12 +41,28 @@ action까지의 값이다. 예전 표를 임의로 새 실험 결과로 바꾸�
 | Word vectors | [95c3d51](https://github.com/kapshaul/NLP-WordVector/tree/95c3d51687f12c9f4ce5aa384c757e4a8f52f9ea) |
 | LSTM / FSM | [c657616](https://github.com/kapshaul/NLP-finite.state.machine.RNN/tree/c657616e83180a89711f869dca116baab246992a) |
 | Sampling | [53e54f2](https://github.com/kapshaul/NLP-sampling.search/tree/53e54f27ed66214fa1e68afda6ae86cc5daf288a) |
-| Bandit comparison | [12f31f2](https://github.com/kapshaul/OnlineLearning/tree/12f31f2ba9a9a0c075c3f1d284dd61f6032a44b5) |
-| Discounted UCB | [5066fcb](https://github.com/kapshaul/OnlineLearning/tree/5066fcb579eff63020f7a64891ca62937fa5abc3) |
+| Bandit comparison | 검토 당시 `bandits-comparison-analysis` `12f31f2` → 현재 [`main/docs/bandits-comparison.md`](https://github.com/kapshaul/OnlineLearning/blob/main/docs/bandits-comparison.md) |
+| Discounted UCB | 검토 당시 `discountedUCB` `5066fcb` → 현재 [`main/docs/discounted-ucb.md`](https://github.com/kapshaul/OnlineLearning/blob/main/docs/discounted-ucb.md) |
 
 알고리즘의 정의는 각 글에 연결한 Transformer, GloVe, t-SNE, nucleus sampling,
 nonstationary UCB, generalized linear bandit 논문과 NumPy/PyTorch 공식 문서를
 함께 대조했다.
+
+### 2026-09-29 OnlineLearning branch 통합
+
+OnlineLearning의 두 실험 branch가 `main` 하나로 통합되었다. 알고리즘 구현과
+결과는 바뀌지 않았고, Bandit comparison과 Discounted UCB 글의 링크와 재현
+안내만 새 경로에 맞게 수정했다.
+
+| 이전 위치 | 현재 `main` 경로 |
+| --- | --- |
+| `bandits-comparison-analysis`: `Simulation.py`, `SimulationNonLinear.py`, `lib/` | 같은 파일 그대로 유지, 보고서는 `docs/bandits-comparison.md` |
+| `discountedUCB`: `Simulation.py` | `SimulationDiscountedUCB.py` (byte 단위 동일) |
+| `discountedUCB`: `lib/DiscountedUCBBandit.py` | 같은 경로로 변경 없이 복원 |
+| `discountedUCB`: 보고서 | `docs/discounted-ucb.md` |
+
+위의 검토일, 발견 사항과 아래 검증 결과는 2026-09-27 검토 기록 그대로다.
+이번 통합에서 원본 결과표와 그림을 다시 생성한 것은 아니다.
 
 ## 검증
 

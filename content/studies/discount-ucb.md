@@ -1,13 +1,13 @@
 ---
 title: "Discounted UCB in a Changing Environment"
 date: 2023-12-03
-lastmod: 2026-09-27
+lastmod: 2026-09-29
 category: "Online Learning"
 tags: ["Nonstationary Bandits", "UCB", "Discounting"]
 author: ["Yong-Hwan Lee"]
 summary: "Study how forgetting old rewards helps after a change point, and distinguish time-based discounting from the selected-arm update used in the archived experiment."
 editPost:
-    URL: "https://github.com/kapshaul/OnlineLearning/tree/discountedUCB"
+    URL: "https://github.com/kapshaul/OnlineLearning/blob/main/docs/discounted-ucb.md"
     Text: "GitHub"
 ---
 
@@ -151,7 +151,7 @@ Within these recorded values, all three discounted variants have lower means tha
 
 ## Reproduction notes
 
-Use the repository's `discountedUCB` branch and `Simulation.py`. The algorithm dictionary selects UCB or `DiscountedUCBBandit` and sets $\alpha$ and $\gamma$.
+Use the repository's `main` branch and [`SimulationDiscountedUCB.py`](https://github.com/kapshaul/OnlineLearning/blob/main/SimulationDiscountedUCB.py), which preserves the archived experiment's simulation script unchanged. The algorithm dictionary selects UCB or `DiscountedUCBBandit` and sets $\alpha$ and $\gamma$.
 
 A revised experiment should distinguish the archived variant from a time-discounted implementation, append the final-horizon checkpoint, and use matched seeds across methods. Testing multiple change points, reward gaps, and stationary periods would show whether faster forgetting helps consistently.
 
@@ -166,5 +166,5 @@ The curves above remain the original archive. No simulations were rerun for this
 
 ## Sources
 
-- [Original discounted-bandit experiment](https://github.com/kapshaul/OnlineLearning/tree/discountedUCB)
+- [Original discounted-bandit experiment](https://github.com/kapshaul/OnlineLearning/blob/main/docs/discounted-ucb.md)
 - [On Upper-Confidence Bound Policies for Non-Stationary Bandit Problems](https://arxiv.org/abs/0805.3415)

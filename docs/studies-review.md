@@ -38,10 +38,10 @@ action까지의 값이다. 예전 표를 임의로 새 실험 결과로 바꾸�
 
 | 범위 | 확인한 revision |
 | --- | --- |
-| Attention | 검토 당시 `6fcf26272616a2128f88f7aec29db67bd8566954` → 현재 [`main`](https://github.com/kapshaul/NLP-attention.mechanism/tree/main) |
-| Word vectors | 검토 당시 `95c3d51687f12c9f4ce5aa384c757e4a8f52f9ea` → 현재 [`main`](https://github.com/kapshaul/NLP-WordVector/tree/main) |
-| LSTM / FSM | 검토 당시 `c657616e83180a89711f869dca116baab246992a` → 현재 [`main`](https://github.com/kapshaul/NLP-finite.state.machine.RNN/tree/main) |
-| Sampling | 검토 당시 `53e54f27ed66214fa1e68afda6ae86cc5daf288a` → 현재 [`main`](https://github.com/kapshaul/NLP-sampling.search/tree/main) |
+| Attention | 검토 당시 `6fcf26272616a2128f88f7aec29db67bd8566954` → 현재 [`main`](https://github.com/kapshaul/nlp-attention-mechanisms/tree/main) |
+| Word vectors | 검토 당시 `95c3d51687f12c9f4ce5aa384c757e4a8f52f9ea` → 현재 [`main`](https://github.com/kapshaul/nlp-word-vectors/tree/main) |
+| LSTM / FSM | 검토 당시 `c657616e83180a89711f869dca116baab246992a` → 현재 [`main`](https://github.com/kapshaul/nlp-rnn-state-machines/tree/main) |
+| Sampling | 검토 당시 `53e54f27ed66214fa1e68afda6ae86cc5daf288a` → 현재 [`main`](https://github.com/kapshaul/nlp-sampling-search/tree/main) |
 | Bandit comparison | 검토 당시 `bandits-comparison-analysis` `12f31f2` → 현재 [`main/docs/bandits-comparison.md`](https://github.com/kapshaul/OnlineLearning/blob/main/docs/bandits-comparison.md) |
 | Discounted UCB | 검토 당시 `discountedUCB` `5066fcb` → 현재 [`main/docs/discounted-ucb.md`](https://github.com/kapshaul/OnlineLearning/blob/main/docs/discounted-ucb.md) |
 

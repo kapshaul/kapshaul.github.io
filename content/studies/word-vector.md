@@ -7,7 +7,7 @@ tags: ["Word Embeddings", "GloVe", "PPMI"]
 author: ["Yong-Hwan Lee"]
 summary: "Build count-based and learned word vectors, derive GloVe gradients, and interpret embedding visualizations and analogy results."
 editPost:
-  URL: "https://github.com/kapshaul/NLP-WordVector/tree/main"
+  URL: "https://github.com/kapshaul/nlp-word-vectors/tree/main"
   Text: "GitHub"
 ---
 
@@ -120,7 +120,7 @@ These asymmetric associations motivate a broader bias evaluation. Scores measure
 
 ## Reproducing the study
 
-The [repository](https://github.com/kapshaul/NLP-WordVector/tree/main) contains:
+The [repository](https://github.com/kapshaul/nlp-word-vectors/tree/main) contains:
 
 | Script | Purpose |
 |---|---|

@@ -7,7 +7,7 @@ tags: ["Text Generation", "Sampling", "Beam Search"]
 author: ["Yong-Hwan Lee"]
 summary: "Compare temperature, top-k, nucleus sampling, and beam search, with attention to probability filtering, recurrent state, and reproducibility."
 editPost:
-    URL: "https://github.com/kapshaul/NLP-sampling.search/tree/main"
+    URL: "https://github.com/kapshaul/nlp-sampling-search/tree/main"
     Text: "GitHub"
 ---
 
@@ -140,5 +140,5 @@ The repository entry point is `decoder.py`. Its comments record a historical env
 
 ## Sources
 
-- [Original decoder and language model](https://github.com/kapshaul/NLP-sampling.search/tree/main)
+- [Original decoder and language model](https://github.com/kapshaul/nlp-sampling-search/tree/main)
 - [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751), which introduces nucleus sampling

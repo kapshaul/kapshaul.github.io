@@ -1,7 +1,7 @@
 ---
 title: "DQN with Parallel Experience Collection"
 date: 2021-12-12
-lastmod: 2026-09-27
+lastmod: 2026-09-29
 tags: ["Reinforcement Learning", "DQN", "Parallel Experience Collection", "CartPole"]
 author: ["Yong-Hwan Lee", "Bakhtiyar Doskenov"]
 description: "This study was carried out as a project at Oregon State University." 
@@ -17,7 +17,7 @@ cover:
 
 ##### Download
 
-+ [Code](https://github.com/kapshaul/Distributed.Multi-Agents.RL)
++ [Code](https://github.com/kapshaul/Distributed.Multi-Agents.RL/tree/main/framework/distributed_dqn)
 
 ---
 
@@ -75,7 +75,7 @@ This experiment uses `custom_cartpole.py`, a slower CartPole environment, to exa
 
     ```bash
     git clone https://github.com/kapshaul/Distributed.Multi-Agents.RL.git
-    cd Distributed.Multi-Agents.RL/Distributed DQN
+    cd Distributed.Multi-Agents.RL/framework/distributed_dqn
     ```
 
 2. Install the required Python packages:

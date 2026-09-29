@@ -18,7 +18,7 @@ cover:
 ##### Download
 
 + [Paper](paper.pdf)
-+ [Code](https://github.com/kapshaul/LLM-finetune-vuln-detection)
++ [Code](https://github.com/kapshaul/llm-finetuning-vulnerability-detection)
 
 ---
 

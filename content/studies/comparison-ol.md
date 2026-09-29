@@ -7,7 +7,7 @@ tags: ["Bandits", "UCB", "Thompson Sampling"]
 author: ["Yong-Hwan Lee"]
 summary: "Compare exploration strategies and inspect where the experimental implementations differ from standard UCB, Thompson sampling, and nonlinear bandit methods."
 editPost:
-    URL: "https://github.com/kapshaul/OnlineLearning/blob/main/docs/bandits-comparison.md"
+    URL: "https://github.com/kapshaul/online-learning/blob/main/docs/bandits-comparison.md"
     Text: "GitHub"
 ---
 
@@ -215,7 +215,7 @@ The original plots retain their historical “GLM-UCB” labels for traceability
 
 ## Reproduction notes
 
-Use the repository's `main` branch. [`Simulation.py`](https://github.com/kapshaul/OnlineLearning/blob/main/Simulation.py) selects independent-arm and linear methods; [`SimulationNonLinear.py`](https://github.com/kapshaul/OnlineLearning/blob/main/SimulationNonLinear.py) selects the nonlinear experiment. Algorithms are enabled in each script's `algorithms` dictionary.
+Use the repository's `main` branch. [`Simulation.py`](https://github.com/kapshaul/online-learning/blob/main/Simulation.py) selects independent-arm and linear methods; [`SimulationNonLinear.py`](https://github.com/kapshaul/online-learning/blob/main/SimulationNonLinear.py) selects the nonlinear experiment. Algorithms are enabled in each script's `algorithms` dictionary.
 
 Before making a new cross-algorithm comparison:
 
@@ -235,7 +235,7 @@ No training or simulation results were regenerated during this content review. T
 
 ## Sources
 
-- [Original bandit comparison experiment](https://github.com/kapshaul/OnlineLearning/blob/main/docs/bandits-comparison.md)
-- [Primary simulation script](https://github.com/kapshaul/OnlineLearning/blob/main/Simulation.py)
+- [Original bandit comparison experiment](https://github.com/kapshaul/online-learning/blob/main/docs/bandits-comparison.md)
+- [Primary simulation script](https://github.com/kapshaul/online-learning/blob/main/Simulation.py)
 - [NumPy normal distribution: the scale parameter](https://numpy.org/doc/stable/reference/random/generated/numpy.random.normal.html)
 - [Parametric Bandits: The Generalized Linear Case](https://proceedings.neurips.cc/paper/2010/hash/c2626d850c80ea07e7511bbae4c76f4b-Abstract.html)

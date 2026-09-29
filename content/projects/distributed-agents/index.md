@@ -17,7 +17,7 @@ cover:
 
 ##### Download
 
-+ [Code](https://github.com/kapshaul/Distributed.Multi-Agents.RL/tree/main/framework/distributed_dqn)
++ [Code](https://github.com/kapshaul/distributed-multi-agent-rl/tree/main/framework/distributed_dqn)
 
 ---
 
@@ -74,8 +74,8 @@ This experiment uses `custom_cartpole.py`, a slower CartPole environment, to exa
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/kapshaul/Distributed.Multi-Agents.RL.git
-    cd Distributed.Multi-Agents.RL/framework/distributed_dqn
+    git clone https://github.com/kapshaul/distributed-multi-agent-rl.git
+    cd distributed-multi-agent-rl/framework/distributed_dqn
     ```
 
 2. Install the required Python packages:

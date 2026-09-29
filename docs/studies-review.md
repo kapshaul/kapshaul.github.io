@@ -42,16 +42,16 @@ action까지의 값이다. 예전 표를 임의로 새 실험 결과로 바꾸�
 | Word vectors | 검토 당시 `95c3d51687f12c9f4ce5aa384c757e4a8f52f9ea` → 현재 [`main`](https://github.com/kapshaul/nlp-word-vectors/tree/main) |
 | LSTM / FSM | 검토 당시 `c657616e83180a89711f869dca116baab246992a` → 현재 [`main`](https://github.com/kapshaul/nlp-rnn-state-machines/tree/main) |
 | Sampling | 검토 당시 `53e54f27ed66214fa1e68afda6ae86cc5daf288a` → 현재 [`main`](https://github.com/kapshaul/nlp-sampling-search/tree/main) |
-| Bandit comparison | 검토 당시 `bandits-comparison-analysis` `12f31f2` → 현재 [`main/docs/bandits-comparison.md`](https://github.com/kapshaul/OnlineLearning/blob/main/docs/bandits-comparison.md) |
-| Discounted UCB | 검토 당시 `discountedUCB` `5066fcb` → 현재 [`main/docs/discounted-ucb.md`](https://github.com/kapshaul/OnlineLearning/blob/main/docs/discounted-ucb.md) |
+| Bandit comparison | 검토 당시 `bandits-comparison-analysis` `12f31f2` → 현재 [`main/docs/bandits-comparison.md`](https://github.com/kapshaul/online-learning/blob/main/docs/bandits-comparison.md) |
+| Discounted UCB | 검토 당시 `discountedUCB` `5066fcb` → 현재 [`main/docs/discounted-ucb.md`](https://github.com/kapshaul/online-learning/blob/main/docs/discounted-ucb.md) |
 
 알고리즘의 정의는 각 글에 연결한 Transformer, GloVe, t-SNE, nucleus sampling,
 nonstationary UCB, generalized linear bandit 논문과 NumPy/PyTorch 공식 문서를
 함께 대조했다.
 
-### 2026-09-29 OnlineLearning branch 통합
+### 2026-09-29 online-learning branch 통합
 
-OnlineLearning의 두 실험 branch가 `main` 하나로 통합되었다. 알고리즘 구현과
+online-learning의 두 실험 branch가 `main` 하나로 통합되었다. 알고리즘 구현과
 결과는 바뀌지 않았고, Bandit comparison과 Discounted UCB 글의 링크와 재현
 안내만 새 경로에 맞게 수정했다.
 

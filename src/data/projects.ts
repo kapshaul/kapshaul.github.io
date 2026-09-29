@@ -73,12 +73,12 @@ export const projectDisplay: Record<string, ProjectDisplay> = {
     tags: ["DQN", "Parallel Experience Collection", "CartPole"],
   },
   "image-denoising": {
-    title: "Recovering images from Poisson noise",
+    title: "Poisson reconstruction for medical imaging",
     category: "Statistical Learning",
     summary:
-      "Deriving and simulating expectation maximization for CT image denoising, with estimation analysis and CRLB evaluation.",
-    highlight: "Statistical estimation for CT reconstruction",
-    tags: ["EM Algorithm", "Image Denoising", "MLE"],
+      "Estimating nine Poisson intensities with expectation maximization, with Fisher-information analysis and a reproducible, seeded simulation study.",
+    highlight: "40,000 seeded simulations · nine parameters",
+    tags: ["EM Algorithm", "Poisson Model", "CRLB"],
   },
   "kf-robot": {
     title: "Sensor fusion for robot orientation",

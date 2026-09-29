@@ -23,7 +23,7 @@ const RAY_START = -1;
 const RAY_TIP = 3.95;
 const AXIS_LABEL_AT = -1.2;
 
-// Observation numbers used by the original study for each axis-aligned path.
+// Row indices of the fixed 16 × 9 sensing matrix A for each axis-aligned path.
 const OBSERVATION: Record<Direction, readonly number[]> = {
   horizontal: [3, 2, 1],
   vertical: [9, 10, 11],
@@ -223,7 +223,7 @@ export function VoxelProjection() {
   const voxelList = voxels.map((j) => `p${j}`);
   const spokenVoxels = `${voxelList.slice(0, 2).join(", ")} and ${voxelList[2]}`;
   const expectedLabel = `E of Y ${observation} equals ${voxels
-    .map((j) => `a ${observation},${j} times lambda ${j}`)
+    .map((j) => `a ${observation},${j} times x ${j}`)
     .join(" plus ")}`;
   const observedLabel = `Y ${observation} equals ${voxels
     .map((j) => `N ${observation},${j}`)
@@ -286,7 +286,7 @@ export function VoxelProjection() {
             3 × 3 voxel layer drawn as cubes with one measurement path
           </title>
           <desc id={descId}>
-            {`Nine cubes p1 to p9, numbered row by row. A ${direction} path through ${path.toLowerCase()} crosses ${spokenVoxels} at mid-height and ends at observation Y${observation}. The other six voxels are off the path. Axis triad: x runs along columns, y along rows, z up.`}
+            {`Nine cubes p1 to p9, numbered row by row, with unknown intensities x1 to x9. A ${direction} path through ${path.toLowerCase()} crosses ${spokenVoxels} at mid-height and ends at observation Y${observation}. The other six voxels are off the path. Axis triad: x runs along columns, y along rows, z up.`}
           </desc>
 
           <polygon className={styles.floor} points={FLOOR} />
@@ -446,7 +446,7 @@ export function VoxelProjection() {
                       <sub>
                         {observation},{j}
                       </sub>
-                      <i>λ</i>
+                      <i>x</i>
                       <sub>{j}</sub>
                     </span>
                   </Fragment>
@@ -492,11 +492,11 @@ export function VoxelProjection() {
       </div>
 
       <p className={styles.note}>
-        The detector records only the total <i>Y</i>
+        Only the total <i>Y</i>
         <sub>
           <i>i</i>
-        </sub>
-        , never the hidden per-voxel counts <i>N</i>
+        </sub>{" "}
+        is observed, never the hidden per-voxel counts <i>N</i>
         <sub>
           <i>ij</i>
         </sub>
@@ -508,11 +508,12 @@ export function VoxelProjection() {
         <sub>
           <i>ij</i>
         </sub>
-        <i>λ</i>
+        <i>x</i>
         <sub>
           <i>j</i>
-        </sub>
-        ; the M-step uses those estimated shares to update each <i>λ</i>
+        </sub>{" "}
+        at the current estimate; the M-step uses those estimated shares to
+        update each intensity <i>x</i>
         <sub>
           <i>j</i>
         </sub>
@@ -523,8 +524,9 @@ export function VoxelProjection() {
         A single 3 × 3 voxel layer (<i>p</i>
         <sub>1</sub>–<i>p</i>
         <sub>9</sub>, numbered row by row) drawn as 3D cubes, with one
-        axis-aligned path selected at a time. Dashed segments trace the path
-        inside the layer.
+        axis-aligned path selected at a time. Each path is one selected row of
+        the fixed binary sensing matrix <i>A</i>, not a scanner geometry.
+        Dashed segments trace the path inside the layer.
       </figcaption>
     </figure>
   );
